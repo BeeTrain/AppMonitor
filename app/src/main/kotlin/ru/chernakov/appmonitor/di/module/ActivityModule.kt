@@ -1,15 +1,16 @@
 package ru.chernakov.appmonitor.di.module
 
+import android.app.Activity
 import dagger.Module
 import dagger.Provides
-import ru.chernakov.appmonitor.presentation.base.BaseActivity
-import javax.inject.Singleton
+import ru.chernakov.appmonitor.di.scope.PerActivity
 
 @Module
-class ActivityModule {
+class ActivityModule(private var activity: Activity) {
 
     @Provides
-    @Singleton
-    fun provideActivityContext(activity: BaseActivity): BaseActivity = activity
+    fun provideActivity(): Activity {
+        return activity
+    }
 
 }

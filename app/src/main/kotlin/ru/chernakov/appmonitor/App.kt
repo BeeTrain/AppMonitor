@@ -1,23 +1,30 @@
 package ru.chernakov.appmonitor
 
-import android.annotation.SuppressLint
 import android.app.Application
-import android.content.Context
-import ru.chernakov.appmonitor.di.AppComponent
-import ru.chernakov.appmonitor.di.DaggerAppComponent
+import ru.chernakov.appmonitor.di.component.AppComponent
+import ru.chernakov.appmonitor.di.component.DaggerAppComponent
+import ru.chernakov.appmonitor.di.module.ApplicationModule
 
 class App : Application() {
 
-    companion object {
-        lateinit var appComponent: AppComponent
-
-        @SuppressLint("StaticFieldLeak")
-        lateinit var context: Context
-    }
+    lateinit var component: AppComponent
 
     override fun onCreate() {
         super.onCreate()
 
-        appComponent = DaggerAppComponent.builder().build()
+        instance = this
+
+        component = DaggerAppComponent.builder()
+            .applicationModule(ApplicationModule(this))
+            .build()
+        component.inject(this)
+    }
+
+    fun getAppComponent(): AppComponent {
+        return component
+    }
+
+    companion object {
+        lateinit var instance: App private set
     }
 }
