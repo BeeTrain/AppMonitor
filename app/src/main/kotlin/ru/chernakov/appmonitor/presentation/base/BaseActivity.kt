@@ -29,6 +29,7 @@ abstract class BaseActivity : MvpAppCompatActivity() {
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
+        setTheme(R.style.AppTheme)
         super.onCreate(savedInstanceState)
         setContentView(ru.chernakov.appmonitor.R.layout.activity_app)
 

@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+		xmlns:android="http://schemas.android.com/apk/res/android"
+		xmlns:tools="http://schemas.android.com/tools"
+		android:layout_width="match_parent"
+		android:layout_height="wrap_content"
+		android:background="?attr/selectableItemBackground">
+
+	<TextView
+			android:id="@+id/forksTextView"
+			android:layout_width="wrap_content"
+			android:layout_height="wrap_content"
+			android:layout_marginTop="8dp"
+			android:layout_marginEnd="16dp"
+			android:drawablePadding="4dp"
+			android:gravity="center_vertical|end"
+			android:textColor="@color/colorPrimary"
+			android:textSize="14sp"
+			tools:drawableTint="@color/colorPrimary"
+			tools:text="2900"/>
+
+</LinearLayout>

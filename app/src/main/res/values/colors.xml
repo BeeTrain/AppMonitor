@@ -1,6 +1,23 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <color name="colorPrimary">#008577</color>
-    <color name="colorPrimaryDark">#00574B</color>
-    <color name="colorAccent">#D81B60</color>
+
+	<!-- Цвета основной темы приложения -->
+	<color name="colorPrimary">#d50000</color>
+	<color name="colorPrimaryLight">#ff5131</color>
+	<color name="colorPrimaryDark">#9b0000</color>
+	<color name="colorControlActivated">@color/colorSecondary</color>
+
+	<!--Цвета дополнительной темы приложения-->
+	<color name="colorSecondary">#ff9100</color>
+	<color name="colorSecondaryLight">#ffc246</color>
+	<color name="colorSecondaryDark">#c56200</color>
+
+	<color name="colorAccent">@color/colorPrimaryLight</color>
+
+	<color name="colorComplementary">#7cb342</color>
+	<color name="colorError">@color/red_600</color>
+
+	<color name="textColorPrimary">@color/white</color>
+	<color name="textColorSecondary">@color/black</color>
+
 </resources>
