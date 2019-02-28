@@ -1,30 +1,37 @@
 package ru.chernakov.appmonitor.presentation.info
 
 import android.os.Bundle
-import android.view.LayoutInflater
-import android.view.View
-import android.view.ViewGroup
+import butterknife.OnClick
 import com.arellomobile.mvp.presenter.InjectPresenter
 import com.arellomobile.mvp.presenter.ProvidePresenter
+import ru.chernakov.appmonitor.App
 import ru.chernakov.appmonitor.R
-import ru.chernakov.appmonitor.presentation.AppActivity
 import ru.chernakov.appmonitor.presentation.base.BaseFragment
 
 class InfoFragment : BaseFragment(), InfoView {
 
+    override val layoutRes = R.layout.fragment_info
+
     @InjectPresenter
     lateinit var presenter: InfoPresenter
 
-    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
-        super.onCreateView(inflater, container, savedInstanceState)
-        val v = inflater.inflate(R.layout.fragment_info, container, false)
+    override fun onCreate(savedInstanceState: Bundle?) {
+        App.instance.getAppComponent().inject(this)
+        super.onCreate(savedInstanceState)
+    }
 
-        return v
+    override fun init() {
+
     }
 
     @ProvidePresenter
     fun providePresenter(): InfoPresenter {
-        return InfoPresenter(activity as AppActivity)
+        return InfoPresenter(router)
+    }
+
+    @OnClick(R.id.text)
+    fun goToNext() {
+        presenter.goToList()
     }
 
 }

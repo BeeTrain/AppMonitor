@@ -7,7 +7,7 @@ import ru.chernakov.appmonitor.di.module.ApplicationModule
 
 class App : Application() {
 
-    lateinit var component: AppComponent
+    private lateinit var component: AppComponent
 
     override fun onCreate() {
         super.onCreate()
@@ -17,7 +17,6 @@ class App : Application() {
         component = DaggerAppComponent.builder()
             .applicationModule(ApplicationModule(this))
             .build()
-        component.inject(this)
     }
 
     fun getAppComponent(): AppComponent {

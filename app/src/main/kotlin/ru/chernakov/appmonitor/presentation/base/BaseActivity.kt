@@ -2,28 +2,45 @@ package ru.chernakov.appmonitor.presentation.base
 
 import android.os.Bundle
 import android.support.v4.app.Fragment
+import android.support.v4.app.FragmentTransaction
 import com.arellomobile.mvp.MvpAppCompatActivity
 import ru.chernakov.appmonitor.R
-import ru.chernakov.appmonitor.navigation.NavigationHost
+import ru.terrakok.cicerone.Navigator
+import ru.terrakok.cicerone.NavigatorHolder
+import ru.terrakok.cicerone.android.support.SupportAppNavigator
+import ru.terrakok.cicerone.commands.Command
+import javax.inject.Inject
 
 
-abstract class BaseActivity : MvpAppCompatActivity(), NavigationHost {
+abstract class BaseActivity : MvpAppCompatActivity() {
+
+    @Inject
+    lateinit var navigatorHolder: NavigatorHolder
+
+    var navigator: Navigator = object : SupportAppNavigator(this, supportFragmentManager, R.id.container) {
+        override fun setupFragmentTransaction(
+            command: Command?,
+            currentFragment: Fragment?,
+            nextFragment: Fragment?,
+            fragmentTransaction: FragmentTransaction
+        ) {
+            fragmentTransaction.setReorderingAllowed(true)
+        }
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_app)
+        setContentView(ru.chernakov.appmonitor.R.layout.activity_app)
 
     }
 
-    override fun navigateTo(fragment: Fragment, addToBackStack: Boolean) {
-        val transaction = supportFragmentManager
-            .beginTransaction()
-            .replace(R.id.container, fragment)
+    override fun onResumeFragments() {
+        super.onResumeFragments()
+        navigatorHolder.setNavigator(navigator)
+    }
 
-        if (addToBackStack) {
-            transaction.addToBackStack(null)
-        }
-
-        transaction.commit()
+    override fun onPause() {
+        navigatorHolder.removeNavigator()
+        super.onPause()
     }
 }

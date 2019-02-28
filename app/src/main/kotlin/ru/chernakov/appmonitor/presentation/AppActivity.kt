@@ -1,39 +1,24 @@
 package ru.chernakov.appmonitor.presentation
 
 import android.os.Bundle
-import ru.chernakov.appmonitor.di.component.ActivityComponent
-import ru.chernakov.appmonitor.di.component.DaggerActivityComponent
-import ru.chernakov.appmonitor.di.module.ActivityModule
+import ru.chernakov.appmonitor.App
+import ru.chernakov.appmonitor.navigation.Screen
 import ru.chernakov.appmonitor.presentation.base.BaseActivity
-import ru.chernakov.appmonitor.presentation.list.ListFragment
+import ru.terrakok.cicerone.Router
 import javax.inject.Inject
-import javax.inject.Singleton
 
-class AppActivity @Inject
-constructor() : BaseActivity() {
 
-    companion object {
-        lateinit var component: ActivityComponent
-    }
+class AppActivity : BaseActivity() {
+
+    @Inject
+    lateinit var router: Router
 
     override fun onCreate(savedInstanceState: Bundle?) {
+        App.instance.getAppComponent().inject(this)
         super.onCreate(savedInstanceState)
-        inject()
 
         if (savedInstanceState == null) {
-            navigateTo(ListFragment(), true)
+            router.navigateTo(Screen.List)
         }
-    }
-
-    private fun inject() {
-        component = DaggerActivityComponent.builder()
-            .activityModule(ActivityModule(this))
-            .build()
-
-        component.inject(this)
-    }
-
-    fun getActivityComponent(): ActivityComponent {
-        return component
     }
 }
