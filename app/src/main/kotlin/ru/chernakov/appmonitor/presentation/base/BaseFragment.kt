@@ -30,7 +30,7 @@ abstract class BaseFragment : MvpAppCompatFragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        init()
+        loadData()
     }
 
     override fun onDestroyView() {
@@ -38,5 +38,5 @@ abstract class BaseFragment : MvpAppCompatFragment() {
         unBinder.unbind()
     }
 
-    abstract fun init()
+    abstract fun loadData()
 }

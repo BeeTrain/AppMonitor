@@ -35,8 +35,6 @@ class ApplicationItem : Serializable {
     var isSystem: Boolean? = null
         private set
 
-    constructor()
-
     constructor(
         name: String,
         apk: String,

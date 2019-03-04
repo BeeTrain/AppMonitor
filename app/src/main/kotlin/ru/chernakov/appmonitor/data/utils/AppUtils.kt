@@ -1,6 +1,11 @@
 package ru.chernakov.appmonitor.data.utils
 
+import android.Manifest
+import android.app.Activity
+import android.content.pm.PackageManager
 import android.os.Environment
+import android.support.v4.app.ActivityCompat
+import android.support.v4.content.ContextCompat
 import org.apache.commons.io.FileUtils
 import ru.chernakov.appmonitor.App
 import ru.chernakov.appmonitor.R
@@ -11,15 +16,20 @@ import java.io.IOException
 
 class AppUtils {
 
+
     companion object {
+        private const val MY_PERMISSIONS_REQUEST_WRITE_READ = 1
+
         fun getDefaultAppFolder(): File {
-            return File(Environment.getExternalStorageDirectory().path + File.pathSeparator + R.string.app_name)
+            return File(Environment.getExternalStorageDirectory().path + File.separator + App.instance.getString(R.string.app_name))
         }
 
-
         fun getAppFolder(): File {
-            val appPreferences = App.appPreferences
-            return File(appPreferences.customPath)
+            val appFolder = getDefaultAppFolder()
+            if (!appFolder.exists()) {
+                appFolder.mkdirs()
+            }
+            return appFolder
         }
 
         fun copyFile(applicationItem: ApplicationItem): Boolean? {
@@ -53,6 +63,27 @@ class AppUtils {
                 else -> res = applicationItem.apk.toString()
             }
 
+            return res
+        }
+
+        fun checkPermissions(activity: Activity): Boolean? {
+            var res: Boolean? = false
+            if (ContextCompat.checkSelfPermission(
+                    activity,
+                    Manifest.permission.WRITE_EXTERNAL_STORAGE
+                ) != PackageManager.PERMISSION_GRANTED
+            ) {
+
+                ActivityCompat.requestPermissions(
+                    activity,
+                    arrayOf(
+                        Manifest.permission.WRITE_EXTERNAL_STORAGE,
+                        Manifest.permission.READ_EXTERNAL_STORAGE
+                    ), MY_PERMISSIONS_REQUEST_WRITE_READ
+                )
+            } else {
+                res = true
+            }
             return res
         }
     }
