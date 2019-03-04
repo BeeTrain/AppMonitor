@@ -1,18 +1,18 @@
-package ru.chernakov.appmonitor.presentation.list.adapter
+package ru.chernakov.appmonitor.presentation.info.adapter
 
 import android.support.v4.app.FragmentActivity
 import android.support.v7.widget.RecyclerView
 import android.view.ViewGroup
 import com.hannesdorfmann.adapterdelegates3.AdapterDelegatesManager
-import ru.chernakov.appmonitor.data.model.ApplicationItem
+import ru.chernakov.appmonitor.data.model.OptionItem
 
-class ListAdapter(activity: FragmentActivity, private val items: List<ApplicationItem>) :
+class OptionsAdapter(activity: FragmentActivity, private val items: ArrayList<OptionItem>) :
     RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
-    private val delegatesManager = AdapterDelegatesManager<List<ApplicationItem>>()
+    private val delegatesManager = AdapterDelegatesManager<List<OptionItem>>()
 
     init {
-        delegatesManager.addDelegate(ListAdapterDelegate(activity))
+        delegatesManager.addDelegate(OptionsAdapterDelegate(activity))
     }
 
     override fun onCreateViewHolder(viewGroup: ViewGroup, position: Int): RecyclerView.ViewHolder {
@@ -27,7 +27,7 @@ class ListAdapter(activity: FragmentActivity, private val items: List<Applicatio
         delegatesManager.onBindViewHolder(items, position, viewHolder)
     }
 
-    fun getItem(position: Int): ApplicationItem {
+    fun getItem(position: Int): OptionItem {
         return items[position]
     }
 }

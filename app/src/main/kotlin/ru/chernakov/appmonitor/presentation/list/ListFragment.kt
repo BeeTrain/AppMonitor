@@ -51,7 +51,7 @@ class ListFragment : BaseFragment(), ListView {
         }
     }
 
-    override fun setupListAdapter(applications: ArrayList<ApplicationItem>) {
+    override fun initAdapter(applications: List<ApplicationItem>) {
         adapter = activity?.let { ListAdapter(it, applications) }
         applicationsList.layoutManager = LinearLayoutManager(context)
         applicationsList.adapter = adapter

@@ -4,7 +4,6 @@ import android.os.Bundle
 import android.support.v4.app.Fragment
 import android.support.v4.app.FragmentTransaction
 import com.arellomobile.mvp.MvpAppCompatActivity
-import ru.chernakov.appmonitor.R
 import ru.terrakok.cicerone.Navigator
 import ru.terrakok.cicerone.NavigatorHolder
 import ru.terrakok.cicerone.android.support.SupportAppNavigator
@@ -17,19 +16,20 @@ abstract class BaseActivity : MvpAppCompatActivity() {
     @Inject
     lateinit var navigatorHolder: NavigatorHolder
 
-    var navigator: Navigator = object : SupportAppNavigator(this, supportFragmentManager, R.id.container) {
-        override fun setupFragmentTransaction(
-            command: Command?,
-            currentFragment: Fragment?,
-            nextFragment: Fragment?,
-            fragmentTransaction: FragmentTransaction
-        ) {
-            fragmentTransaction.setReorderingAllowed(true)
+    var navigator: Navigator =
+        object : SupportAppNavigator(this, supportFragmentManager, ru.chernakov.appmonitor.R.id.container) {
+            override fun setupFragmentTransaction(
+                command: Command?,
+                currentFragment: Fragment?,
+                nextFragment: Fragment?,
+                fragmentTransaction: FragmentTransaction
+            ) {
+                fragmentTransaction.setReorderingAllowed(true)
+            }
         }
-    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
-        setTheme(R.style.AppTheme)
+        setTheme(ru.chernakov.appmonitor.R.style.AppTheme)
         super.onCreate(savedInstanceState)
         setContentView(ru.chernakov.appmonitor.R.layout.activity_app)
 

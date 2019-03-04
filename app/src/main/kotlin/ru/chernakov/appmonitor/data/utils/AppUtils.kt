@@ -2,13 +2,16 @@ package ru.chernakov.appmonitor.data.utils
 
 import android.Manifest
 import android.app.Activity
+import android.content.ActivityNotFoundException
+import android.content.Context
+import android.content.Intent
 import android.content.pm.PackageManager
+import android.net.Uri
 import android.os.Environment
 import android.support.v4.app.ActivityCompat
 import android.support.v4.content.ContextCompat
 import org.apache.commons.io.FileUtils
 import ru.chernakov.appmonitor.App
-import ru.chernakov.appmonitor.R
 import ru.chernakov.appmonitor.data.model.ApplicationItem
 import java.io.File
 import java.io.IOException
@@ -18,10 +21,12 @@ class AppUtils {
 
 
     companion object {
-        private const val MY_PERMISSIONS_REQUEST_WRITE_READ = 1
+        const val MY_PERMISSIONS_REQUEST_WRITE_READ = 1
+
+        const val UNINSTALL_REQUEST_CODE = 1
 
         fun getDefaultAppFolder(): File {
-            return File(Environment.getExternalStorageDirectory().path + File.separator + App.instance.getString(R.string.app_name))
+            return File(Environment.getExternalStorageDirectory().path + File.separator + App.instance.getString(ru.chernakov.appmonitor.R.string.app_name))
         }
 
         fun getAppFolder(): File {
@@ -85,6 +90,29 @@ class AppUtils {
                 res = true
             }
             return res
+        }
+
+        fun goToGooglePlay(context: Context, id: String) {
+            try {
+                context.startActivity(Intent(Intent.ACTION_VIEW, Uri.parse("market://details?id=$id")))
+            } catch (e: ActivityNotFoundException) {
+                context.startActivity(
+                    Intent(
+                        Intent.ACTION_VIEW,
+                        Uri.parse("https://play.google.com/store/apps/details?id=$id")
+                    )
+                )
+            }
+        }
+
+        fun getShareIntent(file: File): Intent {
+            val intent = Intent()
+            intent.action = Intent.ACTION_SEND
+            intent.putExtra(Intent.EXTRA_STREAM, Uri.fromFile(file))
+            intent.type = "application/vnd.android.package-archive"
+            intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_GRANT_READ_URI_PERMISSION or Intent.FLAG_GRANT_WRITE_URI_PERMISSION
+
+            return intent
         }
     }
 }

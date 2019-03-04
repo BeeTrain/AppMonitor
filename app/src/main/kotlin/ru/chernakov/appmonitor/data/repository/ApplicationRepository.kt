@@ -1,14 +1,16 @@
 package ru.chernakov.appmonitor.data.repository
 
+import android.content.pm.ApplicationInfo
 import android.content.pm.PackageManager
 import android.support.v4.app.FragmentActivity
 import io.reactivex.Observable
-import ru.chernakov.appmonitor.R
 import ru.chernakov.appmonitor.data.model.ApplicationItem
+import ru.chernakov.appmonitor.data.utils.getSHA
+
 
 class ApplicationRepository(val activity: FragmentActivity) {
 
-    fun getApplications(): Observable<ArrayList<ApplicationItem>> {
+    fun getApplications(): Observable<List<ApplicationItem>> {
         val appList = ArrayList<ApplicationItem>()
 
         val packageManager = activity.packageManager
@@ -24,7 +26,10 @@ class ApplicationRepository(val activity: FragmentActivity) {
                         packageInfo.applicationInfo.sourceDir,
                         packageInfo.applicationInfo.dataDir,
                         packageManager.getApplicationIcon(packageInfo.applicationInfo),
-                        false
+                        packageInfo.applicationInfo.flags and ApplicationInfo.FLAG_SYSTEM > 0,
+                        getSHA(packageInfo.packageName, packageManager),
+                        packageInfo.firstInstallTime,
+                        packageInfo.lastUpdateTime
                     )
                     appList.add(tempApp)
                 } catch (e: OutOfMemoryError) {
@@ -34,8 +39,11 @@ class ApplicationRepository(val activity: FragmentActivity) {
                         packageInfo.versionName,
                         packageInfo.applicationInfo.sourceDir,
                         packageInfo.applicationInfo.dataDir,
-                        activity.resources.getDrawable(R.drawable.ic_android),
-                        false
+                        packageManager.getApplicationIcon(packageInfo.applicationInfo),
+                        packageInfo.applicationInfo.flags and ApplicationInfo.FLAG_SYSTEM > 0,
+                        getSHA(packageInfo.packageName, packageManager),
+                        packageInfo.firstInstallTime,
+                        packageInfo.lastUpdateTime
                     )
                     appList.add(tempApp)
                 } catch (e: Exception) {

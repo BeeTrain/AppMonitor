@@ -1,38 +1,37 @@
 package ru.chernakov.appmonitor.data.model
 
 import android.graphics.drawable.Drawable
-import com.activeandroid.annotation.Column
-import com.activeandroid.annotation.Table
 import java.io.Serializable
 
 
-@Table(name = "applications")
 class ApplicationItem : Serializable {
 
-    @Column(name = "name")
     var name: String? = null
         private set
 
-    @Column(name = "apk")
     var apk: String? = null
         private set
 
-    @Column(name = "version")
     var version: String? = null
         private set
 
-    @Column(name = "source")
     var source: String? = null
         private set
 
-    @Column(name = "data")
     var data: String? = null
         private set
-    @Column(name = "icon")
     var icon: Drawable? = null
 
-    @Column(name = "is_system")
     var isSystem: Boolean? = null
+        private set
+
+    var sha: String? = null
+        private set
+
+    var installDate: Long? = null
+        private set
+
+    var updateDate: Long? = null
         private set
 
     constructor(
@@ -42,7 +41,10 @@ class ApplicationItem : Serializable {
         source: String,
         data: String,
         icon: Drawable,
-        isSystem: Boolean?
+        isSystem: Boolean?,
+        sha: String?,
+        installDate: Long,
+        updateDate: Long
     ) {
         this.name = name
         this.apk = apk
@@ -51,21 +53,27 @@ class ApplicationItem : Serializable {
         this.data = data
         this.icon = icon
         this.isSystem = isSystem
+        this.sha = sha
+        this.installDate = installDate
+        this.updateDate = updateDate
     }
 
     constructor(string: String) {
         val split = string.split("##".toRegex()).dropLastWhile { it.isEmpty() }.toTypedArray()
-        if (split.size == 6) {
+        if (split.size == 9) {
             this.name = split[0]
             this.apk = split[1]
             this.version = split[2]
             this.source = split[3]
             this.data = split[4]
             this.isSystem = java.lang.Boolean.getBoolean(split[5])
+            this.sha = split[6]
+            this.installDate = split[7].toLong()
+            this.updateDate = split[8].toLong()
         }
     }
 
     override fun toString(): String {
-        return "$name##$apk##$version##$source##$data##$isSystem"
+        return "$name##$apk##$version##$source##$data##$isSystem##$sha##$installDate##$updateDate"
     }
 }

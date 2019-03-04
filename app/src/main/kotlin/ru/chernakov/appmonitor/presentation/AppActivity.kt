@@ -1,5 +1,7 @@
 package ru.chernakov.appmonitor.presentation
 
+import android.app.Activity
+import android.content.Intent
 import android.os.Bundle
 import ru.chernakov.appmonitor.App
 import ru.chernakov.appmonitor.data.utils.AppUtils
@@ -32,5 +34,18 @@ class AppActivity : BaseActivity() {
         super.onBackPressed()
 
         router.backTo(Screen.List)
+    }
+
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        super.onActivityResult(requestCode, resultCode, data)
+        if (requestCode == AppUtils.UNINSTALL_REQUEST_CODE) {
+            if (resultCode == Activity.RESULT_OK) {
+                val intent = Intent(applicationContext, AppActivity::class.java)
+                intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
+                finish()
+                startActivity(intent)
+            } else if (resultCode == Activity.RESULT_CANCELED) {
+            }
+        }
     }
 }

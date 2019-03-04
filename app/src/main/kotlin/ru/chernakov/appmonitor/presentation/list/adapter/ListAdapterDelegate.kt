@@ -29,14 +29,14 @@ class ListAdapterDelegate(private val activity: Activity) : AdapterDelegate<List
         val viewHolder: ListViewHolder = holder as ListViewHolder
         val item: ApplicationItem? = items[position]
 
-        viewHolder.applName.text = item?.name
+        viewHolder.appName.text = item?.name
         viewHolder.appApk.text = item?.apk
         viewHolder.appIcon.setImageDrawable(item?.icon)
     }
 
     internal inner class ListViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
 
-        var applName: TextView = itemView.findViewById(R.id.appName)
+        var appName: TextView = itemView.findViewById(R.id.appName)
         var appApk: TextView = itemView.findViewById(R.id.appApk)
         var appIcon: ImageView = itemView.findViewById(R.id.appIcon)
 

@@ -12,6 +12,6 @@
 	<dimen name="list_spacing_large">30dp</dimen>
 	<dimen name="list_spacing_small">26dp</dimen>
 
-	<dimen name="application_icon_size">88dp</dimen>
+	<dimen name="application_icon_size">64dp</dimen>
 
 </resources>

@@ -18,20 +18,21 @@ class ListPresenter(router: Router, val loadApplicationsUseCase: LoadApplication
     }
 
     fun loadApps() {
-        viewState.setLoading(true)
-        loadApplicationsUseCase.execute(ListObserver(), null)
-
+        if (appList.size == 0) {
+            viewState.setLoading(true)
+            loadApplicationsUseCase.execute(ListObserver(), null)
+        }
     }
 
-    private inner class ListObserver : BaseObserver<ArrayList<ApplicationItem>>() {
+    private inner class ListObserver : BaseObserver<List<ApplicationItem>>() {
 
         override fun onComplete() {
             viewState.setLoading(false)
         }
 
-        override fun onNext(t: ArrayList<ApplicationItem>) {
+        override fun onNext(t: List<ApplicationItem>) {
             appList.clear()
-            viewState.setupListAdapter(t)
+            viewState.initAdapter(t)
         }
 
         override fun onError(e: Throwable) {

@@ -2,20 +2,24 @@ package ru.chernakov.appmonitor.presentation.info
 
 import android.os.Bundle
 import android.support.v7.app.AppCompatActivity
+import android.support.v7.widget.LinearLayoutManager
 import android.support.v7.widget.Toolbar
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
-import butterknife.OnClick
 import com.arellomobile.mvp.presenter.InjectPresenter
 import com.arellomobile.mvp.presenter.ProvidePresenter
+import kotlinx.android.synthetic.main.fragment_info.*
 import kotlinx.android.synthetic.main.toolbar_application_info.*
 import ru.chernakov.appmonitor.App
-
 import ru.chernakov.appmonitor.R
 import ru.chernakov.appmonitor.data.model.ApplicationItem
+import ru.chernakov.appmonitor.data.model.OptionItem
+import ru.chernakov.appmonitor.data.utils.formatDate
 import ru.chernakov.appmonitor.presentation.base.BaseFragment
+import ru.chernakov.appmonitor.presentation.info.adapter.OptionsAdapter
+import java.util.*
 
 class InfoFragment : BaseFragment(), InfoView {
 
@@ -24,7 +28,9 @@ class InfoFragment : BaseFragment(), InfoView {
     @InjectPresenter
     lateinit var presenter: InfoPresenter
 
-    var applicationItem: ApplicationItem? = null
+    lateinit var applicationItem: ApplicationItem
+
+    private var adapter: OptionsAdapter? = null
 
     companion object {
         fun create(appItem: ApplicationItem) =
@@ -46,20 +52,35 @@ class InfoFragment : BaseFragment(), InfoView {
     }
 
     override fun loadData() {
-        appIcon.setImageDrawable(applicationItem?.icon)
-        appName.text = applicationItem?.name
-        appVersion.text = applicationItem?.version
-        appPackage.text = applicationItem?.apk
+        initApplicationInfo(applicationItem)
+        initAdapter(presenter.initOptionsList())
+    }
+
+    override fun initApplicationInfo(applicationItem: ApplicationItem) {
+        appIcon.setImageDrawable(applicationItem.icon)
+        appName.text = applicationItem.name
+        appVersion.text = applicationItem.version
+        appPackage.text = applicationItem.apk
+        appSHA.text = getString(R.string.value_sha, applicationItem.sha)
+        appInstallDate.text =
+            getString(R.string.value_installed, formatDate(applicationItem.installDate?.let { Date(it) }))
+        appUpdateDate.text =
+            getString(R.string.value_updated, formatDate(applicationItem.updateDate?.let { Date(it) }))
+    }
+
+    override fun initAdapter(optionItems: ArrayList<OptionItem>) {
+        activity?.let {
+            adapter = OptionsAdapter(it, optionItems)
+            optionsList.layoutManager = LinearLayoutManager(context)
+            optionsList.adapter = adapter
+            adapter?.notifyDataSetChanged()
+            presenter.setOnClickListener(optionsList, adapter!!, it)
+        }
     }
 
     @ProvidePresenter
     fun providePresenter(): InfoPresenter {
-        return InfoPresenter(router)
-    }
-
-    @OnClick(ru.chernakov.appmonitor.R.id.text)
-    fun goToNext() {
-        applicationItem?.let { presenter.copyFile(it) }
+        return InfoPresenter(router, applicationItem)
     }
 
     private fun setUpToolbar(view: View) {
@@ -69,12 +90,12 @@ class InfoFragment : BaseFragment(), InfoView {
         activity?.setSupportActionBar(toolbar)
 
         toolbar.setNavigationOnClickListener {
-            presenter.goToList()
+            presenter.backToList()
         }
     }
 
     override fun setLoading(isLoading: Boolean) {
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+        //
     }
 
     override fun showMessage(msg: String) {

@@ -1,26 +1,105 @@
 package ru.chernakov.appmonitor.presentation.info
 
+import android.content.Intent
+import android.net.Uri
+import android.support.v4.app.FragmentActivity
+import android.support.v7.widget.RecyclerView
 import com.arellomobile.mvp.InjectViewState
+import ru.chernakov.appmonitor.R
 import ru.chernakov.appmonitor.data.model.ApplicationItem
+import ru.chernakov.appmonitor.data.model.OptionItem
 import ru.chernakov.appmonitor.data.utils.AppUtils
+import ru.chernakov.appmonitor.data.utils.ItemClickSupport
+import ru.chernakov.appmonitor.data.utils.getDrawable
+import ru.chernakov.appmonitor.data.utils.getString
 import ru.chernakov.appmonitor.navigation.Screen
 import ru.chernakov.appmonitor.presentation.base.BasePresenter
+import ru.chernakov.appmonitor.presentation.info.adapter.OptionsAdapter
 import ru.terrakok.cicerone.Router
 
-@InjectViewState
-class InfoPresenter(router: Router) : BasePresenter<InfoView>(router) {
 
-    fun goToList() {
-        router.navigateTo(Screen.List)
+@InjectViewState
+class InfoPresenter(router: Router, private val applicationItem: ApplicationItem) : BasePresenter<InfoView>(router) {
+
+    private val optionsList = ArrayList<OptionItem>()
+
+    fun backToList() {
+        router.backTo(Screen.List)
     }
 
-    fun copyFile(applicationItem: ApplicationItem) {
-        if (AppUtils.copyFile(applicationItem)!!) {
-            viewState.showMessage("Finished")
-        } else {
-            viewState.showMessage("Failed")
+    fun initOptionsList(): ArrayList<OptionItem> {
+        if (optionsList.isEmpty()) {
 
+            optionsList.add(
+                OptionItem(
+                    0,
+                    getString(R.string.option_title_open_app),
+                    getDrawable(ru.chernakov.appmonitor.R.drawable.ic_open)
+                )
+            )
+            optionsList.add(
+                OptionItem(
+                    1,
+                    getString(R.string.option_title_save_apk),
+                    getDrawable(ru.chernakov.appmonitor.R.drawable.ic_file_download)
+                )
+            )
+            optionsList.add(
+                OptionItem(
+                    2,
+                    getString(R.string.option_title_open_play_market),
+                    getDrawable(ru.chernakov.appmonitor.R.drawable.ic_play_circle)
+                )
+            )
+            optionsList.add(
+                OptionItem(
+                    3,
+                    getString(R.string.option_title_delete_app),
+                    getDrawable(ru.chernakov.appmonitor.R.drawable.ic_uninstall)
+                )
+            )
+        }
+        return optionsList
+    }
+
+    fun setOnClickListener(recyclerView: RecyclerView, adapter: OptionsAdapter, activity: FragmentActivity) {
+        with(ItemClickSupport.addTo(recyclerView)) {
+            setOnItemClickListener { recyclerView, position, v ->
+                when (adapter.getItem(position).id) {
+                    0 -> startApplication(activity)
+                    1 -> saveApk()
+                    2 -> openPlayMarket(activity)
+                    3 -> uninstallApplication(activity)
+                }
+            }
         }
     }
 
+    private fun startApplication(activity: FragmentActivity) {
+        try {
+            val intent = activity.packageManager.getLaunchIntentForPackage(applicationItem.apk)
+            activity.startActivity(intent)
+        } catch (e: NullPointerException) {
+            viewState.showMessage(getString(R.string.error_cannot_run_app))
+        }
+    }
+
+    private fun saveApk() {
+        if (AppUtils.copyFile(applicationItem)!!) {
+            viewState.showMessage(getString(R.string.apk_saved))
+        } else {
+            viewState.showMessage(getString(R.string.error_cannot_save_apk))
+        }
+    }
+
+    private fun openPlayMarket(activity: FragmentActivity) {
+        applicationItem.apk?.let { AppUtils.goToGooglePlay(activity, it) }
+    }
+
+    private fun uninstallApplication(activity: FragmentActivity) {
+        val intent = Intent(Intent.ACTION_UNINSTALL_PACKAGE)
+        intent.data = Uri.parse("package:" + applicationItem.apk)
+        intent.putExtra(Intent.EXTRA_RETURN_RESULT, true)
+        activity.startActivityForResult(intent, AppUtils.UNINSTALL_REQUEST_CODE)
+    }
 }
