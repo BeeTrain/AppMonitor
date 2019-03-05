@@ -1,8 +1,8 @@
-package ru.chernakov.appmonitor.presentation.info
+package ru.chernakov.appmonitor.presentation.ui.info
 
 import ru.chernakov.appmonitor.data.model.ApplicationItem
 import ru.chernakov.appmonitor.data.model.OptionItem
-import ru.chernakov.appmonitor.presentation.base.BaseView
+import ru.chernakov.appmonitor.presentation.ui.base.BaseView
 
 interface InfoView : BaseView {
 

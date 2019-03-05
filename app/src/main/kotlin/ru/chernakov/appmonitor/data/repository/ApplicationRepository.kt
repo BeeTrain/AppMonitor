@@ -1,20 +1,30 @@
 package ru.chernakov.appmonitor.data.repository
 
 import android.content.pm.PackageManager
-import android.support.v4.app.FragmentActivity
 import io.reactivex.Observable
+import ru.chernakov.appmonitor.App
+import ru.chernakov.appmonitor.data.cache.ApplicationCache
 import ru.chernakov.appmonitor.data.model.ApplicationItem
-import ru.chernakov.appmonitor.data.utils.getSHA
-import ru.chernakov.appmonitor.data.utils.isSystemPackage
+import ru.chernakov.appmonitor.data.utils.AppUtils
+import ru.chernakov.appmonitor.data.utils.DateUtils
+import ru.chernakov.appmonitor.data.utils.FormatUtils
 
 
-class ApplicationRepository(val activity: FragmentActivity) {
+class ApplicationRepository(private val cache: ApplicationCache) {
+
+    fun get(): Observable<List<ApplicationItem>> {
+        return if (!cache.isExpired(DateUtils.getCurrentTimeInMillis())) {
+            cache.getApplications()
+        } else {
+            getApplications()
+        }
+    }
 
     fun getApplications(): Observable<List<ApplicationItem>> {
         return Observable.create {
             val appList = ArrayList<ApplicationItem>()
 
-            val packageManager = activity.packageManager
+            val packageManager = App.instance.packageManager
             val packages = packageManager.getInstalledPackages(PackageManager.GET_META_DATA)
 
             for (packageInfo in packages) {
@@ -27,8 +37,8 @@ class ApplicationRepository(val activity: FragmentActivity) {
                             packageInfo.applicationInfo.sourceDir,
                             packageInfo.applicationInfo.dataDir,
                             packageManager.getApplicationIcon(packageInfo.applicationInfo),
-                            isSystemPackage(packageInfo),
-                            getSHA(packageInfo.packageName, packageManager),
+                            AppUtils.isSystemPackage(packageInfo),
+                            FormatUtils.getSHA(packageInfo.packageName, packageManager),
                             packageInfo.firstInstallTime,
                             packageInfo.lastUpdateTime
                         )
@@ -41,8 +51,8 @@ class ApplicationRepository(val activity: FragmentActivity) {
                             packageInfo.applicationInfo.sourceDir,
                             packageInfo.applicationInfo.dataDir,
                             packageManager.getApplicationIcon(packageInfo.applicationInfo),
-                            isSystemPackage(packageInfo),
-                            getSHA(packageInfo.packageName, packageManager),
+                            AppUtils.isSystemPackage(packageInfo),
+                            FormatUtils.getSHA(packageInfo.packageName, packageManager),
                             packageInfo.firstInstallTime,
                             packageInfo.lastUpdateTime
                         )
@@ -53,6 +63,7 @@ class ApplicationRepository(val activity: FragmentActivity) {
                 }
             }
             if (appList.size == packages.size) {
+                cache.putApplications(appList, DateUtils.getCurrentTimeInMillis())
                 it.onNext(appList)
                 it.onComplete()
             }

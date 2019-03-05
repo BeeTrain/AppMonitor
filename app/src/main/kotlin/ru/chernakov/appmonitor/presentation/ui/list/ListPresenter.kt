@@ -1,11 +1,11 @@
-package ru.chernakov.appmonitor.presentation.list
+package ru.chernakov.appmonitor.presentation.ui.list
 
 import com.arellomobile.mvp.InjectViewState
 import ru.chernakov.appmonitor.data.model.ApplicationItem
 import ru.chernakov.appmonitor.domain.interactor.BaseObserver
 import ru.chernakov.appmonitor.domain.interactor.LoadApplications
 import ru.chernakov.appmonitor.navigation.Screen
-import ru.chernakov.appmonitor.presentation.base.BasePresenter
+import ru.chernakov.appmonitor.presentation.ui.base.BasePresenter
 import ru.terrakok.cicerone.Router
 
 @InjectViewState

@@ -5,6 +5,7 @@ import dagger.Module
 import dagger.Provides
 import ru.chernakov.appmonitor.App
 import ru.chernakov.appmonitor.UIThread
+import ru.chernakov.appmonitor.data.cache.ApplicationCache
 import ru.chernakov.appmonitor.data.executor.JobExecutor
 import ru.chernakov.appmonitor.domain.executor.PostExecutionThread
 import ru.chernakov.appmonitor.domain.executor.ThreadExecutor
@@ -29,5 +30,11 @@ class ApplicationModule(private val app: App) {
     @Singleton
     internal fun providePostExecutionThread(uiThread: UIThread): PostExecutionThread {
         return uiThread
+    }
+
+    @Provides
+    @Singleton
+    internal fun provideApplicationCache(): ApplicationCache {
+        return ApplicationCache()
     }
 }

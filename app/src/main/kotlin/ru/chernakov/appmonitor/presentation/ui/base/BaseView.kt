@@ -1,4 +1,4 @@
-package ru.chernakov.appmonitor.presentation.base
+package ru.chernakov.appmonitor.presentation.ui.base
 
 import com.arellomobile.mvp.MvpView
 

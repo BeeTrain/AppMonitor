@@ -6,9 +6,9 @@ import ru.chernakov.appmonitor.di.module.ApplicationModule
 import ru.chernakov.appmonitor.di.module.GlobalNavigationModule
 import ru.chernakov.appmonitor.domain.executor.PostExecutionThread
 import ru.chernakov.appmonitor.domain.executor.ThreadExecutor
-import ru.chernakov.appmonitor.presentation.AppActivity
-import ru.chernakov.appmonitor.presentation.info.InfoFragment
-import ru.chernakov.appmonitor.presentation.list.ListFragment
+import ru.chernakov.appmonitor.presentation.ui.AppActivity
+import ru.chernakov.appmonitor.presentation.ui.info.InfoFragment
+import ru.chernakov.appmonitor.presentation.ui.list.ListFragment
 import javax.inject.Singleton
 
 @Singleton
@@ -26,7 +26,9 @@ interface AppComponent {
 
     fun inject(listFragment: ListFragment)
 
+
     fun application(): Application
+
     fun threadExecutor(): ThreadExecutor
     fun postExecutionThread(): PostExecutionThread
 }

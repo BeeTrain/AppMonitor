@@ -14,7 +14,7 @@ class App : Application() {
     companion object {
         lateinit var instance: App private set
 
-        lateinit var appPreferences: AppPreferences
+        lateinit var appPreferences : AppPreferences
     }
 
     override fun onCreate() {

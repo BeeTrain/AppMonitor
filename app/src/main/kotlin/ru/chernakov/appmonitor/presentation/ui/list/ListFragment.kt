@@ -1,4 +1,4 @@
-package ru.chernakov.appmonitor.presentation.list
+package ru.chernakov.appmonitor.presentation.ui.list
 
 import android.os.Bundle
 import android.support.v7.app.AppCompatActivity
@@ -14,13 +14,14 @@ import kotlinx.android.synthetic.main.fragment_list.*
 import ru.chernakov.appmonitor.App
 import ru.chernakov.appmonitor.R
 import ru.chernakov.appmonitor.UIThread
+import ru.chernakov.appmonitor.data.cache.ApplicationCache
 import ru.chernakov.appmonitor.data.model.ApplicationItem
 import ru.chernakov.appmonitor.data.repository.ApplicationRepository
 import ru.chernakov.appmonitor.data.utils.ItemClickSupport
 import ru.chernakov.appmonitor.domain.executor.ThreadExecutor
 import ru.chernakov.appmonitor.domain.interactor.LoadApplications
-import ru.chernakov.appmonitor.presentation.base.BaseFragment
-import ru.chernakov.appmonitor.presentation.list.adapter.ListAdapter
+import ru.chernakov.appmonitor.presentation.ui.base.BaseFragment
+import ru.chernakov.appmonitor.presentation.ui.list.adapter.ListAdapter
 import javax.inject.Inject
 
 
@@ -37,6 +38,9 @@ class ListFragment : BaseFragment(), ListView {
 
     @Inject
     lateinit var threadExecutor: ThreadExecutor
+
+    @Inject
+    lateinit var applicationCache: ApplicationCache
 
     override fun onCreate(savedInstanceState: Bundle?) {
         App.instance.getAppComponent().inject(this)
@@ -67,7 +71,9 @@ class ListFragment : BaseFragment(), ListView {
 
         with(ItemClickSupport.addTo(applicationsList)) {
             setOnItemClickListener { recyclerView, position, v ->
-                adapter?.getItem(position)?.let { presenter.goToInfo(it) }
+                adapter?.getItem(position)?.let {
+                    presenter.goToInfo(it)
+                }
             }
         }
 
@@ -77,7 +83,10 @@ class ListFragment : BaseFragment(), ListView {
 
     @ProvidePresenter
     fun providePresenter(): ListPresenter {
-        return ListPresenter(router, LoadApplications(ApplicationRepository(activity!!), threadExecutor, uiThread))
+        return ListPresenter(
+            router,
+            LoadApplications(ApplicationRepository(applicationCache), threadExecutor, uiThread)
+        )
     }
 
     private fun setUpToolbar(view: View) {

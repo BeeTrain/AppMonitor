@@ -14,6 +14,6 @@ class LoadApplications(
 ) :
     UseCaseObservable<List<ApplicationItem>, Void>(threadExecutor, postExecutionThread) {
     override fun buildUseCaseObservable(params: Void?): Observable<List<ApplicationItem>> {
-        return applicationRepository.getApplications()
+        return applicationRepository.get()
     }
 }

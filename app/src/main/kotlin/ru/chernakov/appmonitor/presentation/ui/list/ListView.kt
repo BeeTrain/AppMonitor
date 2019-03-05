@@ -1,7 +1,7 @@
-package ru.chernakov.appmonitor.presentation.list
+package ru.chernakov.appmonitor.presentation.ui.list
 
 import ru.chernakov.appmonitor.data.model.ApplicationItem
-import ru.chernakov.appmonitor.presentation.base.BaseView
+import ru.chernakov.appmonitor.presentation.ui.base.BaseView
 
 interface ListView : BaseView {
 

@@ -1,4 +1,4 @@
-package ru.chernakov.appmonitor.presentation.list.adapter
+package ru.chernakov.appmonitor.presentation.ui.list.adapter
 
 import android.support.v4.app.FragmentActivity
 import android.support.v7.widget.RecyclerView

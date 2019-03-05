@@ -2,8 +2,8 @@ package ru.chernakov.appmonitor.navigation
 
 import android.support.v4.app.Fragment
 import ru.chernakov.appmonitor.data.model.ApplicationItem
-import ru.chernakov.appmonitor.presentation.info.InfoFragment
-import ru.chernakov.appmonitor.presentation.list.ListFragment
+import ru.chernakov.appmonitor.presentation.ui.info.InfoFragment
+import ru.chernakov.appmonitor.presentation.ui.list.ListFragment
 import ru.terrakok.cicerone.android.support.SupportAppScreen
 
 object Screen {

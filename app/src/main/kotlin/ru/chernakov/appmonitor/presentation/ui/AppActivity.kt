@@ -1,4 +1,4 @@
-package ru.chernakov.appmonitor.presentation
+package ru.chernakov.appmonitor.presentation.ui
 
 import android.app.Activity
 import android.content.Intent
@@ -6,7 +6,7 @@ import android.os.Bundle
 import ru.chernakov.appmonitor.App
 import ru.chernakov.appmonitor.data.utils.AppUtils
 import ru.chernakov.appmonitor.navigation.Screen
-import ru.chernakov.appmonitor.presentation.base.BaseActivity
+import ru.chernakov.appmonitor.presentation.ui.base.BaseActivity
 import ru.terrakok.cicerone.Router
 import javax.inject.Inject
 

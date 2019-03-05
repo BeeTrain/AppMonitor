@@ -1,4 +1,4 @@
-package ru.chernakov.appmonitor.presentation.info
+package ru.chernakov.appmonitor.presentation.ui.info
 
 import android.os.Bundle
 import android.support.v7.app.AppCompatActivity
@@ -16,9 +16,9 @@ import ru.chernakov.appmonitor.App
 import ru.chernakov.appmonitor.R
 import ru.chernakov.appmonitor.data.model.ApplicationItem
 import ru.chernakov.appmonitor.data.model.OptionItem
-import ru.chernakov.appmonitor.data.utils.formatDate
-import ru.chernakov.appmonitor.presentation.base.BaseFragment
-import ru.chernakov.appmonitor.presentation.info.adapter.OptionsAdapter
+import ru.chernakov.appmonitor.presentation.ui.base.BaseFragment
+import ru.chernakov.appmonitor.presentation.ui.info.adapter.OptionsAdapter
+import ru.chernakov.appmonitor.data.utils.DateUtils
 import java.util.*
 
 class InfoFragment : BaseFragment(), InfoView {
@@ -63,9 +63,9 @@ class InfoFragment : BaseFragment(), InfoView {
         appPackage.text = applicationItem.apk
         appSHA.text = getString(R.string.value_sha, applicationItem.sha)
         appInstallDate.text =
-            getString(R.string.value_installed, formatDate(applicationItem.installDate?.let { Date(it) }))
+            getString(R.string.value_installed, DateUtils.formatDate(applicationItem.installDate?.let { Date(it) }))
         appUpdateDate.text =
-            getString(R.string.value_updated, formatDate(applicationItem.updateDate?.let { Date(it) }))
+            getString(R.string.value_updated, DateUtils.formatDate(applicationItem.updateDate?.let { Date(it) }))
     }
 
     override fun initAdapter(optionItems: ArrayList<OptionItem>) {

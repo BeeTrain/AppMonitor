@@ -5,6 +5,8 @@ import android.app.Activity
 import android.content.ActivityNotFoundException
 import android.content.Context
 import android.content.Intent
+import android.content.pm.ApplicationInfo
+import android.content.pm.PackageInfo
 import android.content.pm.PackageManager
 import android.net.Uri
 import android.os.Environment
@@ -18,8 +20,6 @@ import java.io.IOException
 
 
 class AppUtils {
-
-
     companion object {
         const val MY_PERMISSIONS_REQUEST_WRITE_READ = 1
 
@@ -113,6 +113,10 @@ class AppUtils {
             intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_GRANT_READ_URI_PERMISSION or Intent.FLAG_GRANT_WRITE_URI_PERMISSION
 
             return intent
+        }
+
+        fun isSystemPackage(packageInfo: PackageInfo): Boolean {
+            return packageInfo.applicationInfo.flags and ApplicationInfo.FLAG_SYSTEM != 0
         }
     }
 }

@@ -1,4 +1,4 @@
-package ru.chernakov.appmonitor.presentation.info.adapter
+package ru.chernakov.appmonitor.presentation.ui.info.adapter
 
 import android.app.Activity
 import android.support.v7.widget.RecyclerView

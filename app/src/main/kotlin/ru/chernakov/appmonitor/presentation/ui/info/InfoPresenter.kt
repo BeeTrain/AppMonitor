@@ -1,4 +1,4 @@
-package ru.chernakov.appmonitor.presentation.info
+package ru.chernakov.appmonitor.presentation.ui.info
 
 import android.content.Intent
 import android.net.Uri
@@ -8,13 +8,12 @@ import com.arellomobile.mvp.InjectViewState
 import ru.chernakov.appmonitor.R
 import ru.chernakov.appmonitor.data.model.ApplicationItem
 import ru.chernakov.appmonitor.data.model.OptionItem
+import ru.chernakov.appmonitor.navigation.Screen
+import ru.chernakov.appmonitor.presentation.ui.base.BasePresenter
+import ru.chernakov.appmonitor.presentation.ui.info.adapter.OptionsAdapter
 import ru.chernakov.appmonitor.data.utils.AppUtils
 import ru.chernakov.appmonitor.data.utils.ItemClickSupport
-import ru.chernakov.appmonitor.data.utils.getDrawable
-import ru.chernakov.appmonitor.data.utils.getString
-import ru.chernakov.appmonitor.navigation.Screen
-import ru.chernakov.appmonitor.presentation.base.BasePresenter
-import ru.chernakov.appmonitor.presentation.info.adapter.OptionsAdapter
+import ru.chernakov.appmonitor.data.utils.ResourcesUtils
 import ru.terrakok.cicerone.Router
 
 
@@ -30,32 +29,36 @@ class InfoPresenter(router: Router, private val applicationItem: ApplicationItem
     fun initOptionsList(): ArrayList<OptionItem> {
         if (optionsList.isEmpty()) {
 
-            optionsList.add(
-                OptionItem(
-                    0,
-                    getString(R.string.option_title_open_app),
-                    getDrawable(ru.chernakov.appmonitor.R.drawable.ic_open)
+            if (!applicationItem.isSystem!!) {
+                optionsList.add(
+                    OptionItem(
+                        0,
+                        ResourcesUtils.getString(R.string.option_title_open_app),
+                        ResourcesUtils.getDrawable(ru.chernakov.appmonitor.R.drawable.ic_open)
+                    )
                 )
-            )
+            }
             optionsList.add(
                 OptionItem(
                     1,
-                    getString(R.string.option_title_save_apk),
-                    getDrawable(ru.chernakov.appmonitor.R.drawable.ic_file_download)
+                    ResourcesUtils.getString(R.string.option_title_save_apk),
+                    ResourcesUtils.getDrawable(ru.chernakov.appmonitor.R.drawable.ic_file_download)
                 )
             )
-            optionsList.add(
-                OptionItem(
-                    2,
-                    getString(R.string.option_title_open_play_market),
-                    getDrawable(ru.chernakov.appmonitor.R.drawable.ic_play_circle)
+            if (!applicationItem.isSystem!!) {
+                optionsList.add(
+                    OptionItem(
+                        2,
+                        ResourcesUtils.getString(R.string.option_title_open_play_market),
+                        ResourcesUtils.getDrawable(ru.chernakov.appmonitor.R.drawable.ic_play_circle)
+                    )
                 )
-            )
+            }
             optionsList.add(
                 OptionItem(
                     3,
-                    getString(R.string.option_title_delete_app),
-                    getDrawable(ru.chernakov.appmonitor.R.drawable.ic_uninstall)
+                    ResourcesUtils.getString(R.string.option_title_delete_app),
+                    ResourcesUtils.getDrawable(ru.chernakov.appmonitor.R.drawable.ic_uninstall)
                 )
             )
         }
@@ -80,15 +83,15 @@ class InfoPresenter(router: Router, private val applicationItem: ApplicationItem
             val intent = activity.packageManager.getLaunchIntentForPackage(applicationItem.apk)
             activity.startActivity(intent)
         } catch (e: NullPointerException) {
-            viewState.showMessage(getString(R.string.error_cannot_run_app))
+            viewState.showMessage(ResourcesUtils.getString(R.string.error_cannot_run_app))
         }
     }
 
     private fun saveApk() {
         if (AppUtils.copyFile(applicationItem)!!) {
-            viewState.showMessage(getString(R.string.apk_saved))
+            viewState.showMessage(ResourcesUtils.getString(R.string.apk_saved))
         } else {
-            viewState.showMessage(getString(R.string.error_cannot_save_apk))
+            viewState.showMessage(ResourcesUtils.getString(R.string.error_cannot_save_apk))
         }
     }
 
