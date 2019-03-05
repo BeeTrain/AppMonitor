@@ -1,14 +1,18 @@
 package ru.chernakov.appmonitor.domain.interactor
 
 import io.reactivex.Observable
-import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.disposables.Disposable
 import io.reactivex.observers.DisposableObserver
 import io.reactivex.schedulers.Schedulers
+import ru.chernakov.appmonitor.domain.executor.PostExecutionThread
+import ru.chernakov.appmonitor.domain.executor.ThreadExecutor
 
 
-abstract class UseCaseObservable<T, Params> {
+abstract class UseCaseObservable<T, Params>(
+    private val threadExecutor: ThreadExecutor,
+    private val postExecutionThread: PostExecutionThread
+) {
 
     private val disposables: CompositeDisposable = CompositeDisposable()
 
@@ -17,9 +21,8 @@ abstract class UseCaseObservable<T, Params> {
     fun execute(observer: DisposableObserver<T>, params: Void?) {
 
         val observable = this.buildUseCaseObservable(params)
-            .subscribeOn(Schedulers.io())
-            .observeOn(AndroidSchedulers.mainThread())
-
+            .subscribeOn(Schedulers.from(threadExecutor))
+            .observeOn(postExecutionThread.scheduler);
         addDisposable(observable.subscribeWith(observer))
     }
 

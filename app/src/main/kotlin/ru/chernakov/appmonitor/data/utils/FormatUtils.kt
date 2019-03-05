@@ -1,21 +1,11 @@
 package ru.chernakov.appmonitor.data.utils
 
+import android.content.pm.ApplicationInfo
+import android.content.pm.PackageInfo
 import android.content.pm.PackageManager
 import android.os.Build
 import java.security.MessageDigest
 
-
-fun bytesToHex(bytes: ByteArray): String {
-    val hexArray = charArrayOf('0', '1', '2', '3', '4', '5', '6', '7', '8', '9', 'A', 'B', 'C', 'D', 'E', 'F')
-    val hexChars = CharArray(bytes.size * 2)
-    var v: Int
-    for (j in bytes.indices) {
-        v = bytes[j].toInt() and 0xFF
-        hexChars[j * 2] = hexArray[v.ushr(4)]
-        hexChars[j * 2 + 1] = hexArray[v and 0x0F]
-    }
-    return String(hexChars)
-}
 
 fun getSHA(packageName: String, packageManager: PackageManager): String {
     var shaRes = ""
@@ -50,4 +40,20 @@ fun getSHA(packageName: String, packageManager: PackageManager): String {
     }
 
     return shaRes
+}
+
+fun bytesToHex(bytes: ByteArray): String {
+    val hexArray = charArrayOf('0', '1', '2', '3', '4', '5', '6', '7', '8', '9', 'A', 'B', 'C', 'D', 'E', 'F')
+    val hexChars = CharArray(bytes.size * 2)
+    var v: Int
+    for (j in bytes.indices) {
+        v = bytes[j].toInt() and 0xFF
+        hexChars[j * 2] = hexArray[v.ushr(4)]
+        hexChars[j * 2 + 1] = hexArray[v and 0x0F]
+    }
+    return String(hexChars)
+}
+
+fun isSystemPackage(packageInfo: PackageInfo): Boolean {
+    return packageInfo.applicationInfo.flags and ApplicationInfo.FLAG_SYSTEM != 0
 }

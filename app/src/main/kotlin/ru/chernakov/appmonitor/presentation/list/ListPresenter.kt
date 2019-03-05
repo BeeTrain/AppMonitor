@@ -18,10 +18,8 @@ class ListPresenter(router: Router, val loadApplicationsUseCase: LoadApplication
     }
 
     fun loadApps() {
-        if (appList.size == 0) {
-            viewState.setLoading(true)
-            loadApplicationsUseCase.execute(ListObserver(), null)
-        }
+        viewState.setLoading(appList.size == 0)
+        loadApplicationsUseCase.execute(ListObserver(), null)
     }
 
     private inner class ListObserver : BaseObserver<List<ApplicationItem>>() {
@@ -37,7 +35,7 @@ class ListPresenter(router: Router, val loadApplicationsUseCase: LoadApplication
 
         override fun onError(e: Throwable) {
             viewState.setLoading(false)
-            e.message?.let { viewState.showMessage(it) }
+            viewState.showMessage(e.message!!)
         }
     }
 }
