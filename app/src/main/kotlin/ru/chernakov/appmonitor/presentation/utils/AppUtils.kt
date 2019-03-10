@@ -1,4 +1,4 @@
-package ru.chernakov.appmonitor.data.utils
+package ru.chernakov.appmonitor.presentation.utils
 
 import android.Manifest
 import android.app.Activity

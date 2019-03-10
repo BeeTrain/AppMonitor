@@ -1,5 +1,6 @@
 package ru.chernakov.appmonitor.presentation.ui.list
 
+import android.content.Intent
 import android.os.Bundle
 import android.support.v7.app.AppCompatActivity
 import android.support.v7.widget.LinearLayoutManager
@@ -12,16 +13,17 @@ import com.arellomobile.mvp.presenter.InjectPresenter
 import com.arellomobile.mvp.presenter.ProvidePresenter
 import kotlinx.android.synthetic.main.fragment_list.*
 import ru.chernakov.appmonitor.App
-import ru.chernakov.appmonitor.R
 import ru.chernakov.appmonitor.UIThread
 import ru.chernakov.appmonitor.data.cache.ApplicationCache
 import ru.chernakov.appmonitor.data.model.ApplicationItem
 import ru.chernakov.appmonitor.data.repository.ApplicationRepository
-import ru.chernakov.appmonitor.data.utils.ItemClickSupport
 import ru.chernakov.appmonitor.domain.executor.ThreadExecutor
 import ru.chernakov.appmonitor.domain.interactor.LoadApplications
+import ru.chernakov.appmonitor.presentation.service.PackageService
 import ru.chernakov.appmonitor.presentation.ui.base.BaseFragment
 import ru.chernakov.appmonitor.presentation.ui.list.adapter.ListAdapter
+import ru.chernakov.appmonitor.presentation.utils.ItemClickSupport
+import ru.chernakov.appmonitor.presentation.utils.ResourcesUtils
 import javax.inject.Inject
 
 
@@ -90,10 +92,26 @@ class ListFragment : BaseFragment(), ListView {
     }
 
     private fun setUpToolbar(view: View) {
-        val toolbar: Toolbar = view.findViewById(R.id.toolbar)
-        toolbar.navigationIcon = activity?.getDrawable(R.drawable.ic_cloud)
+        val toolbar: Toolbar = view.findViewById(ru.chernakov.appmonitor.R.id.toolbar)
+        toolbar.navigationIcon = ResourcesUtils.getDrawable(ru.chernakov.appmonitor.R.drawable.ic_cloud)
+
         val activity = activity as AppCompatActivity?
         activity?.setSupportActionBar(toolbar)
+
+        toolbar.setNavigationOnClickListener {
+            if (App.isServiceRunning) {
+                showMessage("Stop")
+                val intent = Intent(context, PackageService::class.java)
+                intent.action = PackageService.ACTION_STOP
+                App.instance.startService(intent)
+            } else {
+                showMessage("Start")
+                val intent = Intent(context, PackageService::class.java)
+                intent.action = PackageService.ACTION_START
+                App.instance.startService(intent)
+            }
+
+        }
     }
 
     override fun setLoading(isLoading: Boolean) {

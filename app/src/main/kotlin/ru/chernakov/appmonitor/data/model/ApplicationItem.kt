@@ -1,6 +1,7 @@
 package ru.chernakov.appmonitor.data.model
 
 import android.graphics.drawable.Drawable
+import ru.chernakov.appmonitor.presentation.utils.PackageUtils
 import java.io.Serializable
 
 
@@ -20,7 +21,9 @@ class ApplicationItem : Serializable {
 
     var data: String? = null
         private set
+
     var icon: Drawable? = null
+        set
 
     var isSystem: Boolean? = null
         private set
@@ -70,6 +73,8 @@ class ApplicationItem : Serializable {
             this.sha = split[6]
             this.installDate = split[7].toLong()
             this.updateDate = split[8].toLong()
+
+            this.icon = PackageUtils.getPackageIcon(this.apk)
         }
     }
 

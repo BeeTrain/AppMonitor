@@ -3,39 +3,25 @@ package ru.chernakov.appmonitor.data
 import android.content.Context
 import android.content.SharedPreferences
 import android.preference.PreferenceManager
-import ru.chernakov.appmonitor.data.utils.AppUtils
+import ru.chernakov.appmonitor.presentation.utils.AppUtils
 
 
 class AppPreferences(private val context: Context) {
     private val sharedPreferences: SharedPreferences
     private val editor: SharedPreferences.Editor
 
-    var rootStatus: Int
-        get() = sharedPreferences.getInt(KeyIsRooted, 0)
-        set(rootStatus) {
-            editor.putInt(KeyIsRooted, rootStatus)
+    init {
+        this.sharedPreferences = PreferenceManager.getDefaultSharedPreferences(context)
+        this.editor = sharedPreferences.edit()
+    }
+
+    var isColdStart: Boolean
+        get() = sharedPreferences.getBoolean(IS_COLD_START, true)
+        set(isColdStart) {
+            editor.putBoolean(IS_COLD_START, isColdStart)
             editor.commit()
         }
 
-//    val primaryColorPref: Int
-//        get() = sharedPreferences.getInt(KeyPrimaryColor, context.getResources().getColor(R.color.primary))
-//
-//    val fabColorPref: Int
-//        get() = sharedPreferences.getInt(KeyFABColor, context.getResources().getColor(R.color.fab))
-
-    var navigationBlackPref: Boolean?
-        get() = sharedPreferences.getBoolean(KeyNavigationBlack, false)
-        set(res) {
-            editor.putBoolean(KeyNavigationBlack, res!!)
-            editor.commit()
-        }
-
-    var fabShowPref: Boolean?
-        get() = sharedPreferences.getBoolean(KeyFABShow, false)
-        set(res) {
-            editor.putBoolean(KeyFABShow, res!!)
-            editor.commit()
-        }
 
     var customFilename: String
         get() = sharedPreferences.getString(KeyCustomFilename, "1")
@@ -76,10 +62,6 @@ class AppPreferences(private val context: Context) {
             editor.commit()
         }
 
-    init {
-        this.sharedPreferences = PreferenceManager.getDefaultSharedPreferences(context)
-        this.editor = sharedPreferences.edit()
-    }
 
     fun setPrimaryColorPref(res: Int?) {
         editor.putInt(KeyPrimaryColor, res!!)
@@ -92,6 +74,7 @@ class AppPreferences(private val context: Context) {
     }
 
     companion object {
+        const val IS_COLD_START = "is_cold_start"
 
         val KeyPrimaryColor = "prefPrimaryColor"
         val KeyFABColor = "prefFABColor"

@@ -11,9 +11,9 @@ import ru.chernakov.appmonitor.data.model.OptionItem
 import ru.chernakov.appmonitor.navigation.Screen
 import ru.chernakov.appmonitor.presentation.ui.base.BasePresenter
 import ru.chernakov.appmonitor.presentation.ui.info.adapter.OptionsAdapter
-import ru.chernakov.appmonitor.data.utils.AppUtils
-import ru.chernakov.appmonitor.data.utils.ItemClickSupport
-import ru.chernakov.appmonitor.data.utils.ResourcesUtils
+import ru.chernakov.appmonitor.presentation.utils.AppUtils
+import ru.chernakov.appmonitor.presentation.utils.ItemClickSupport
+import ru.chernakov.appmonitor.presentation.utils.ResourcesUtils
 import ru.terrakok.cicerone.Router
 
 

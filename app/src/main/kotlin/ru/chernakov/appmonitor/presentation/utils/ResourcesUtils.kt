@@ -1,4 +1,4 @@
-package ru.chernakov.appmonitor.data.utils
+package ru.chernakov.appmonitor.presentation.utils
 
 import android.graphics.drawable.Drawable
 import android.os.Build

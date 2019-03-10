@@ -5,9 +5,9 @@ import io.reactivex.Observable
 import ru.chernakov.appmonitor.App
 import ru.chernakov.appmonitor.data.cache.ApplicationCache
 import ru.chernakov.appmonitor.data.model.ApplicationItem
-import ru.chernakov.appmonitor.data.utils.AppUtils
-import ru.chernakov.appmonitor.data.utils.DateUtils
-import ru.chernakov.appmonitor.data.utils.FormatUtils
+import ru.chernakov.appmonitor.presentation.utils.AppUtils
+import ru.chernakov.appmonitor.presentation.utils.DateUtils
+import ru.chernakov.appmonitor.presentation.utils.PackageUtils
 
 
 class ApplicationRepository(private val cache: ApplicationCache) {
@@ -38,7 +38,7 @@ class ApplicationRepository(private val cache: ApplicationCache) {
                             packageInfo.applicationInfo.dataDir,
                             packageManager.getApplicationIcon(packageInfo.applicationInfo),
                             AppUtils.isSystemPackage(packageInfo),
-                            FormatUtils.getSHA(packageInfo.packageName, packageManager),
+                            PackageUtils.getSHA(packageInfo.packageName, packageManager),
                             packageInfo.firstInstallTime,
                             packageInfo.lastUpdateTime
                         )
@@ -52,7 +52,7 @@ class ApplicationRepository(private val cache: ApplicationCache) {
                             packageInfo.applicationInfo.dataDir,
                             packageManager.getApplicationIcon(packageInfo.applicationInfo),
                             AppUtils.isSystemPackage(packageInfo),
-                            FormatUtils.getSHA(packageInfo.packageName, packageManager),
+                            PackageUtils.getSHA(packageInfo.packageName, packageManager),
                             packageInfo.firstInstallTime,
                             packageInfo.lastUpdateTime
                         )
@@ -63,6 +63,7 @@ class ApplicationRepository(private val cache: ApplicationCache) {
                 }
             }
             if (appList.size == packages.size) {
+
                 cache.putApplications(appList, DateUtils.getCurrentTimeInMillis())
                 it.onNext(appList)
                 it.onComplete()

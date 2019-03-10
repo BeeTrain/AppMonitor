@@ -7,12 +7,15 @@ import ru.chernakov.appmonitor.App
 import ru.chernakov.appmonitor.UIThread
 import ru.chernakov.appmonitor.data.cache.ApplicationCache
 import ru.chernakov.appmonitor.data.executor.JobExecutor
+import ru.chernakov.appmonitor.data.repository.ApplicationRepository
 import ru.chernakov.appmonitor.domain.executor.PostExecutionThread
 import ru.chernakov.appmonitor.domain.executor.ThreadExecutor
 import javax.inject.Singleton
 
 @Module
 class ApplicationModule(private val app: App) {
+
+    val cache = provideApplicationCache()
 
     @Provides
     @Singleton
@@ -30,6 +33,12 @@ class ApplicationModule(private val app: App) {
     @Singleton
     internal fun providePostExecutionThread(uiThread: UIThread): PostExecutionThread {
         return uiThread
+    }
+
+    @Provides
+    @Singleton
+    internal fun provideApplicationsRepository(cache: ApplicationCache): ApplicationRepository {
+        return ApplicationRepository(cache)
     }
 
     @Provides
