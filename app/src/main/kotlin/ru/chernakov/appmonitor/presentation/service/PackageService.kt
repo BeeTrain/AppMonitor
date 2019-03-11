@@ -6,8 +6,10 @@ import android.os.Build
 import android.support.v4.app.NotificationCompat
 import android.widget.RemoteViews
 import ru.chernakov.appmonitor.App
+import ru.chernakov.appmonitor.data.repository.ApplicationRepository
 import ru.chernakov.appmonitor.presentation.ui.AppActivity
 import java.util.*
+import javax.inject.Inject
 
 
 class PackageService : IntentService(TAG) {
@@ -21,6 +23,15 @@ class PackageService : IntentService(TAG) {
         const val SERVICE_ID = 100
     }
 
+    @Inject
+    lateinit var applicationRepository: ApplicationRepository
+
+    override fun onCreate() {
+        App.instance.getAppComponent().inject(this)
+        super.onCreate()
+
+    }
+
     override fun onStartCommand(intent: Intent?, flags: Int, startId: Int): Int {
         val action = intent?.action
 
@@ -32,13 +43,14 @@ class PackageService : IntentService(TAG) {
                 stopForegroundService()
             }
             ACTION_RUN_APP -> {
-
+                val openAppIntent = Intent(this, AppActivity::class.java)
+                openAppIntent.flags = Intent.FLAG_ACTIVITY_CLEAR_TOP or Intent.FLAG_ACTIVITY_SINGLE_TOP
+                startActivity(openAppIntent)
             }
         }
 
         return Service.START_NOT_STICKY
     }
-
 
 
     override fun onHandleIntent(intent: Intent?) {
@@ -89,7 +101,8 @@ class PackageService : IntentService(TAG) {
         val closeServiceIntent = Intent(this, PackageService::class.java)
         closeServiceIntent.action = ACTION_STOP
         notificationView.setOnClickPendingIntent(
-            ru.chernakov.appmonitor.R.id.btClose, PendingIntent.getService(this, 100, closeServiceIntent, PendingIntent.FLAG_UPDATE_CURRENT)
+            ru.chernakov.appmonitor.R.id.btClose,
+            PendingIntent.getService(this, 100, closeServiceIntent, PendingIntent.FLAG_UPDATE_CURRENT)
         )
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
             val builder = Notification.Builder(this, TAG)

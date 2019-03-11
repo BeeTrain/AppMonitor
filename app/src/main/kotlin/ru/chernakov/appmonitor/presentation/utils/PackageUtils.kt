@@ -5,6 +5,7 @@ import android.graphics.drawable.Drawable
 import android.os.Build
 import ru.chernakov.appmonitor.App
 import ru.chernakov.appmonitor.R
+import ru.chernakov.appmonitor.data.model.ApplicationItem
 import java.security.MessageDigest
 
 class PackageUtils {
@@ -57,6 +58,111 @@ class PackageUtils {
                 //
             }
             return icon
+        }
+
+        fun getPackages(): ArrayList<ApplicationItem> {
+            val appList = ArrayList<ApplicationItem>()
+
+            val packageManager = App.instance.packageManager
+            val packages = packageManager.getInstalledPackages(PackageManager.GET_META_DATA)
+
+            for (packageInfo in packages) {
+                if (!(packageManager.getApplicationLabel(packageInfo.applicationInfo) == "" || packageInfo.packageName == "")) {
+                    try {
+                        val tempApp = ApplicationItem(
+                            packageManager.getApplicationLabel(packageInfo.applicationInfo).toString(),
+                            packageInfo.packageName,
+                            packageInfo.versionName,
+                            packageInfo.applicationInfo.sourceDir,
+                            packageInfo.applicationInfo.dataDir,
+                            packageManager.getApplicationIcon(packageInfo.applicationInfo),
+                            AppUtils.isSystemPackage(packageInfo),
+                            PackageUtils.getSHA(packageInfo.packageName, packageManager),
+                            packageInfo.firstInstallTime,
+                            packageInfo.lastUpdateTime
+                        )
+                        appList.add(tempApp)
+                    } catch (e: OutOfMemoryError) {
+                        val tempApp = ApplicationItem(
+                            packageManager.getApplicationLabel(packageInfo.applicationInfo).toString(),
+                            packageInfo.packageName,
+                            packageInfo.versionName,
+                            packageInfo.applicationInfo.sourceDir,
+                            packageInfo.applicationInfo.dataDir,
+                            packageManager.getApplicationIcon(packageInfo.applicationInfo),
+                            AppUtils.isSystemPackage(packageInfo),
+                            PackageUtils.getSHA(packageInfo.packageName, packageManager),
+                            packageInfo.firstInstallTime,
+                            packageInfo.lastUpdateTime
+                        )
+                        appList.add(tempApp)
+                    } catch (e: Exception) {
+                        e.printStackTrace()
+                    }
+                }
+            }
+
+            return appList
+        }
+
+        fun getInstalledPackages(
+            sourceData: List<ApplicationItem>,
+            checkUpdate: List<ApplicationItem>
+        ): ArrayList<ApplicationItem> {
+            val installed = ArrayList<ApplicationItem>()
+
+            for (fromUpdate: ApplicationItem in checkUpdate) {
+                var isNew = true
+                for (fromDb: ApplicationItem in sourceData) {
+                    if (fromUpdate.name == fromDb.name) {
+                        isNew = false
+                    }
+                }
+                if (isNew) {
+                    installed.add(fromUpdate)
+                }
+            }
+
+            return installed
+        }
+
+        fun getUninstalledPackages(
+            sourceData: List<ApplicationItem>,
+            checkUpdate: List<ApplicationItem>
+        ): ArrayList<ApplicationItem> {
+            val uninstalled = ArrayList<ApplicationItem>()
+            for (fromDb: ApplicationItem in sourceData) {
+                var isDeleted = true
+                for (fromUpdate: ApplicationItem in checkUpdate) {
+                    if (fromDb.name == fromUpdate.name) {
+                        isDeleted = false
+                    }
+                }
+                if (isDeleted) {
+                    uninstalled.add(fromDb)
+                }
+            }
+
+            return uninstalled
+        }
+
+        fun getUpdatedPackages(
+            sourceData: List<ApplicationItem>,
+            checkUpdate: List<ApplicationItem>
+        ): ArrayList<ApplicationItem> {
+            val updated = ArrayList<ApplicationItem>()
+
+            for (fromUpdate: ApplicationItem in checkUpdate) {
+                for (fromDb: ApplicationItem in sourceData) {
+                    if (fromUpdate.name == fromDb.name) {
+                        if (fromUpdate.updateDate!! > fromDb.updateDate!!) {
+                            updated.add(fromUpdate)
+                        }
+                    }
+                }
+            }
+
+            return updated
         }
 
         private fun bytesToHex(bytes: ByteArray): String {
