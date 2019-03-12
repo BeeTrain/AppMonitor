@@ -12,12 +12,15 @@ class ApplicationCache {
     fun getApplications(): Observable<List<ApplicationItem>> {
         return Observable.create {
             val cacheItems: ArrayList<ApplicationItem> = ArrayList()
+            val hashSet = HashSet<ApplicationItem>()
+
             for (String in applicationCache) {
                 if (String != null && !String.isEmpty()) {
                     val item = ApplicationItem(String)
-                    cacheItems.add(item)
+                    hashSet.add(item)
                 }
             }
+            cacheItems.addAll(hashSet)
 
             cacheItems.sortWith(Comparator { p1, p2 ->
                 p1.name.toString().toLowerCase()

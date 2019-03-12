@@ -54,9 +54,13 @@ class ApplicationRepository(val cache: ApplicationCache) {
     fun getFromPrefs(): ArrayList<ApplicationItem> {
         val appList = ArrayList<ApplicationItem>()
         val appsListSet = App.appPreferences.deviceApps
+        val hashSet = HashSet<ApplicationItem>()
+
         for (String in appsListSet) {
-            appList.add(ApplicationItem(String))
+            hashSet.add(ApplicationItem(String))
         }
+        appList.addAll(hashSet)
+
         return appList
     }
 }

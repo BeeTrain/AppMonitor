@@ -81,4 +81,40 @@ class ApplicationItem : Serializable {
     override fun toString(): String {
         return "$name##$apk##$version##$source##$data##$isSystem##$sha##$installDate##$updateDate"
     }
+
+    override fun equals(other: Any?): Boolean {
+        if (this === other) return true
+        if (javaClass != other?.javaClass) return false
+
+        other as ApplicationItem
+
+        if (name != other.name) return false
+        if (apk != other.apk) return false
+        if (version != other.version) return false
+        if (source != other.source) return false
+        if (data != other.data) return false
+        if (icon != other.icon) return false
+        if (isSystem != other.isSystem) return false
+        if (sha != other.sha) return false
+        if (installDate != other.installDate) return false
+        if (updateDate != other.updateDate) return false
+
+        return true
+    }
+
+    override fun hashCode(): Int {
+        var result = name?.hashCode() ?: 0
+        result = 31 * result + (apk?.hashCode() ?: 0)
+        result = 31 * result + (version?.hashCode() ?: 0)
+        result = 31 * result + (source?.hashCode() ?: 0)
+        result = 31 * result + (data?.hashCode() ?: 0)
+        result = 31 * result + (icon?.hashCode() ?: 0)
+        result = 31 * result + (isSystem?.hashCode() ?: 0)
+        result = 31 * result + (sha?.hashCode() ?: 0)
+        result = 31 * result + (installDate?.hashCode() ?: 0)
+        result = 31 * result + (updateDate?.hashCode() ?: 0)
+        return result
+    }
+
+
 }

@@ -30,7 +30,9 @@ class ListPresenter(router: Router, val loadApplicationsUseCase: LoadApplication
 
         override fun onNext(t: List<ApplicationItem>) {
             appList.clear()
-            viewState.initAdapter(t)
+            appList.addAll(t)
+
+            viewState.initAdapter(appList)
         }
 
         override fun onError(e: Throwable) {
