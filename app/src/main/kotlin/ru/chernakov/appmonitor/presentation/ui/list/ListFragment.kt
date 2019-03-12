@@ -65,8 +65,21 @@ class ListFragment : BaseFragment(), ListView {
         swipeRefresh.setOnRefreshListener { presenter.loadApps() }
     }
 
-    override fun initAdapter(applications: List<ApplicationItem>) {
+    override fun initAdapter(applications: ArrayList<ApplicationItem>) {
         swipeRefresh.isRefreshing = false
+
+        val hashSet = HashSet<ApplicationItem>()
+
+        for (ApplicationItem in applications) {
+            hashSet.add(ApplicationItem)
+        }
+        applications.clear()
+        applications.addAll(hashSet)
+
+        applications.sortWith(Comparator { p1, p2 ->
+            p1.name.toString().toLowerCase()
+                .compareTo(p2.name.toString().toLowerCase())
+        })
 
         adapter = activity?.let { ListAdapter(it, applications) }
         applicationsList.layoutManager = LinearLayoutManager(context)

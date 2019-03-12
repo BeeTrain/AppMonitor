@@ -5,5 +5,5 @@ import ru.chernakov.appmonitor.presentation.ui.base.BaseView
 
 interface ListView : BaseView {
 
-    fun initAdapter(applications: List<ApplicationItem>)
+    fun initAdapter(applications: ArrayList<ApplicationItem>)
 }
