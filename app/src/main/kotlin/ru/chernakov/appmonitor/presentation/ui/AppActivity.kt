@@ -4,9 +4,10 @@ import android.app.Activity
 import android.content.Intent
 import android.os.Bundle
 import ru.chernakov.appmonitor.App
-import ru.chernakov.appmonitor.presentation.utils.AppUtils
+import ru.chernakov.appmonitor.data.model.ApplicationItem
 import ru.chernakov.appmonitor.navigation.Screen
 import ru.chernakov.appmonitor.presentation.ui.base.BaseActivity
+import ru.chernakov.appmonitor.presentation.utils.AppUtils
 import ru.terrakok.cicerone.Router
 import javax.inject.Inject
 
@@ -23,6 +24,15 @@ class AppActivity : BaseActivity() {
         if (savedInstanceState == null) {
             router.newRootScreen(Screen.List)
             router.navigateTo(Screen.List)
+        }
+
+        if (intent.extras != null) {
+            val extras = intent.extras
+            val pack = extras.getString(AppUtils.INTENT_START_APP_INFO_SCREEN)
+            if (pack != null && !pack.isEmpty()) {
+                router.newRootScreen(Screen.List)
+                router.navigateTo(Screen.ApplicationInfo(ApplicationItem(pack)))
+            }
         }
 
         actionBar?.setDisplayHomeAsUpEnabled(true)

@@ -3,8 +3,6 @@ package ru.chernakov.appmonitor
 import android.app.Application
 import android.content.Intent
 import android.os.Build
-import com.raizlabs.android.dbflow.config.FlowConfig
-import com.raizlabs.android.dbflow.config.FlowManager
 import ru.chernakov.appmonitor.data.AppPreferences
 import ru.chernakov.appmonitor.di.component.AppComponent
 import ru.chernakov.appmonitor.di.component.DaggerAppComponent
@@ -28,8 +26,6 @@ class App : Application() {
         super.onCreate()
 
         instance = this
-
-        FlowManager.init(FlowConfig.Builder(this).build())
 
         appPreferences = AppPreferences(this)
 

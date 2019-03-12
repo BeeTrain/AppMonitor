@@ -13,6 +13,7 @@ import com.arellomobile.mvp.presenter.InjectPresenter
 import com.arellomobile.mvp.presenter.ProvidePresenter
 import kotlinx.android.synthetic.main.fragment_list.*
 import ru.chernakov.appmonitor.App
+import ru.chernakov.appmonitor.R
 import ru.chernakov.appmonitor.UIThread
 import ru.chernakov.appmonitor.data.cache.ApplicationCache
 import ru.chernakov.appmonitor.data.model.ApplicationItem
@@ -100,17 +101,16 @@ class ListFragment : BaseFragment(), ListView {
 
         toolbar.setNavigationOnClickListener {
             if (App.isServiceRunning) {
-                showMessage("Stop")
+                showMessage(getString(R.string.msg_service_stopped))
                 val intent = Intent(context, PackageService::class.java)
                 intent.action = PackageService.ACTION_STOP
                 App.instance.startService(intent)
             } else {
-                showMessage("Start")
+                showMessage(getString(R.string.msg_service_started))
                 val intent = Intent(context, PackageService::class.java)
                 intent.action = PackageService.ACTION_START
                 App.instance.startService(intent)
             }
-
         }
     }
 

@@ -1,12 +1,13 @@
 package ru.chernakov.appmonitor.presentation.utils
 
+import android.content.pm.PackageInfo
 import android.content.pm.PackageManager
 import android.graphics.drawable.Drawable
 import android.os.Build
 import ru.chernakov.appmonitor.App
-import ru.chernakov.appmonitor.R
 import ru.chernakov.appmonitor.data.model.ApplicationItem
 import java.security.MessageDigest
+
 
 class PackageUtils {
     companion object {
@@ -48,7 +49,7 @@ class PackageUtils {
 
         fun getPackageIcon(packageName: String?): Drawable {
             val packageManager = App.instance.packageManager
-            var icon: Drawable = ResourcesUtils.getDrawable(R.drawable.ic_android)
+            var icon: Drawable = ResourcesUtils.getDrawable(ru.chernakov.appmonitor.R.drawable.ic_android)
             try {
                 val packageInfo = packageManager.getPackageInfo(packageName, PackageManager.GET_META_DATA)
                 if (packageInfo != null) {
@@ -61,13 +62,15 @@ class PackageUtils {
         }
 
         fun getPackages(): ArrayList<ApplicationItem> {
-            val appList = ArrayList<ApplicationItem>()
+            val appList = HashSet<ApplicationItem>()
 
             val packageManager = App.instance.packageManager
             val packages = packageManager.getInstalledPackages(PackageManager.GET_META_DATA)
 
             for (packageInfo in packages) {
-                if (!(packageManager.getApplicationLabel(packageInfo.applicationInfo) == "" || packageInfo.packageName == "")) {
+                if (!(packageManager.getApplicationLabel(packageInfo.applicationInfo) == "" || packageInfo.packageName == "")
+                    && isNonSystemApp(packageInfo)
+                ) {
                     try {
                         val tempApp = ApplicationItem(
                             packageManager.getApplicationLabel(packageInfo.applicationInfo).toString(),
@@ -102,7 +105,7 @@ class PackageUtils {
                 }
             }
 
-            return appList
+            return ArrayList(appList.toList())
         }
 
         fun getInstalledPackages(
@@ -175,6 +178,17 @@ class PackageUtils {
                 hexChars[j * 2 + 1] = hexArray[v and 0x0F]
             }
             return String(hexChars)
+        }
+
+        fun isNonSystemApp(packageInfo: PackageInfo): Boolean {
+            try {
+                val packageManager = App.instance.packageManager
+
+                return packageInfo.applicationInfo.sourceDir.startsWith("/data/app/")
+                        && packageManager.getLaunchIntentForPackage(packageInfo.packageName) != null
+            } catch (e: PackageManager.NameNotFoundException) {
+                return false
+            }
         }
     }
 }

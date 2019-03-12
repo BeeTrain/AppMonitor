@@ -1,6 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-
-	<string name="msg_service_running">Фоновый режим работы</string>
+	<string name="msg_package_installed" formatted="false">%s был установлен</string>
+	<string name="msg_package_updated" formatted="false">%s был обновлен</string>
+	<string name="msg_service_running">Сервис фоновой работы</string>
+	<string name="msg_service_stopped">Сервис фоновой работы остановлен</string>
+	<string name="msg_service_started">Сервис фоновой работы запущен</string>
 
 </resources>

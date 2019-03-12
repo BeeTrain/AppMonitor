@@ -1,13 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
-	<!-- Цвета основной темы приложения -->
 	<color name="colorPrimary">#d50000</color>
 	<color name="colorPrimaryLight">#ff5131</color>
 	<color name="colorPrimaryDark">#9b0000</color>
 	<color name="colorControlActivated">@color/colorSecondary</color>
 
-	<!--Цвета дополнительной темы приложения-->
 	<color name="colorSecondary">#ff9100</color>
 	<color name="colorSecondaryLight">#ffc246</color>
 	<color name="colorSecondaryDark">#c56200</color>

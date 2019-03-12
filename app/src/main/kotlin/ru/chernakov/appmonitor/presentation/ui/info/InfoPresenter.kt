@@ -29,15 +29,13 @@ class InfoPresenter(router: Router, private val applicationItem: ApplicationItem
     fun initOptionsList(): ArrayList<OptionItem> {
         if (optionsList.isEmpty()) {
 
-            if (!applicationItem.isSystem!!) {
-                optionsList.add(
-                    OptionItem(
-                        0,
-                        ResourcesUtils.getString(R.string.option_title_open_app),
-                        ResourcesUtils.getDrawable(ru.chernakov.appmonitor.R.drawable.ic_open)
-                    )
+            optionsList.add(
+                OptionItem(
+                    0,
+                    ResourcesUtils.getString(R.string.option_title_open_app),
+                    ResourcesUtils.getDrawable(ru.chernakov.appmonitor.R.drawable.ic_open)
                 )
-            }
+            )
             optionsList.add(
                 OptionItem(
                     1,
@@ -45,15 +43,13 @@ class InfoPresenter(router: Router, private val applicationItem: ApplicationItem
                     ResourcesUtils.getDrawable(ru.chernakov.appmonitor.R.drawable.ic_file_download)
                 )
             )
-            if (!applicationItem.isSystem!!) {
-                optionsList.add(
-                    OptionItem(
-                        2,
-                        ResourcesUtils.getString(R.string.option_title_open_play_market),
-                        ResourcesUtils.getDrawable(ru.chernakov.appmonitor.R.drawable.ic_play_circle)
-                    )
+            optionsList.add(
+                OptionItem(
+                    2,
+                    ResourcesUtils.getString(R.string.option_title_open_play_market),
+                    ResourcesUtils.getDrawable(ru.chernakov.appmonitor.R.drawable.ic_play_circle)
                 )
-            }
+            )
             optionsList.add(
                 OptionItem(
                     3,

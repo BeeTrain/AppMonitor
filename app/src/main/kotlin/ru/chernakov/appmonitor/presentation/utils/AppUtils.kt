@@ -23,6 +23,8 @@ class AppUtils {
     companion object {
         const val MY_PERMISSIONS_REQUEST_WRITE_READ = 1
 
+        const val INTENT_START_APP_INFO_SCREEN = "start_app_info_screen"
+
         const val UNINSTALL_REQUEST_CODE = 1
 
         fun getDefaultAppFolder(): File {
@@ -58,17 +60,7 @@ class AppUtils {
         }
 
         fun getAPKFilename(applicationItem: ApplicationItem): String {
-            val appPreferences = App.appPreferences
-            val res: String
-
-            when (appPreferences.customFilename) {
-                "1" -> res = applicationItem.apk + "_" + applicationItem.version
-                "2" -> res = applicationItem.name + "_" + applicationItem.version
-                "4" -> res = applicationItem.name.toString()
-                else -> res = applicationItem.apk.toString()
-            }
-
-            return res
+            return applicationItem.name + "_" + applicationItem.version
         }
 
         fun checkPermissions(activity: Activity): Boolean? {
