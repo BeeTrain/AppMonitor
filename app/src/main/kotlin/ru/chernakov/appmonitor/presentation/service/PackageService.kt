@@ -136,7 +136,7 @@ class PackageService : IntentService(TAG) {
     private fun initTimerTask() {
         val timer = Timer()
         val task = ShowTimer()
-        timer.scheduleAtFixedRate(task, 0, 30000)
+        timer.scheduleAtFixedRate(task, 0, 10000)
     }
 
     private fun createNotification(): Notification {
