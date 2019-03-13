@@ -3,19 +3,27 @@ apply plugin: 'kotlin-android'
 apply plugin: 'kotlin-android-extensions'
 apply plugin: 'kotlin-kapt'
 
+def appVersion = "1.0.0"
+def appCode = 1
+
 android {
     compileSdkVersion 28
     defaultConfig {
         applicationId "ru.chernakov.appmonitor"
         minSdkVersion 21
         targetSdkVersion 28
-        versionCode 1
-        versionName "1.0"
+        versionCode appCode
+        versionName appVersion
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
     }
     buildTypes {
+        debug {
+            minifyEnabled false
+            useProguard false
+        }
         release {
             minifyEnabled false
+            useProguard true
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
         }
     }
