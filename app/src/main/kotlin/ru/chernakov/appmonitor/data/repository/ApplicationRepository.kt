@@ -23,10 +23,10 @@ class ApplicationRepository(val cache: ApplicationCache) {
             if (App.appPreferences.isColdStart) {
                 appList = PackageUtils.getPackages()
 
-                update(appList)
             } else {
                 appList = getFromPrefs()
             }
+            update(appList)
 
             it.onNext(appList)
             it.onComplete()

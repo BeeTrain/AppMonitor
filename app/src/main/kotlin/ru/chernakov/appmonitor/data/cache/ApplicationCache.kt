@@ -8,7 +8,7 @@ import ru.chernakov.appmonitor.presentation.utils.DateUtils
 class ApplicationCache {
     private val EXPIRATION_TIME = (1000 * 60 * 2).toLong()
 
-    val apps = ArrayList<String>()
+    val apps = HashSet<String>()
     private var lastUpdateTime: Long = 0
 
     fun getApplications(): Observable<List<ApplicationItem>> {
