@@ -18,7 +18,7 @@ import ru.terrakok.cicerone.Router
 
 
 @InjectViewState
-class InfoPresenter(router: Router, private val applicationItem: ApplicationItem) : BasePresenter<InfoView>(router) {
+class InfoPresenter(router: Router, val applicationItem: ApplicationItem) : BasePresenter<InfoView>(router) {
 
     private val optionsList = ArrayList<OptionItem>()
 

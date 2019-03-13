@@ -52,7 +52,7 @@ class InfoFragment : BaseFragment(), InfoView {
     }
 
     override fun loadData() {
-        initApplicationInfo(applicationItem)
+        initApplicationInfo(presenter.applicationItem)
         initAdapter(presenter.initOptionsList())
     }
 
