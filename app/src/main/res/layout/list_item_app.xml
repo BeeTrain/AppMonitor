@@ -24,7 +24,7 @@
 			android:maxWidth="50dp"
 			android:maxHeight="50dp"
 			android:contentDescription="@string/content_description_default"
-			android:src="@drawable/ic_android"/>
+			android:src="@drawable/ic_app"/>
 
 		<LinearLayout
 			android:orientation="vertical"

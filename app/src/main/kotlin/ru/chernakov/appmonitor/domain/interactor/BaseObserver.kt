@@ -8,5 +8,5 @@ internal open class BaseObserver<T> : DisposableObserver<T>() {
 
     override fun onComplete() {}
 
-    override fun onError(exception: Throwable) {}
+    override fun onError(e: Throwable) {}
 }

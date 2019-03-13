@@ -4,14 +4,13 @@ import io.reactivex.Observable
 import ru.chernakov.appmonitor.App
 import ru.chernakov.appmonitor.data.cache.ApplicationCache
 import ru.chernakov.appmonitor.data.model.ApplicationItem
-import ru.chernakov.appmonitor.presentation.utils.DateUtils
 import ru.chernakov.appmonitor.presentation.utils.PackageUtils
 
 
 class ApplicationRepository(val cache: ApplicationCache) {
 
     fun get(): Observable<List<ApplicationItem>> {
-        return if (!cache.isExpired(DateUtils.getCurrentTimeInMillis())) {
+        return if (!cache.isExpired()) {
             cache.getApplications()
         } else {
             getApplications()
@@ -24,29 +23,23 @@ class ApplicationRepository(val cache: ApplicationCache) {
             if (App.appPreferences.isColdStart) {
                 appList = PackageUtils.getPackages()
 
-                saveToPrefs(appList)
+                update(appList)
             } else {
                 appList = getFromPrefs()
             }
 
-            appList.sortWith(Comparator { p1, p2 ->
-                p1.name.toString().toLowerCase()
-                    .compareTo(p2.name.toString().toLowerCase())
-            })
-
-            cache.putApplications(appList, DateUtils.getCurrentTimeInMillis())
             it.onNext(appList)
             it.onComplete()
         }
     }
 
-    fun saveToPrefs(applicationItems: ArrayList<ApplicationItem>) {
+    fun update(applicationItems: ArrayList<ApplicationItem>) {
         val appsListSet = HashSet<String>()
         for (ApplicationItem in applicationItems) {
             appsListSet.add(ApplicationItem.toString())
         }
         App.appPreferences.deviceApps = appsListSet
-        cache.putApplications(applicationItems, DateUtils.getCurrentTimeInMillis())
+        cache.update(applicationItems)
 
         App.appPreferences.isColdStart = false
     }
@@ -54,12 +47,10 @@ class ApplicationRepository(val cache: ApplicationCache) {
     fun getFromPrefs(): ArrayList<ApplicationItem> {
         val appList = ArrayList<ApplicationItem>()
         val appsListSet = App.appPreferences.deviceApps
-        val hashSet = HashSet<ApplicationItem>()
 
         for (String in appsListSet) {
-            hashSet.add(ApplicationItem(String))
+            appList.add(ApplicationItem(String))
         }
-        appList.addAll(hashSet)
 
         return appList
     }

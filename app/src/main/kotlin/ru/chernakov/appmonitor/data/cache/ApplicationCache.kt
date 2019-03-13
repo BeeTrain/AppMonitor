@@ -1,46 +1,48 @@
 package ru.chernakov.appmonitor.data.cache
 
 import io.reactivex.Observable
+import ru.chernakov.appmonitor.App
 import ru.chernakov.appmonitor.data.model.ApplicationItem
+import ru.chernakov.appmonitor.presentation.utils.DateUtils
 
 class ApplicationCache {
     private val EXPIRATION_TIME = (1000 * 60 * 2).toLong()
 
-    val applicationCache = ArrayList<String>()
+    val apps = ArrayList<String>()
     private var lastUpdateTime: Long = 0
 
     fun getApplications(): Observable<List<ApplicationItem>> {
         return Observable.create {
             val cacheItems: ArrayList<ApplicationItem> = ArrayList()
-            val hashSet = HashSet<ApplicationItem>()
 
-            for (String in applicationCache) {
+            for (String in apps) {
                 if (String != null && !String.isEmpty()) {
-                    val item = ApplicationItem(String)
-                    hashSet.add(item)
+                    cacheItems.add(ApplicationItem(String))
                 }
             }
-            cacheItems.addAll(hashSet)
-
-            cacheItems.sortWith(Comparator { p1, p2 ->
-                p1.name.toString().toLowerCase()
-                    .compareTo(p2.name.toString().toLowerCase())
-            })
 
             it.onNext(cacheItems)
             it.onComplete()
         }
     }
 
-    fun putApplications(applicationItems: ArrayList<ApplicationItem>, updateTime: Long) {
-        applicationCache.clear()
+    fun update(applicationItems: ArrayList<ApplicationItem>) {
+        apps.clear()
         for (ApplicationItem in applicationItems) {
-            applicationCache.add(ApplicationItem.toString())
+            apps.add(ApplicationItem.toString())
         }
-        lastUpdateTime = updateTime
+        setLastCacheUpdate(DateUtils.getCurrentTimeInMillis())
     }
 
-    fun isExpired(currentTime: Long): Boolean {
-        return (currentTime - lastUpdateTime) > EXPIRATION_TIME
+    fun isExpired(): Boolean {
+        return (DateUtils.getCurrentTimeInMillis() - getLastCacheUpdate()) > EXPIRATION_TIME || App.appPreferences.isColdStart
+    }
+
+    private fun getLastCacheUpdate(): Long {
+        return lastUpdateTime
+    }
+
+    private fun setLastCacheUpdate(updateTime: Long) {
+        lastUpdateTime = updateTime
     }
 }

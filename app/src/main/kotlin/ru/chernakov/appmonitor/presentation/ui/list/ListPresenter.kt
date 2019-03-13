@@ -4,7 +4,7 @@ import com.arellomobile.mvp.InjectViewState
 import ru.chernakov.appmonitor.data.model.ApplicationItem
 import ru.chernakov.appmonitor.domain.interactor.BaseObserver
 import ru.chernakov.appmonitor.domain.interactor.LoadApplications
-import ru.chernakov.appmonitor.navigation.Screen
+import ru.chernakov.appmonitor.presentation.navigation.Screen
 import ru.chernakov.appmonitor.presentation.ui.base.BasePresenter
 import ru.terrakok.cicerone.Router
 

@@ -5,7 +5,7 @@ import android.content.SharedPreferences
 import android.preference.PreferenceManager
 
 
-class AppPreferences(private val context: Context) {
+class AppPreferences(context: Context) {
     private val sharedPreferences: SharedPreferences
     private val editor: SharedPreferences.Editor
 

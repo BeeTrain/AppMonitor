@@ -1,4 +1,4 @@
-package ru.chernakov.appmonitor.navigation
+package ru.chernakov.appmonitor.presentation.navigation
 
 import android.support.v4.app.Fragment
 import ru.chernakov.appmonitor.data.model.ApplicationItem

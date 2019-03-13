@@ -8,7 +8,7 @@ import com.arellomobile.mvp.InjectViewState
 import ru.chernakov.appmonitor.R
 import ru.chernakov.appmonitor.data.model.ApplicationItem
 import ru.chernakov.appmonitor.data.model.OptionItem
-import ru.chernakov.appmonitor.navigation.Screen
+import ru.chernakov.appmonitor.presentation.navigation.Screen
 import ru.chernakov.appmonitor.presentation.ui.base.BasePresenter
 import ru.chernakov.appmonitor.presentation.ui.info.adapter.OptionsAdapter
 import ru.chernakov.appmonitor.presentation.utils.AppUtils
@@ -63,7 +63,7 @@ class InfoPresenter(router: Router, private val applicationItem: ApplicationItem
 
     fun setOnClickListener(recyclerView: RecyclerView, adapter: OptionsAdapter, activity: FragmentActivity) {
         with(ItemClickSupport.addTo(recyclerView)) {
-            setOnItemClickListener { recyclerView, position, v ->
+            setOnItemClickListener { _, position, _ ->
                 when (adapter.getItem(position).id) {
                     0 -> startApplication(activity)
                     1 -> saveApk()
@@ -76,7 +76,7 @@ class InfoPresenter(router: Router, private val applicationItem: ApplicationItem
 
     private fun startApplication(activity: FragmentActivity) {
         try {
-            val intent = activity.packageManager.getLaunchIntentForPackage(applicationItem.apk)
+            val intent = activity.packageManager.getLaunchIntentForPackage(applicationItem.apk!!)
             activity.startActivity(intent)
         } catch (e: NullPointerException) {
             viewState.showMessage(ResourcesUtils.getString(R.string.error_cannot_run_app))

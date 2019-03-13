@@ -3,6 +3,7 @@ package ru.chernakov.appmonitor.data.model
 import android.graphics.drawable.Drawable
 import ru.chernakov.appmonitor.presentation.utils.PackageUtils
 import java.io.Serializable
+import java.lang.Boolean.getBoolean
 
 
 class ApplicationItem : Serializable {
@@ -69,7 +70,7 @@ class ApplicationItem : Serializable {
             this.version = split[2]
             this.source = split[3]
             this.data = split[4]
-            this.isSystem = java.lang.Boolean.getBoolean(split[5])
+            this.isSystem = getBoolean(split[5])
             this.sha = split[6]
             this.installDate = split[7].toLong()
             this.updateDate = split[8].toLong()
@@ -115,6 +116,4 @@ class ApplicationItem : Serializable {
         result = 31 * result + (updateDate?.hashCode() ?: 0)
         return result
     }
-
-
 }

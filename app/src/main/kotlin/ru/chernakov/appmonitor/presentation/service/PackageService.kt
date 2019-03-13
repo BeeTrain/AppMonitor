@@ -10,7 +10,6 @@ import ru.chernakov.appmonitor.R
 import ru.chernakov.appmonitor.data.repository.ApplicationRepository
 import ru.chernakov.appmonitor.presentation.ui.AppActivity
 import ru.chernakov.appmonitor.presentation.utils.AppUtils
-import ru.chernakov.appmonitor.presentation.utils.DateUtils
 import ru.chernakov.appmonitor.presentation.utils.PackageUtils
 import java.util.*
 import javax.inject.Inject
@@ -36,6 +35,23 @@ class PackageService : IntentService(TAG) {
 
     }
 
+    override fun onHandleIntent(intent: Intent?) {
+        val action = intent?.action
+
+        when (action) {
+            ACTION_START -> {
+                startForegroundService()
+            }
+            ACTION_STOP -> {
+                stopForegroundService()
+            }
+            ACTION_OPEN_APP -> {
+                val notifyManager = getSystemService(NOTIFICATION_SERVICE) as NotificationManager
+                notifyManager.notify(SERVICE_ID, createNotification())
+            }
+        }
+    }
+
     override fun onStartCommand(intent: Intent?, flags: Int, startId: Int): Int {
         val action = intent?.action
 
@@ -53,19 +69,6 @@ class PackageService : IntentService(TAG) {
         }
 
         return Service.START_NOT_STICKY
-    }
-
-    override fun onHandleIntent(intent: Intent?) {
-        val action = intent?.action
-
-        when (action) {
-            ACTION_START -> {
-                startForegroundService()
-            }
-            ACTION_STOP -> {
-                stopForegroundService()
-            }
-        }
     }
 
     private fun startForegroundService() {
@@ -111,25 +114,14 @@ class PackageService : IntentService(TAG) {
                 }
             }
 
-//            val uninstalledApps =
-//                PackageUtils.getUninstalledPackages(
-//                    dataPackages,
-//                    checkPackages
-//                )
-//            if (uninstalledApps.size > 0) {
-//                for (ApplicationItem in uninstalledApps) {
-//                    val text = ApplicationItem.name + " был удален"
-//                    showMessageNotification(text)
-//                }
-//            }
             if (installedApps.size > 0 || updatedApps.size > 0) {
-                applicationRepository.saveToPrefs(checkPackages)
+                applicationRepository.update(checkPackages)
             }
         } else {
-            if (applicationRepository.cache.applicationCache.size > 0
-                && applicationRepository.cache.isExpired(DateUtils.getCurrentTimeInMillis())
+            if (applicationRepository.cache.apps.size > 0
+                && applicationRepository.cache.isExpired()
             )
-                applicationRepository.saveToPrefs(PackageUtils.getPackages())
+                applicationRepository.update(PackageUtils.getPackages())
         }
     }
 
