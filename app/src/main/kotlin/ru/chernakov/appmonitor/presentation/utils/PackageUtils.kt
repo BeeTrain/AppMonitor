@@ -31,7 +31,7 @@ class PackageUtils {
                             packageInfo.applicationInfo.dataDir,
                             packageManager.getApplicationIcon(packageInfo.applicationInfo),
                             AppUtils.isSystemPackage(packageInfo),
-                            PackageUtils.getSHA(packageInfo.packageName, packageManager),
+                            PackageUtils.getSHA(packageInfo.applicationInfo.sourceDir, packageManager),
                             packageInfo.firstInstallTime,
                             packageInfo.lastUpdateTime
                         )
@@ -45,7 +45,7 @@ class PackageUtils {
                             packageInfo.applicationInfo.dataDir,
                             packageManager.getApplicationIcon(packageInfo.applicationInfo),
                             AppUtils.isSystemPackage(packageInfo),
-                            PackageUtils.getSHA(packageInfo.packageName, packageManager),
+                            PackageUtils.getSHA(packageInfo.applicationInfo.sourceDir, packageManager),
                             packageInfo.firstInstallTime,
                             packageInfo.lastUpdateTime
                         )
@@ -119,15 +119,14 @@ class PackageUtils {
             return updated
         }
 
-
-        fun getSHA(packageName: String, packageManager: PackageManager): String {
+        fun getSHA(sourceFileDir: String, packageManager: PackageManager): String {
             var shaRes = ""
             val sha: List<String>
             val md: MessageDigest = MessageDigest.getInstance("SHA")
 
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.P) {
                 val signingInfo =
-                    packageManager.getPackageInfo(packageName, PackageManager.GET_SIGNING_CERTIFICATES).signingInfo
+                    packageManager.getPackageArchiveInfo(sourceFileDir, PackageManager.GET_SIGNATURES).signingInfo
 
                 sha = if (signingInfo.hasMultipleSigners()) {
                     signingInfo.apkContentsSigners.map {
@@ -141,7 +140,7 @@ class PackageUtils {
                     }
                 }
             } else {
-                val signingInfo = packageManager.getPackageInfo(packageName, PackageManager.GET_SIGNATURES).signatures
+                val signingInfo = packageManager.getPackageArchiveInfo(sourceFileDir, PackageManager.GET_SIGNATURES).signatures
 
                 sha = signingInfo.map {
                     md.update(it.toByteArray())
