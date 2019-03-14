@@ -23,13 +23,16 @@ class AppActivity : BaseActivity() {
         super.onCreate(savedInstanceState)
 
         if (savedInstanceState == null) {
-            router.newRootScreen(Screen.List)
-            router.navigateTo(Screen.List)
+            if (intent.extras == null) {
+                router.newRootScreen(Screen.List)
+                router.navigateTo(Screen.List)
+            } else {
+                intent.extras?.let {
+                    onProvidedIntent(intent)
+                }
+            }
         }
 
-        intent.extras?.let {
-            onProvidedIntent(intent)
-        }
 
         actionBar?.setDisplayHomeAsUpEnabled(true)
 
@@ -61,8 +64,8 @@ class AppActivity : BaseActivity() {
         startActivity(intent)
     }
 
-    private fun onProvidedIntent(intent: Intent) {
-        val pack = intent.extras!!.getString(AppUtils.INTENT_START_APP_INFO_SCREEN)
+    private fun onProvidedIntent(providedIntent: Intent) {
+        val pack = providedIntent.extras!!.getString(AppUtils.INTENT_START_APP_INFO_SCREEN)
         if (pack != null && !pack.isEmpty()) {
             val serviceIntent = Intent(this, PackageService::class.java)
             serviceIntent.action = PackageService.ACTION_START
