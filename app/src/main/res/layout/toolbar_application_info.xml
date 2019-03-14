@@ -111,7 +111,7 @@
 
 		</LinearLayout>
 
-		<include layout="@layout/toolbar_default"/>
+		<include layout="@layout/toolbar_custom"/>
 
 	</android.support.design.widget.CollapsingToolbarLayout>
 

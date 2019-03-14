@@ -168,6 +168,39 @@ class PackageUtils {
             return icon
         }
 
+        fun isNonSystemApp(packageInfo: PackageInfo): Boolean {
+            try {
+                val packageManager = App.instance.packageManager
+
+                return packageInfo.applicationInfo.sourceDir.startsWith("/data/app/")
+                        && packageManager.getLaunchIntentForPackage(packageInfo.packageName) != null
+            } catch (e: PackageManager.NameNotFoundException) {
+                return false
+            }
+        }
+
+        fun getApplicationItem(packageName: String?): ApplicationItem? {
+            try {
+                val packageManager = App.instance.packageManager
+                val packageInfo = packageManager.getPackageInfo(packageName, PackageManager.GET_META_DATA)
+
+                return ApplicationItem(
+                    packageManager.getApplicationLabel(packageInfo.applicationInfo).toString(),
+                    packageInfo.packageName,
+                    packageInfo.versionName,
+                    packageInfo.applicationInfo.sourceDir,
+                    packageInfo.applicationInfo.dataDir,
+                    packageManager.getApplicationIcon(packageInfo.applicationInfo),
+                    AppUtils.isSystemPackage(packageInfo),
+                    PackageUtils.getSHA(packageInfo.applicationInfo.sourceDir, packageManager),
+                    packageInfo.firstInstallTime,
+                    packageInfo.lastUpdateTime
+                )
+            } catch (e: PackageManager.NameNotFoundException) {
+                return null
+            }
+        }
+
         private fun bytesToHex(bytes: ByteArray): String {
             val hexArray = charArrayOf('0', '1', '2', '3', '4', '5', '6', '7', '8', '9', 'A', 'B', 'C', 'D', 'E', 'F')
             val hexChars = CharArray(bytes.size * 2)
@@ -178,17 +211,6 @@ class PackageUtils {
                 hexChars[j * 2 + 1] = hexArray[v and 0x0F]
             }
             return String(hexChars)
-        }
-
-        fun isNonSystemApp(packageInfo: PackageInfo): Boolean {
-            try {
-                val packageManager = App.instance.packageManager
-
-                return packageInfo.applicationInfo.sourceDir.startsWith("/data/app/")
-                        && packageManager.getLaunchIntentForPackage(packageInfo.packageName) != null
-            } catch (e: PackageManager.NameNotFoundException) {
-                return false
-            }
         }
     }
 }

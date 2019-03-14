@@ -7,7 +7,9 @@ import android.os.Build
 import android.support.v4.app.NotificationCompat
 import ru.chernakov.appmonitor.App
 import ru.chernakov.appmonitor.R
+import ru.chernakov.appmonitor.data.model.EventItem
 import ru.chernakov.appmonitor.data.repository.ApplicationRepository
+import ru.chernakov.appmonitor.data.repository.HistoryRepository
 import ru.chernakov.appmonitor.presentation.ui.AppActivity
 import ru.chernakov.appmonitor.presentation.utils.AppUtils
 import ru.chernakov.appmonitor.presentation.utils.PackageUtils
@@ -28,6 +30,9 @@ class PackageService : IntentService(TAG) {
 
     @Inject
     lateinit var applicationRepository: ApplicationRepository
+
+    @Inject
+    lateinit var historyRepository: HistoryRepository
 
     override fun onCreate() {
         App.instance.getAppComponent().inject(this)
@@ -90,25 +95,37 @@ class PackageService : IntentService(TAG) {
             val dataPackages = applicationRepository.getFromPrefs()
             val checkPackages = PackageUtils.getPackages()
 
-            val installedApps =
-                PackageUtils.getInstalledPackages(
-                    dataPackages,
-                    checkPackages
-                )
+            val installedApps = PackageUtils.getInstalledPackages(dataPackages, checkPackages)
             if (installedApps.size > 0) {
                 for (ApplicationItem in installedApps) {
+                    val eventItem = EventItem(
+                        ApplicationItem.name,
+                        ApplicationItem.apk,
+                        ApplicationItem.version,
+                        EventItem.EVENT_INSTALL,
+                        ApplicationItem.updateDate,
+                        PackageUtils.getPackageIcon(ApplicationItem.name)
+                    )
+                    historyRepository.addEvent(eventItem)
+
                     val text = getString(R.string.msg_package_installed, ApplicationItem.name)
                     showMessageNotification(text, ApplicationItem.toString())
                 }
             }
 
-            val updatedApps =
-                PackageUtils.getUpdatedPackages(
-                    dataPackages,
-                    checkPackages
-                )
+            val updatedApps = PackageUtils.getUpdatedPackages(dataPackages, checkPackages)
             if (updatedApps.size > 0) {
                 for (ApplicationItem in updatedApps) {
+                    val eventItem = EventItem(
+                        ApplicationItem.name,
+                        ApplicationItem.apk,
+                        ApplicationItem.version,
+                        EventItem.EVENT_UPDATE,
+                        ApplicationItem.updateDate,
+                        PackageUtils.getPackageIcon(ApplicationItem.name)
+                    )
+                    historyRepository.addEvent(eventItem)
+
                     val text = getString(R.string.msg_package_updated, ApplicationItem.name)
                     showMessageNotification(text, ApplicationItem.toString())
                 }

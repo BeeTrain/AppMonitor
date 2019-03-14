@@ -12,6 +12,7 @@ class AppPreferences(context: Context) {
     companion object {
         const val IS_COLD_START = "is_cold_start"
         const val DEVICE_APPS = "device_apps"
+        const val EVENTS_HISTORY = "events_history"
     }
 
     init {
@@ -35,4 +36,12 @@ class AppPreferences(context: Context) {
             editor.commit()
         }
 
+    var eventsHistory: Set<String>
+        get() = sharedPreferences.getStringSet(EVENTS_HISTORY, HashSet())
+        set(eventsHistory) {
+            editor.remove(EVENTS_HISTORY)
+            editor.commit()
+            editor.putStringSet(EVENTS_HISTORY, eventsHistory)
+            editor.commit()
+        }
 }

@@ -4,12 +4,16 @@
 	<string name="content_description_default">content_description_default</string>
 	<string name="error_cannot_run_app">Не удается запустить приложение</string>
 	<string name="error_cannot_save_apk">Не удалось сохранить APK файл</string>
+	<string name="history_no_data">Нет записей в истории</string>
+	<string name="install_date" formatted="false">Дата установки: %s</string>
 	<string name="option_title_delete_app">Удалить приложение</string>
 	<string name="option_title_open_app">Открыть приложение</string>
 	<string name="option_title_open_play_market">Открыть в Play Market</string>
 	<string name="option_title_save_apk">Сохранить APK</string>
 	<string name="send_to" formatted="false">Поделиться %s через</string>
 	<string name="title_app">App</string>
+	<string name="title_history">История</string>
+	<string name="title_info">Info</string>
 	<string name="title_installed">Установлено</string>
 	<string name="title_package">Package</string>
 	<string name="title_sha">SHA</string>
@@ -19,4 +23,6 @@
 	<string name="value_installed" formatted="false">Установлено: %s</string>
 	<string name="value_sha" formatted="false">SHA: %s</string>
 	<string name="value_updated" formatted="false">Обновлено: %s</string>
+	<string name="update_date" formatted="false">Дата обновления: %s</string>
+	<string name="uninstall_date" formatted="false">Дата удаления: %s</string>
 </resources>

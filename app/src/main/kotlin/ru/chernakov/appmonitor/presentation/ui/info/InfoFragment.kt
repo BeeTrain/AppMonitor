@@ -88,6 +88,7 @@ class InfoFragment : BaseFragment(), InfoView {
         toolbar.navigationIcon = activity?.getDrawable(R.drawable.ic_arrow_back)
         val activity = activity as AppCompatActivity?
         activity?.setSupportActionBar(toolbar)
+        activity?.title = getString(R.string.title_info)
 
         toolbar.setNavigationOnClickListener {
             presenter.backToList()

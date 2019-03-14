@@ -1,6 +1,5 @@
 package ru.chernakov.appmonitor.presentation.ui.list
 
-import android.content.Intent
 import android.os.Bundle
 import android.support.v7.app.AppCompatActivity
 import android.support.v7.widget.LinearLayoutManager
@@ -20,7 +19,6 @@ import ru.chernakov.appmonitor.data.model.ApplicationItem
 import ru.chernakov.appmonitor.data.repository.ApplicationRepository
 import ru.chernakov.appmonitor.domain.executor.ThreadExecutor
 import ru.chernakov.appmonitor.domain.interactor.LoadApplications
-import ru.chernakov.appmonitor.presentation.service.PackageService
 import ru.chernakov.appmonitor.presentation.ui.base.BaseFragment
 import ru.chernakov.appmonitor.presentation.ui.list.adapter.ListAdapter
 import ru.chernakov.appmonitor.presentation.utils.ItemClickSupport
@@ -61,7 +59,6 @@ class ListFragment : BaseFragment(), ListView {
     }
 
     override fun loadData() {
-
         swipeRefresh.setOnRefreshListener { presenter.loadApps() }
     }
 
@@ -78,7 +75,7 @@ class ListFragment : BaseFragment(), ListView {
         applicationsList.adapter = adapter
 
         with(ItemClickSupport.addTo(applicationsList)) {
-            setOnItemClickListener { recyclerView, position, v ->
+            setOnItemClickListener { _, position, _ ->
                 adapter?.getItem(position)?.let {
                     presenter.goToInfo(it)
                 }
@@ -99,23 +96,26 @@ class ListFragment : BaseFragment(), ListView {
 
     private fun setUpToolbar(view: View) {
         val toolbar: Toolbar = view.findViewById(ru.chernakov.appmonitor.R.id.toolbar)
-        toolbar.navigationIcon = ResourcesUtils.getDrawable(ru.chernakov.appmonitor.R.drawable.ic_cloud)
+        toolbar.navigationIcon = ResourcesUtils.getDrawable(R.drawable.ic_history)
 
         val activity = activity as AppCompatActivity?
         activity?.setSupportActionBar(toolbar)
+        activity?.title = getString(R.string.app_name)
 
         toolbar.setNavigationOnClickListener {
-            if (App.isServiceRunning) {
-                showMessage(getString(R.string.msg_service_stopped))
-                val intent = Intent(context, PackageService::class.java)
-                intent.action = PackageService.ACTION_STOP
-                App.instance.startService(intent)
-            } else {
-                showMessage(getString(R.string.msg_service_started))
-                val intent = Intent(context, PackageService::class.java)
-                intent.action = PackageService.ACTION_START
-                App.instance.startService(intent)
-            }
+            presenter.goToHistory()
+
+//            if (App.isServiceRunning) {
+//                showMessage(getString(R.string.msg_service_stopped))
+//                val intent = Intent(context, PackageService::class.java)
+//                intent.action = PackageService.ACTION_STOP
+//                App.instance.startService(intent)
+//            } else {
+//                showMessage(getString(R.string.msg_service_started))
+//                val intent = Intent(context, PackageService::class.java)
+//                intent.action = PackageService.ACTION_START
+//                App.instance.startService(intent)
+//            }
         }
     }
 

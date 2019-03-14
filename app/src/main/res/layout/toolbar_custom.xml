@@ -9,4 +9,8 @@
 	app:elevation="@dimen/default_elevation"
 	app:layout_collapseMode="pin"
 	app:layout_scrollFlags="scroll|exitUntilCollapsed"
-	style="@style/Widget.AppMonitor.Toolbar"/>
+	style="@style/Widget.AppMonitor.Toolbar">
+
+	<include layout="@layout/layout_actionbar"/>
+
+</android.support.v7.widget.Toolbar>
