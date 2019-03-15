@@ -5,6 +5,7 @@ import android.content.pm.PackageManager
 import android.graphics.drawable.Drawable
 import android.os.Build
 import ru.chernakov.appmonitor.App
+import ru.chernakov.appmonitor.data.dto.ApplicationDto
 import ru.chernakov.appmonitor.data.model.ApplicationItem
 import java.security.MessageDigest
 
@@ -12,8 +13,8 @@ import java.security.MessageDigest
 class PackageUtils {
     companion object {
 
-        fun getPackages(): ArrayList<ApplicationItem> {
-            val appList = HashSet<ApplicationItem>()
+        fun getPackages(): ArrayList<ApplicationDto> {
+            val appList = HashSet<ApplicationDto>()
 
             val packageManager = App.instance.packageManager
             val packages = packageManager.getInstalledPackages(PackageManager.GET_META_DATA)
@@ -23,29 +24,23 @@ class PackageUtils {
                     && isNonSystemApp(packageInfo)
                 ) {
                     try {
-                        val tempApp = ApplicationItem(
+                        val tempApp = ApplicationDto(
                             packageManager.getApplicationLabel(packageInfo.applicationInfo).toString(),
                             packageInfo.packageName,
                             packageInfo.versionName,
                             packageInfo.applicationInfo.sourceDir,
                             packageInfo.applicationInfo.dataDir,
-                            packageManager.getApplicationIcon(packageInfo.applicationInfo),
-                            AppUtils.isSystemPackage(packageInfo),
-                            PackageUtils.getSHA(packageInfo.applicationInfo.sourceDir, packageManager),
                             packageInfo.firstInstallTime,
                             packageInfo.lastUpdateTime
                         )
                         appList.add(tempApp)
                     } catch (e: OutOfMemoryError) {
-                        val tempApp = ApplicationItem(
+                        val tempApp = ApplicationDto(
                             packageManager.getApplicationLabel(packageInfo.applicationInfo).toString(),
                             packageInfo.packageName,
                             packageInfo.versionName,
                             packageInfo.applicationInfo.sourceDir,
                             packageInfo.applicationInfo.dataDir,
-                            packageManager.getApplicationIcon(packageInfo.applicationInfo),
-                            AppUtils.isSystemPackage(packageInfo),
-                            PackageUtils.getSHA(packageInfo.applicationInfo.sourceDir, packageManager),
                             packageInfo.firstInstallTime,
                             packageInfo.lastUpdateTime
                         )
@@ -60,14 +55,14 @@ class PackageUtils {
         }
 
         fun getInstalledPackages(
-            sourceData: List<ApplicationItem>,
-            checkUpdate: List<ApplicationItem>
-        ): ArrayList<ApplicationItem> {
-            val installed = ArrayList<ApplicationItem>()
+            sourceData: List<ApplicationDto>,
+            checkUpdate: List<ApplicationDto>
+        ): ArrayList<ApplicationDto> {
+            val installed = ArrayList<ApplicationDto>()
 
-            for (fromUpdate: ApplicationItem in checkUpdate) {
+            for (fromUpdate: ApplicationDto in checkUpdate) {
                 var isNew = true
-                for (fromDb: ApplicationItem in sourceData) {
+                for (fromDb: ApplicationDto in sourceData) {
                     if (fromUpdate.name == fromDb.name) {
                         isNew = false
                     }
@@ -81,13 +76,13 @@ class PackageUtils {
         }
 
         fun getUninstalledPackages(
-            sourceData: List<ApplicationItem>,
-            checkUpdate: List<ApplicationItem>
-        ): ArrayList<ApplicationItem> {
-            val uninstalled = ArrayList<ApplicationItem>()
-            for (fromDb: ApplicationItem in sourceData) {
+            sourceData: List<ApplicationDto>,
+            checkUpdate: List<ApplicationDto>
+        ): ArrayList<ApplicationDto> {
+            val uninstalled = ArrayList<ApplicationDto>()
+            for (fromDb: ApplicationDto in sourceData) {
                 var isDeleted = true
-                for (fromUpdate: ApplicationItem in checkUpdate) {
+                for (fromUpdate: ApplicationDto in checkUpdate) {
                     if (fromDb.name == fromUpdate.name) {
                         isDeleted = false
                     }
@@ -101,13 +96,13 @@ class PackageUtils {
         }
 
         fun getUpdatedPackages(
-            sourceData: List<ApplicationItem>,
-            checkUpdate: List<ApplicationItem>
-        ): ArrayList<ApplicationItem> {
-            val updated = ArrayList<ApplicationItem>()
+            sourceData: List<ApplicationDto>,
+            checkUpdate: List<ApplicationDto>
+        ): ArrayList<ApplicationDto> {
+            val updated = ArrayList<ApplicationDto>()
 
-            for (fromUpdate: ApplicationItem in checkUpdate) {
-                for (fromDb: ApplicationItem in sourceData) {
+            for (fromUpdate: ApplicationDto in checkUpdate) {
+                for (fromDb: ApplicationDto in sourceData) {
                     if (fromUpdate.name == fromDb.name) {
                         if (fromUpdate.updateDate!! > fromDb.updateDate!!) {
                             updated.add(fromUpdate)

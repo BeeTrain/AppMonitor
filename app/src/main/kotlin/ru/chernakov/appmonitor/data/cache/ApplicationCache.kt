@@ -2,7 +2,7 @@ package ru.chernakov.appmonitor.data.cache
 
 import io.reactivex.Observable
 import ru.chernakov.appmonitor.App
-import ru.chernakov.appmonitor.data.model.ApplicationItem
+import ru.chernakov.appmonitor.data.dto.ApplicationDto
 import ru.chernakov.appmonitor.presentation.utils.DateUtils
 import javax.inject.Inject
 import javax.inject.Singleton
@@ -15,13 +15,13 @@ internal constructor() {
     val apps = HashSet<String>()
     private var lastUpdateTime: Long = 0
 
-    fun getApplications(): Observable<List<ApplicationItem>> {
+    fun getApplications(): Observable<List<ApplicationDto>> {
         return Observable.create {
-            val cacheItems: ArrayList<ApplicationItem> = ArrayList()
+            val cacheItems: ArrayList<ApplicationDto> = ArrayList()
 
             for (String in apps) {
                 if (!String.isEmpty()) {
-                    cacheItems.add(ApplicationItem(String))
+                    cacheItems.add(ApplicationDto(String))
                 }
             }
 
@@ -30,10 +30,10 @@ internal constructor() {
         }
     }
 
-    fun update(applicationItems: ArrayList<ApplicationItem>) {
+    fun update(applicationItems: ArrayList<ApplicationDto>) {
         apps.clear()
-        for (ApplicationItem in applicationItems) {
-            apps.add(ApplicationItem.toString())
+        for (ApplicationDto in applicationItems) {
+            apps.add(ApplicationDto.toString())
         }
         setLastCacheUpdate(DateUtils.getCurrentTimeInMillis())
     }

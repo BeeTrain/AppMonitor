@@ -3,7 +3,7 @@ package ru.chernakov.appmonitor.data.repository
 import io.reactivex.Observable
 import ru.chernakov.appmonitor.App
 import ru.chernakov.appmonitor.data.cache.ApplicationCache
-import ru.chernakov.appmonitor.data.model.ApplicationItem
+import ru.chernakov.appmonitor.data.dto.ApplicationDto
 import ru.chernakov.appmonitor.presentation.utils.PackageUtils
 import javax.inject.Inject
 import javax.inject.Singleton
@@ -12,7 +12,7 @@ import javax.inject.Singleton
 class ApplicationRepository @Inject
 internal constructor(val cache: ApplicationCache) {
 
-    fun get(): Observable<List<ApplicationItem>> {
+    fun get(): Observable<List<ApplicationDto>> {
         return if (!cache.isExpired()) {
             cache.getApplications()
         } else {
@@ -20,9 +20,9 @@ internal constructor(val cache: ApplicationCache) {
         }
     }
 
-    private fun getApplications(): Observable<List<ApplicationItem>> {
+    private fun getApplications(): Observable<List<ApplicationDto>> {
         return Observable.create {
-            val appList: ArrayList<ApplicationItem>
+            val appList: ArrayList<ApplicationDto>
             if (App.appPreferences.isColdStart) {
                 appList = PackageUtils.getPackages()
 
@@ -36,7 +36,7 @@ internal constructor(val cache: ApplicationCache) {
         }
     }
 
-    fun update(applicationItems: ArrayList<ApplicationItem>) {
+    fun update(applicationItems: ArrayList<ApplicationDto>) {
         val appsListSet = HashSet<String>()
         for (ApplicationItem in applicationItems) {
             appsListSet.add(ApplicationItem.toString())
@@ -47,12 +47,12 @@ internal constructor(val cache: ApplicationCache) {
         App.appPreferences.isColdStart = false
     }
 
-    fun getFromPrefs(): ArrayList<ApplicationItem> {
-        val appList = ArrayList<ApplicationItem>()
+    fun getFromPrefs(): ArrayList<ApplicationDto> {
+        val appList = ArrayList<ApplicationDto>()
         val appsListSet = App.appPreferences.deviceApps
 
         for (String in appsListSet) {
-            appList.add(ApplicationItem(String))
+            appList.add(ApplicationDto(String))
         }
 
         return appList

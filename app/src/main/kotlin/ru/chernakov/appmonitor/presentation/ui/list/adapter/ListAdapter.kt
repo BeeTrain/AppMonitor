@@ -4,12 +4,12 @@ import android.support.v4.app.FragmentActivity
 import android.support.v7.widget.RecyclerView
 import android.view.ViewGroup
 import com.hannesdorfmann.adapterdelegates3.AdapterDelegatesManager
-import ru.chernakov.appmonitor.data.model.ApplicationItem
+import ru.chernakov.appmonitor.data.dto.ApplicationDto
 
-class ListAdapter(activity: FragmentActivity, private val items: List<ApplicationItem>) :
+class ListAdapter(activity: FragmentActivity, private val items: List<ApplicationDto>) :
     RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
-    private val delegatesManager = AdapterDelegatesManager<List<ApplicationItem>>()
+    private val delegatesManager = AdapterDelegatesManager<List<ApplicationDto>>()
 
     init {
         delegatesManager.addDelegate(ListAdapterDelegate(activity))
@@ -27,7 +27,7 @@ class ListAdapter(activity: FragmentActivity, private val items: List<Applicatio
         delegatesManager.onBindViewHolder(items, position, viewHolder)
     }
 
-    fun getItem(position: Int): ApplicationItem {
+    fun getItem(position: Int): ApplicationDto {
         return items[position]
     }
 }

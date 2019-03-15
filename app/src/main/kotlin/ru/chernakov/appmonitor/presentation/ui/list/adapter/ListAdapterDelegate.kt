@@ -8,30 +8,31 @@ import android.widget.ImageView
 import android.widget.TextView
 import com.hannesdorfmann.adapterdelegates3.AdapterDelegate
 import ru.chernakov.appmonitor.R
-import ru.chernakov.appmonitor.data.model.ApplicationItem
+import ru.chernakov.appmonitor.data.dto.ApplicationDto
+import ru.chernakov.appmonitor.presentation.utils.PackageUtils
 
-class ListAdapterDelegate(private val activity: Activity) : AdapterDelegate<List<ApplicationItem>>() {
+class ListAdapterDelegate(private val activity: Activity) : AdapterDelegate<List<ApplicationDto>>() {
 
     override fun onCreateViewHolder(parent: ViewGroup): RecyclerView.ViewHolder {
         return ListViewHolder(activity.layoutInflater.inflate(R.layout.list_item_app, parent, false))
     }
 
-    override fun isForViewType(items: List<ApplicationItem>, position: Int): Boolean {
-        return items[position] is ApplicationItem
+    override fun isForViewType(items: List<ApplicationDto>, position: Int): Boolean {
+        return items[position] is ApplicationDto
     }
 
     override fun onBindViewHolder(
-        items: List<ApplicationItem>,
+        items: List<ApplicationDto>,
         position: Int,
         holder: RecyclerView.ViewHolder,
         payloads: MutableList<Any>
     ) {
         val viewHolder: ListViewHolder = holder as ListViewHolder
-        val item: ApplicationItem? = items[position]
+        val item: ApplicationDto? = items[position]
 
         viewHolder.appName.text = item?.name
         viewHolder.appApk.text = item?.apk
-        viewHolder.appIcon.setImageDrawable(item?.icon)
+        viewHolder.appIcon.setImageDrawable(PackageUtils.getPackageIcon(item?.apk))
     }
 
     internal inner class ListViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {

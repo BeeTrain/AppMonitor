@@ -15,13 +15,14 @@ import ru.chernakov.appmonitor.App
 import ru.chernakov.appmonitor.R
 import ru.chernakov.appmonitor.UIThread
 import ru.chernakov.appmonitor.data.cache.ApplicationCache
-import ru.chernakov.appmonitor.data.model.ApplicationItem
+import ru.chernakov.appmonitor.data.dto.ApplicationDto
 import ru.chernakov.appmonitor.data.repository.ApplicationRepository
 import ru.chernakov.appmonitor.domain.executor.ThreadExecutor
 import ru.chernakov.appmonitor.domain.interactor.LoadApplications
 import ru.chernakov.appmonitor.presentation.ui.base.BaseFragment
 import ru.chernakov.appmonitor.presentation.ui.list.adapter.ListAdapter
 import ru.chernakov.appmonitor.presentation.utils.ItemClickSupport
+import ru.chernakov.appmonitor.presentation.utils.PackageUtils
 import ru.chernakov.appmonitor.presentation.utils.ResourcesUtils
 import javax.inject.Inject
 
@@ -62,7 +63,7 @@ class ListFragment : BaseFragment(), ListView {
         swipeRefresh.setOnRefreshListener { presenter.loadApps() }
     }
 
-    override fun initAdapter(applications: ArrayList<ApplicationItem>) {
+    override fun initAdapter(applications: ArrayList<ApplicationDto>) {
         swipeRefresh.isRefreshing = false
 
         applications.sortWith(Comparator { p1, p2 ->
@@ -77,7 +78,10 @@ class ListFragment : BaseFragment(), ListView {
         with(ItemClickSupport.addTo(applicationsList)) {
             setOnItemClickListener { _, position, _ ->
                 adapter?.getItem(position)?.let {
-                    presenter.goToInfo(it)
+                    val applicationItem = PackageUtils.getApplicationItem(it.apk)
+                    if (applicationItem != null){
+                        presenter.goToInfo(applicationItem)
+                    }
                 }
             }
         }

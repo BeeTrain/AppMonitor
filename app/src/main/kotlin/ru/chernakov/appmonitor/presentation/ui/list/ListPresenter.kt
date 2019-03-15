@@ -1,9 +1,10 @@
 package ru.chernakov.appmonitor.presentation.ui.list
 
 import com.arellomobile.mvp.InjectViewState
+import ru.chernakov.appmonitor.data.dto.ApplicationDto
 import ru.chernakov.appmonitor.data.model.ApplicationItem
-import ru.chernakov.appmonitor.domain.interactor.base.observer.BaseObserver
 import ru.chernakov.appmonitor.domain.interactor.LoadApplications
+import ru.chernakov.appmonitor.domain.interactor.base.observer.BaseObserver
 import ru.chernakov.appmonitor.presentation.navigation.Screen
 import ru.chernakov.appmonitor.presentation.ui.base.BasePresenter
 import ru.terrakok.cicerone.Router
@@ -11,7 +12,7 @@ import ru.terrakok.cicerone.Router
 @InjectViewState
 class ListPresenter(router: Router, val loadApplicationsUseCase: LoadApplications) : BasePresenter<ListView>(router) {
 
-    val appList = ArrayList<ApplicationItem>()
+    val appList = ArrayList<ApplicationDto>()
 
     fun goToInfo(applicationItem: ApplicationItem) {
         router.navigateTo(Screen.ApplicationInfo(applicationItem))
@@ -26,13 +27,13 @@ class ListPresenter(router: Router, val loadApplicationsUseCase: LoadApplication
         loadApplicationsUseCase.execute(ListObserver(), null)
     }
 
-    private inner class ListObserver : BaseObserver<List<ApplicationItem>>() {
+    private inner class ListObserver : BaseObserver<List<ApplicationDto>>() {
 
         override fun onComplete() {
             viewState.setLoading(false)
         }
 
-        override fun onNext(t: List<ApplicationItem>) {
+        override fun onNext(t: List<ApplicationDto>) {
             appList.clear()
             appList.addAll(t)
 
