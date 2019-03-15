@@ -60,7 +60,7 @@ class HistoryFragment : BaseFragment(), HistoryView {
 
     override fun initAdapter(history: ArrayList<EventItem>) {
         if (history.size > 0) {
-            historyList.visibility = View.VISIBLE
+            content.visibility = View.VISIBLE
             tvNoData.visibility = View.GONE
 
             history.sortWith(Comparator { p1, p2 ->
@@ -83,7 +83,7 @@ class HistoryFragment : BaseFragment(), HistoryView {
             adapter?.notifyDataSetChanged()
             setLoading(false)
         } else {
-            historyList.visibility = View.GONE
+            content.visibility = View.GONE
             tvNoData.visibility = View.VISIBLE
         }
     }
