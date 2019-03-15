@@ -4,8 +4,12 @@ import io.reactivex.Observable
 import ru.chernakov.appmonitor.App
 import ru.chernakov.appmonitor.data.model.ApplicationItem
 import ru.chernakov.appmonitor.presentation.utils.DateUtils
+import javax.inject.Inject
+import javax.inject.Singleton
 
-class ApplicationCache {
+@Singleton
+class ApplicationCache @Inject
+internal constructor() {
     private val EXPIRATION_TIME = (1000 * 60 * 2).toLong()
 
     val apps = HashSet<String>()
@@ -16,7 +20,7 @@ class ApplicationCache {
             val cacheItems: ArrayList<ApplicationItem> = ArrayList()
 
             for (String in apps) {
-                if (String != null && !String.isEmpty()) {
+                if (!String.isEmpty()) {
                     cacheItems.add(ApplicationItem(String))
                 }
             }

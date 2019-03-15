@@ -5,9 +5,12 @@ import ru.chernakov.appmonitor.App
 import ru.chernakov.appmonitor.data.cache.ApplicationCache
 import ru.chernakov.appmonitor.data.model.ApplicationItem
 import ru.chernakov.appmonitor.presentation.utils.PackageUtils
+import javax.inject.Inject
+import javax.inject.Singleton
 
-
-class ApplicationRepository(val cache: ApplicationCache) {
+@Singleton
+class ApplicationRepository @Inject
+internal constructor(val cache: ApplicationCache) {
 
     fun get(): Observable<List<ApplicationItem>> {
         return if (!cache.isExpired()) {

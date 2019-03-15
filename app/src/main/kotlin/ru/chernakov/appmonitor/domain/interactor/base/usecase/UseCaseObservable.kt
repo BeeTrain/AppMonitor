@@ -1,4 +1,4 @@
-package ru.chernakov.appmonitor.domain.interactor
+package ru.chernakov.appmonitor.domain.interactor.base.usecase
 
 import io.reactivex.Observable
 import io.reactivex.disposables.CompositeDisposable
@@ -22,7 +22,7 @@ abstract class UseCaseObservable<T, Params>(
 
         val observable = this.buildUseCaseObservable(params)
             .subscribeOn(Schedulers.from(threadExecutor))
-            .observeOn(postExecutionThread.scheduler);
+            .observeOn(postExecutionThread.scheduler)
         addDisposable(observable.subscribeWith(observer))
     }
 

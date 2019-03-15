@@ -1,4 +1,4 @@
-package ru.chernakov.appmonitor.domain.interactor
+package ru.chernakov.appmonitor.domain.interactor.base.observer
 
 import io.reactivex.observers.DisposableObserver
 

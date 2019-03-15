@@ -2,7 +2,7 @@ package ru.chernakov.appmonitor.presentation.ui.list
 
 import com.arellomobile.mvp.InjectViewState
 import ru.chernakov.appmonitor.data.model.ApplicationItem
-import ru.chernakov.appmonitor.domain.interactor.BaseObserver
+import ru.chernakov.appmonitor.domain.interactor.base.observer.BaseObserver
 import ru.chernakov.appmonitor.domain.interactor.LoadApplications
 import ru.chernakov.appmonitor.presentation.navigation.Screen
 import ru.chernakov.appmonitor.presentation.ui.base.BasePresenter

@@ -5,6 +5,7 @@ import ru.chernakov.appmonitor.data.model.ApplicationItem
 import ru.chernakov.appmonitor.data.repository.ApplicationRepository
 import ru.chernakov.appmonitor.domain.executor.PostExecutionThread
 import ru.chernakov.appmonitor.domain.executor.ThreadExecutor
+import ru.chernakov.appmonitor.domain.interactor.base.usecase.UseCaseObservable
 
 
 class LoadApplications(

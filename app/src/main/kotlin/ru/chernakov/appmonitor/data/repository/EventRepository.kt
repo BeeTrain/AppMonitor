@@ -3,9 +3,12 @@ package ru.chernakov.appmonitor.data.repository
 import io.reactivex.Observable
 import ru.chernakov.appmonitor.App
 import ru.chernakov.appmonitor.data.model.EventItem
+import javax.inject.Inject
+import javax.inject.Singleton
 
-
-class HistoryRepository {
+@Singleton
+class EventRepository @Inject
+internal constructor(){
 
     fun get(): Observable<List<EventItem>> {
         return Observable.create {

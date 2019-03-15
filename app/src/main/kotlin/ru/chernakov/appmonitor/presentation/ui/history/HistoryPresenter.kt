@@ -4,7 +4,7 @@ import com.arellomobile.mvp.InjectViewState
 import ru.chernakov.appmonitor.R
 import ru.chernakov.appmonitor.data.model.ApplicationItem
 import ru.chernakov.appmonitor.data.model.EventItem
-import ru.chernakov.appmonitor.domain.interactor.BaseObserver
+import ru.chernakov.appmonitor.domain.interactor.base.observer.BaseObserver
 import ru.chernakov.appmonitor.domain.interactor.LoadHistory
 import ru.chernakov.appmonitor.presentation.navigation.Screen
 import ru.chernakov.appmonitor.presentation.ui.base.BasePresenter

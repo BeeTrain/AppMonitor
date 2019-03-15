@@ -15,7 +15,7 @@ import ru.chernakov.appmonitor.App
 import ru.chernakov.appmonitor.R
 import ru.chernakov.appmonitor.UIThread
 import ru.chernakov.appmonitor.data.model.EventItem
-import ru.chernakov.appmonitor.data.repository.HistoryRepository
+import ru.chernakov.appmonitor.data.repository.EventRepository
 import ru.chernakov.appmonitor.domain.executor.ThreadExecutor
 import ru.chernakov.appmonitor.domain.interactor.LoadHistory
 import ru.chernakov.appmonitor.presentation.ui.base.BaseFragment
@@ -32,7 +32,7 @@ class HistoryFragment : BaseFragment(), HistoryView {
     lateinit var presenter: HistoryPresenter
 
     @Inject
-    lateinit var historyRepository: HistoryRepository
+    lateinit var eventRepository: EventRepository
 
     @Inject
     lateinit var uiThread: UIThread
@@ -73,7 +73,7 @@ class HistoryFragment : BaseFragment(), HistoryView {
             historyList.adapter = adapter
 
             with(ItemClickSupport.addTo(historyList)) {
-                setOnItemClickListener { recyclerView, position, v ->
+                setOnItemClickListener { _, position, _ ->
                     adapter?.getItem(position)?.let {
                         presenter.onEventClick(it)
                     }
@@ -92,7 +92,7 @@ class HistoryFragment : BaseFragment(), HistoryView {
     fun providePresenter(): HistoryPresenter {
         return HistoryPresenter(
             router,
-            LoadHistory(historyRepository, threadExecutor, uiThread)
+            LoadHistory(eventRepository, threadExecutor, uiThread)
         )
     }
 
