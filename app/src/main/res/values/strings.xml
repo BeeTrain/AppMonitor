@@ -12,7 +12,7 @@
 	<string name="option_title_save_apk">Сохранить APK</string>
 	<string name="send_to" formatted="false">Поделиться %s через</string>
 	<string name="title_app">App</string>
-	<string name="title_history">История</string>
+	<string name="title_history">History</string>
 	<string name="title_info">Info</string>
 	<string name="title_installed">Установлено</string>
 	<string name="title_package">Package</string>
