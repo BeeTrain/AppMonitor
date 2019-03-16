@@ -18,4 +18,6 @@
 	<color name="textColorPrimary">@color/white</color>
 	<color name="textColorSecondary">@color/black</color>
 
+	<color name="listBackgroundColor">#FFFBFA</color>
+
 </resources>

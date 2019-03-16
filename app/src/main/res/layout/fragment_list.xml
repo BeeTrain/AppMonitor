@@ -1,45 +1,59 @@
-<LinearLayout
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
 	xmlns:android="http://schemas.android.com/apk/res/android"
 	xmlns:app="http://schemas.android.com/apk/res-auto"
 	android:layout_width="match_parent"
-	android:orientation="vertical"
 	android:layout_height="match_parent">
 
-	<include layout="@layout/toolbar_default"/>
+	<LinearLayout
+		style="@style/Widget.AppMonitor.Backdrop"
+		android:layout_width="match_parent"
+		android:layout_height="match_parent"
+		android:gravity="center_horizontal"
+		android:orientation="vertical"
+		android:paddingTop="100dp"
+		android:paddingBottom="30dp">
 
-	<android.support.v4.widget.SwipeRefreshLayout
-		android:id="@+id/swipeRefresh"
+		<include layout="@layout/menu_backdrop"/>
+
+	</LinearLayout>
+
+	<android.support.design.widget.AppBarLayout
+		android:id="@+id/app_bar"
 		android:layout_width="match_parent"
 		android:layout_height="wrap_content">
 
+		<include layout="@layout/toolbar_default"/>
+
+	</android.support.design.widget.AppBarLayout>
+
+	<android.support.v4.widget.NestedScrollView
+		android:id="@+id/scrollViewGrid"
+		android:layout_width="match_parent"
+		android:layout_height="match_parent"
+		android:layout_below="@+id/app_bar"
+		android:background="@color/listBackgroundColor"
+		android:elevation="@dimen/default_elevation">
+
 		<LinearLayout
-			android:orientation="vertical"
 			android:layout_width="match_parent"
-			android:layout_height="wrap_content">
+			android:layout_height="match_parent"
+			android:orientation="vertical">
 
-			<android.support.v4.widget.NestedScrollView
-				android:id="@+id/scrollViewGrid"
+			<android.support.v7.widget.RecyclerView
+				android:id="@+id/applicationsList"
 				android:layout_width="match_parent"
-				android:layout_height="match_parent"
-				android:background="@color/white_transparent_100"
-				android:paddingTop="@dimen/default_elevation"
-				app:layout_behavior="@string/appbar_scrolling_view_behavior">
-
-				<android.support.v7.widget.RecyclerView
-					android:id="@+id/applicationsList"
-					android:layout_width="match_parent"
-					android:layout_height="match_parent"/>
-
-			</android.support.v4.widget.NestedScrollView>
+				android:layout_height="match_parent"/>
 
 			<ProgressBar
 				android:id="@+id/progressLoading"
-				android:layout_width="wrap_content"
+				android:layout_width="match_parent"
 				android:layout_height="match_parent"
+				app:layout_behavior="@string/appbar_scrolling_view_behavior"
 				android:layout_gravity="center"/>
 
 		</LinearLayout>
 
-	</android.support.v4.widget.SwipeRefreshLayout>
+	</android.support.v4.widget.NestedScrollView>
 
-</LinearLayout>
+</RelativeLayout>

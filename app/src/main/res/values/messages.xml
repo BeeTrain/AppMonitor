@@ -4,6 +4,7 @@
 	<string name="msg_app_updated">Приложение обновлено</string>
 	<string name="msg_app_uninstalled">Приложение удалено</string>
 	<string name="msg_app_wasnt_found">Приложение не найдено</string>
+	<string name="msg_list_refreshing">Обновление…</string>
 	<string name="msg_package_installed" formatted="false">%s был установлен</string>
 	<string name="msg_package_updated" formatted="false">%s был обновлен</string>
 	<string name="msg_service_running">Сервис фоновой работы</string>

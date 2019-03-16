@@ -12,10 +12,13 @@
 	<string name="option_title_save_apk">Сохранить APK</string>
 	<string name="send_to" formatted="false">Поделиться %s через</string>
 	<string name="title_app">App</string>
+	<string name="title_filter">Фильтр</string>
 	<string name="title_history">History</string>
 	<string name="title_info">Info</string>
 	<string name="title_installed">Установлено</string>
 	<string name="title_package">Package</string>
+	<string name="title_refresh">Обновить</string>
+	<string name="title_search">Поиск</string>
 	<string name="title_sha">SHA</string>
 	<string name="title_stop">Остановить</string>
 	<string name="title_updated">Обновлено</string>
@@ -25,4 +28,5 @@
 	<string name="value_updated" formatted="false">Обновлено: %s</string>
 	<string name="update_date" formatted="false">Дата обновления: %s</string>
 	<string name="uninstall_date" formatted="false">Дата удаления: %s</string>
+
 </resources>

@@ -20,4 +20,8 @@
 		<item name="android:textColor">?android:attr/textColorPrimary</item>
 	</style>
 
+	<style name="Widget.AppMonitor.Backdrop" parent="">
+		<item name="android:background">?attr/colorPrimary</item>
+	</style>
+
 </resources>

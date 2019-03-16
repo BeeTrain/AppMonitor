@@ -16,4 +16,6 @@
 
 	<dimen name="notification_height">72dp</dimen>
 
+	<dimen name="list_reveal_height">550dp</dimen>
+
 </resources>
