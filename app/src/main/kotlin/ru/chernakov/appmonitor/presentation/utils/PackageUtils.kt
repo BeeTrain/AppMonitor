@@ -121,7 +121,7 @@ class PackageUtils {
 
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.P) {
                 val signingInfo =
-                    packageManager.getPackageArchiveInfo(sourceFileDir, PackageManager.GET_SIGNATURES).signingInfo
+                    packageManager.getPackageArchiveInfo(sourceFileDir, PackageManager.GET_SIGNING_CERTIFICATES).signingInfo
 
                 sha = if (signingInfo.hasMultipleSigners()) {
                     signingInfo.apkContentsSigners.map {

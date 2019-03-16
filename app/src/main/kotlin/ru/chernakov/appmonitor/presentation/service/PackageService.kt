@@ -93,54 +93,51 @@ class PackageService : IntentService(TAG) {
     }
 
     private fun doWork() {
-        if (!App.appPreferences.isColdStart) {
-            val dataPackages = applicationRepository.getFromPrefs()
-            val checkPackages = PackageUtils.getPackages()
+        if (App.appPreferences.isColdStart) {
+            return
+        }
 
-            val installedApps = PackageUtils.getInstalledPackages(dataPackages, checkPackages)
-            if (installedApps.size > 0) {
-                for (ApplicationItem in installedApps) {
-                    val eventItem = EventItem(
-                        ApplicationItem.name,
-                        ApplicationItem.apk,
-                        ApplicationItem.version,
-                        EventItem.EVENT_INSTALL,
-                        ApplicationItem.updateDate,
-                        PackageUtils.getPackageIcon(ApplicationItem.name)
-                    )
-                    eventRepository.addEvent(eventItem)
+        val dataPackages = applicationRepository.getFromPrefs()
+        val checkPackages = PackageUtils.getPackages()
 
-                    val text = getString(R.string.msg_package_installed, ApplicationItem.name)
-                    showMessageNotification(text, ApplicationItem.toString())
-                }
+        val installedApps = PackageUtils.getInstalledPackages(dataPackages, checkPackages)
+        if (installedApps.size > 0) {
+            for (ApplicationItem in installedApps) {
+                val eventItem = EventItem(
+                    ApplicationItem.name,
+                    ApplicationItem.apk,
+                    ApplicationItem.version,
+                    EventItem.EVENT_INSTALL,
+                    ApplicationItem.updateDate,
+                    PackageUtils.getPackageIcon(ApplicationItem.name)
+                )
+                eventRepository.addEvent(eventItem)
+
+                val text = getString(R.string.msg_package_installed, ApplicationItem.name)
+                showMessageNotification(text, ApplicationItem.toString())
             }
+        }
 
-            val updatedApps = PackageUtils.getUpdatedPackages(dataPackages, checkPackages)
-            if (updatedApps.size > 0) {
-                for (ApplicationItem in updatedApps) {
-                    val eventItem = EventItem(
-                        ApplicationItem.name,
-                        ApplicationItem.apk,
-                        ApplicationItem.version,
-                        EventItem.EVENT_UPDATE,
-                        ApplicationItem.updateDate,
-                        PackageUtils.getPackageIcon(ApplicationItem.name)
-                    )
-                    eventRepository.addEvent(eventItem)
+        val updatedApps = PackageUtils.getUpdatedPackages(dataPackages, checkPackages)
+        if (updatedApps.size > 0) {
+            for (ApplicationItem in updatedApps) {
+                val eventItem = EventItem(
+                    ApplicationItem.name,
+                    ApplicationItem.apk,
+                    ApplicationItem.version,
+                    EventItem.EVENT_UPDATE,
+                    ApplicationItem.updateDate,
+                    PackageUtils.getPackageIcon(ApplicationItem.name)
+                )
+                eventRepository.addEvent(eventItem)
 
-                    val text = getString(R.string.msg_package_updated, ApplicationItem.name)
-                    showMessageNotification(text, ApplicationItem.toString())
-                }
+                val text = getString(R.string.msg_package_updated, ApplicationItem.name)
+                showMessageNotification(text, ApplicationItem.toString())
             }
+        }
 
-            if (installedApps.size > 0 || updatedApps.size > 0) {
-                applicationRepository.update(checkPackages)
-            }
-        } else {
-            if (applicationRepository.cache.apps.size > 0
-                && applicationRepository.cache.isExpired()
-            )
-                applicationRepository.update(PackageUtils.getPackages())
+        if (installedApps.size > 0 || updatedApps.size > 0) {
+            applicationRepository.update(checkPackages)
         }
     }
 
