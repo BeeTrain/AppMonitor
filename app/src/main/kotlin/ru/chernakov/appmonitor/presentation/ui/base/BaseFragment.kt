@@ -24,6 +24,7 @@ abstract class BaseFragment : MvpAppCompatFragment() {
         super.onCreateView(inflater, container, savedInstanceState)
         val v = inflater.inflate(layoutRes, container, false)
         unBinder = ButterKnife.bind(this, v)
+        setUpToolbar(v)
 
         return v
     }
@@ -39,4 +40,6 @@ abstract class BaseFragment : MvpAppCompatFragment() {
     }
 
     abstract fun loadData()
+
+    abstract fun setUpToolbar(view: View)
 }

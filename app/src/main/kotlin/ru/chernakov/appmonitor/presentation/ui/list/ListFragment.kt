@@ -5,7 +5,10 @@ import android.os.Bundle
 import android.support.v7.app.AppCompatActivity
 import android.support.v7.widget.LinearLayoutManager
 import android.support.v7.widget.Toolbar
-import android.view.*
+import android.view.Menu
+import android.view.MenuInflater
+import android.view.MenuItem
+import android.view.View
 import android.view.animation.AccelerateDecelerateInterpolator
 import android.widget.Toast
 import butterknife.OnClick
@@ -49,13 +52,6 @@ class ListFragment : BaseFragment(), ListView {
         App.instance.getAppComponent().inject(this)
         super.onCreate(savedInstanceState)
         setHasOptionsMenu(true)
-    }
-
-    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
-        val v: View? = super.onCreateView(inflater, container, savedInstanceState)
-        setUpToolbar(v!!)
-
-        return v
     }
 
     override fun onCreateOptionsMenu(menu: Menu?, menuInflater: MenuInflater?) {
@@ -138,7 +134,7 @@ class ListFragment : BaseFragment(), ListView {
         presenter.goToAbout()
     }
 
-    private fun setUpToolbar(view: View) {
+    override fun setUpToolbar(view: View) {
         val toolbar: Toolbar = view.findViewById(R.id.toolbar)
         val activity = activity as AppCompatActivity
         activity.setSupportActionBar(toolbar)
