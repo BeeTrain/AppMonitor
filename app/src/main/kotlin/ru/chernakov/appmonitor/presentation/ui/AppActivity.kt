@@ -33,7 +33,6 @@ class AppActivity : BaseActivity() {
             }
         }
 
-
         actionBar?.setDisplayHomeAsUpEnabled(true)
 
         AppUtils.checkPermissions(this)

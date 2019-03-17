@@ -142,6 +142,7 @@ class ListFragment : BaseFragment(), ListView {
         val toolbar: Toolbar = view.findViewById(R.id.toolbar)
         val activity = activity as AppCompatActivity
         activity.setSupportActionBar(toolbar)
+        toolbar.title = getString(R.string.app_name)
         toolbar.navigationIcon = ResourcesUtils.getDrawable(R.drawable.ic_menu_open)
         toolbar.setNavigationOnClickListener(
             NavigationIconClickListener(

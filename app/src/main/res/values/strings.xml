@@ -30,5 +30,6 @@
 	<string name="value_updated" formatted="false">Обновлено: %s</string>
 	<string name="update_date" formatted="false">Дата обновления: %s</string>
 	<string name="uninstall_date" formatted="false">Дата удаления: %s</string>
+	<string name="title_about">About</string>
 
 </resources>

@@ -113,7 +113,32 @@
 
 		</LinearLayout>
 
-		<include layout="@layout/toolbar_custom"/>
+		<android.support.v7.widget.Toolbar
+			android:id="@+id/toolbar"
+			android:layout_width="match_parent"
+			android:layout_height="?attr/actionBarSize"
+			android:background="?attr/colorPrimary"
+			app:elevation="@dimen/default_elevation"
+			app:layout_collapseMode="pin"
+			app:layout_scrollFlags="scroll|exitUntilCollapsed"
+			style="@style/Widget.AppMonitor.Toolbar">
+
+			<FrameLayout
+				xmlns:android="http://schemas.android.com/apk/res/android"
+				android:layout_width="match_parent"
+				android:layout_height="wrap_content"
+				android:orientation="vertical">
+
+				<TextView
+					android:id="@+id/toolbar_title"
+					style="@style/TextAppearance.AppMonitor.Toolbar"
+					android:layout_width="wrap_content"
+					android:layout_height="wrap_content"
+					android:text="@string/title_info"/>
+
+			</FrameLayout>
+
+		</android.support.v7.widget.Toolbar>
 
 	</android.support.design.widget.CollapsingToolbarLayout>
 

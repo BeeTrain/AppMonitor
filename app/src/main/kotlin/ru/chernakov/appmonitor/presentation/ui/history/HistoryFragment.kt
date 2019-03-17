@@ -98,11 +98,11 @@ class HistoryFragment : BaseFragment(), HistoryView {
 
     private fun setUpToolbar(view: View) {
         val toolbar: Toolbar = view.findViewById(ru.chernakov.appmonitor.R.id.toolbar)
-        toolbar.navigationIcon = activity?.getDrawable(ru.chernakov.appmonitor.R.drawable.ic_close)
-        val activity = activity as AppCompatActivity?
-        activity?.setSupportActionBar(toolbar)
-        activity?.title = getString(R.string.title_history)
+        val activity = activity as AppCompatActivity
+        activity.setSupportActionBar(toolbar)
 
+        toolbar.title = getString(R.string.title_history)
+        toolbar.navigationIcon = activity.getDrawable(ru.chernakov.appmonitor.R.drawable.ic_close)
         toolbar.setNavigationOnClickListener {
             presenter.backToList()
         }
