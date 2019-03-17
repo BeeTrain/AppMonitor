@@ -3,7 +3,7 @@ apply plugin: 'kotlin-android'
 apply plugin: 'kotlin-android-extensions'
 apply plugin: 'kotlin-kapt'
 
-def appVersion = "1.0.1"
+def appVersion = "1.0.2"
 def appCode = 1
 
 android {
