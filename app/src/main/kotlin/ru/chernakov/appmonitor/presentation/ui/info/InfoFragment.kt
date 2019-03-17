@@ -59,8 +59,10 @@ class InfoFragment : BaseFragment(), InfoView {
         appUpdateDate.text =
             getString(R.string.value_updated, DateUtils.formatDate(applicationItem.updateDate?.let { Date(it) }))
 
-        val sizeStr =
-            getString(R.string.size_mb_val, FormatUtils.round(FormatUtils.convertBytesToMB(applicationItem.appSize!!)))
+        val sizeStr = getString(
+            R.string.size_mb_val,
+            FormatUtils.round(FormatUtils.convertBytesToMB(applicationItem.appSize!!))
+        )
         appDataSize.text = getString(R.string.data_size, sizeStr)
     }
 

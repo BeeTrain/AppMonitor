@@ -27,39 +27,49 @@ class InfoPresenter(router: Router, val applicationItem: ApplicationItem) : Base
     }
 
     fun initOptionsList(): ArrayList<OptionItem> {
-        if (optionsList.isEmpty()) {
+        optionsList.clear()
 
-            optionsList.add(
+        optionsList.add(
+            OptionItem(
+                OptionItem.OPEN_APP_ID,
+                ResourcesUtils.getString(R.string.option_title_open_app),
+                ResourcesUtils.getDrawable(ru.chernakov.appmonitor.R.drawable.ic_open)
+            )
+        )
+
+        when (AppUtils.getOutputFilename(applicationItem).exists()) {
+            true -> optionsList.add(
                 OptionItem(
-                    0,
-                    ResourcesUtils.getString(R.string.option_title_open_app),
-                    ResourcesUtils.getDrawable(ru.chernakov.appmonitor.R.drawable.ic_open)
+                    OptionItem.APK_SAVED_ID,
+                    ResourcesUtils.getString(R.string.option_title_apk_saved),
+                    ResourcesUtils.getDrawable(R.drawable.ic_apk_saved)
                 )
             )
-            optionsList.add(
+            false -> optionsList.add(
                 OptionItem(
-                    1,
+                    OptionItem.SAVE_APK_ID,
                     ResourcesUtils.getString(R.string.option_title_save_apk),
-                    ResourcesUtils.getDrawable(ru.chernakov.appmonitor.R.drawable.ic_file_download)
-                )
-            )
-            if (applicationItem.fromPlayMarket!!) {
-                optionsList.add(
-                    OptionItem(
-                        2,
-                        ResourcesUtils.getString(R.string.option_title_open_play_market),
-                        ResourcesUtils.getDrawable(ru.chernakov.appmonitor.R.drawable.ic_play_circle)
-                    )
-                )
-            }
-            optionsList.add(
-                OptionItem(
-                    3,
-                    ResourcesUtils.getString(R.string.option_title_delete_app),
-                    ResourcesUtils.getDrawable(ru.chernakov.appmonitor.R.drawable.ic_uninstall)
+                    ResourcesUtils.getDrawable(R.drawable.ic_save_apk)
                 )
             )
         }
+        if (applicationItem.fromPlayMarket!!) {
+            optionsList.add(
+                OptionItem(
+                    OptionItem.PLAY_MARKET_ID,
+                    ResourcesUtils.getString(R.string.option_title_open_play_market),
+                    ResourcesUtils.getDrawable(R.drawable.ic_shop)
+                )
+            )
+        }
+        optionsList.add(
+            OptionItem(
+                OptionItem.DELETE_APP_ID,
+                ResourcesUtils.getString(R.string.option_title_delete_app),
+                ResourcesUtils.getDrawable(R.drawable.ic_uninstall)
+            )
+        )
+
         return optionsList
     }
 
@@ -67,10 +77,10 @@ class InfoPresenter(router: Router, val applicationItem: ApplicationItem) : Base
         with(ItemClickSupport.addTo(recyclerView)) {
             setOnItemClickListener { _, position, _ ->
                 when (adapter.getItem(position).id) {
-                    0 -> startApplication(activity)
-                    1 -> saveApk(activity)
-                    2 -> openPlayMarket(activity)
-                    3 -> uninstallApplication(activity)
+                    OptionItem.OPEN_APP_ID -> startApplication(activity)
+                    OptionItem.SAVE_APK_ID -> saveApk(activity)
+                    OptionItem.PLAY_MARKET_ID -> openPlayMarket(activity)
+                    OptionItem.DELETE_APP_ID -> uninstallApplication(activity)
                 }
             }
         }
@@ -88,7 +98,10 @@ class InfoPresenter(router: Router, val applicationItem: ApplicationItem) : Base
     private fun saveApk(activity: FragmentActivity) {
         if (AppUtils.checkPermissions(activity)!!) {
             when (AppUtils.copyFile(applicationItem)!!) {
-                true -> viewState.showMessage(ResourcesUtils.getString(R.string.msg_apk_saved))
+                true -> {
+                    viewState.showMessage(ResourcesUtils.getString(R.string.msg_apk_saved))
+                    viewState.initAdapter(initOptionsList())
+                }
                 false -> viewState.showMessage(ResourcesUtils.getString(R.string.error_cannot_save_apk))
             }
         }

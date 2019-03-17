@@ -13,7 +13,7 @@
 		style="@style/Widget.AppMonitor.Button.TextButton"
 		android:layout_width="wrap_content"
 		android:layout_height="wrap_content"
-		android:text="Service"/>
+		android:text="@string/title_scanning"/>
 
 	<View
 		android:layout_width="56dp"
@@ -26,6 +26,6 @@
 		style="@style/Widget.AppMonitor.Button.TextButton"
 		android:layout_width="wrap_content"
 		android:layout_height="wrap_content"
-		android:text="About"/>
+		android:text="@string/title_about"/>
 
 </merge>
