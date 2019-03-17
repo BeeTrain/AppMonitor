@@ -3,7 +3,7 @@
 	<string name="app_version" formatted="false">Version: %s</string>
 	<string name="content_description_default">content_description_default</string>
 	<string name="data_size" formatted="false">Занимаемое место: %s</string>
-	<string name="developed_by">developed by</string>
+	<string name="developed_by">developed by Chernakov M.E.</string>
 	<string name="developer_url">www.github.com/beetrain</string>
 	<string name="error_cannot_run_app">Не удается запустить приложение</string>
 	<string name="error_cannot_save_apk">Не удалось сохранить APK файл</string>
