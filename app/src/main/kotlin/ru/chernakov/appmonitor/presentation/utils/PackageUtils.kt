@@ -7,7 +7,9 @@ import android.os.Build
 import ru.chernakov.appmonitor.App
 import ru.chernakov.appmonitor.data.dto.ApplicationDto
 import ru.chernakov.appmonitor.data.model.ApplicationItem
+import java.io.File
 import java.security.MessageDigest
+import java.util.*
 
 
 class PackageUtils {
@@ -121,7 +123,8 @@ class PackageUtils {
 
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.P) {
                 val signingInfo =
-                    packageManager.getPackageArchiveInfo(sourceFileDir, PackageManager.GET_SIGNING_CERTIFICATES).signingInfo
+                    packageManager.getPackageArchiveInfo(sourceFileDir, PackageManager.GET_SIGNING_CERTIFICATES)
+                        .signingInfo
 
                 sha = if (signingInfo.hasMultipleSigners()) {
                     signingInfo.apkContentsSigners.map {
@@ -135,7 +138,8 @@ class PackageUtils {
                     }
                 }
             } else {
-                val signingInfo = packageManager.getPackageArchiveInfo(sourceFileDir, PackageManager.GET_SIGNATURES).signatures
+                val signingInfo =
+                    packageManager.getPackageArchiveInfo(sourceFileDir, PackageManager.GET_SIGNATURES).signatures
 
                 sha = signingInfo.map {
                     md.update(it.toByteArray())
@@ -189,11 +193,46 @@ class PackageUtils {
                     AppUtils.isSystemPackage(packageInfo),
                     PackageUtils.getSHA(packageInfo.applicationInfo.sourceDir, packageManager),
                     packageInfo.firstInstallTime,
-                    packageInfo.lastUpdateTime
+                    packageInfo.lastUpdateTime,
+                    verifyInstaller(packageName!!),
+                    getFileSize(packageInfo.applicationInfo.sourceDir)
                 )
             } catch (e: PackageManager.NameNotFoundException) {
+                e.printStackTrace()
                 return null
             }
+        }
+
+        fun getFileSize(packageDir: String?): Long {
+            val file = File(packageDir)
+            if (!file.exists())
+                return 0
+            if (!file.isDirectory)
+                return file.length()
+            val dirs = LinkedList<File>()
+            dirs.add(file)
+            var result: Long = 0
+            while (!dirs.isEmpty()) {
+                val dir = dirs.removeAt(0)
+                if (!dir.exists())
+                    continue
+                val listFiles = dir.listFiles()
+                if (listFiles == null || listFiles.size == 0)
+                    continue
+                for (child in listFiles) {
+                    result += child.length()
+                    if (child.isDirectory)
+                        dirs.add(child)
+                }
+            }
+            return result
+        }
+
+        fun verifyInstaller(packageName: String): Boolean {
+            val packageManager = App.instance.packageManager
+            val installer = packageManager.getInstallerPackageName(packageName)
+
+            return installer != null && AppUtils.VALID_INSTALLERS.contains(installer)
         }
 
         private fun bytesToHex(bytes: ByteArray): String {

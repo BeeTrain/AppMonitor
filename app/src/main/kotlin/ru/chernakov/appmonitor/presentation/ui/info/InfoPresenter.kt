@@ -43,13 +43,15 @@ class InfoPresenter(router: Router, val applicationItem: ApplicationItem) : Base
                     ResourcesUtils.getDrawable(ru.chernakov.appmonitor.R.drawable.ic_file_download)
                 )
             )
-            optionsList.add(
-                OptionItem(
-                    2,
-                    ResourcesUtils.getString(R.string.option_title_open_play_market),
-                    ResourcesUtils.getDrawable(ru.chernakov.appmonitor.R.drawable.ic_play_circle)
+            if (applicationItem.fromPlayMarket!!) {
+                optionsList.add(
+                    OptionItem(
+                        2,
+                        ResourcesUtils.getString(R.string.option_title_open_play_market),
+                        ResourcesUtils.getDrawable(ru.chernakov.appmonitor.R.drawable.ic_play_circle)
+                    )
                 )
-            )
+            }
             optionsList.add(
                 OptionItem(
                     3,
@@ -66,7 +68,7 @@ class InfoPresenter(router: Router, val applicationItem: ApplicationItem) : Base
             setOnItemClickListener { _, position, _ ->
                 when (adapter.getItem(position).id) {
                     0 -> startApplication(activity)
-                    1 -> saveApk()
+                    1 -> saveApk(activity)
                     2 -> openPlayMarket(activity)
                     3 -> uninstallApplication(activity)
                 }
@@ -83,11 +85,12 @@ class InfoPresenter(router: Router, val applicationItem: ApplicationItem) : Base
         }
     }
 
-    private fun saveApk() {
-        if (AppUtils.copyFile(applicationItem)!!) {
-            viewState.showMessage(ResourcesUtils.getString(R.string.msg_apk_saved))
-        } else {
-            viewState.showMessage(ResourcesUtils.getString(R.string.error_cannot_save_apk))
+    private fun saveApk(activity: FragmentActivity) {
+        if (AppUtils.checkPermissions(activity)!!) {
+            when (AppUtils.copyFile(applicationItem)!!) {
+                true -> viewState.showMessage(ResourcesUtils.getString(R.string.msg_apk_saved))
+                false -> viewState.showMessage(ResourcesUtils.getString(R.string.error_cannot_save_apk))
+            }
         }
     }
 

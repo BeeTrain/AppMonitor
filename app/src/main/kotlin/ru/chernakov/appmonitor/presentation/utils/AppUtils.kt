@@ -17,6 +17,7 @@ import ru.chernakov.appmonitor.App
 import ru.chernakov.appmonitor.data.model.ApplicationItem
 import java.io.File
 import java.io.IOException
+import java.util.*
 
 
 class AppUtils {
@@ -26,6 +27,8 @@ class AppUtils {
         const val INTENT_START_APP_INFO_SCREEN = "start_app_info_screen"
 
         const val UNINSTALL_REQUEST_CODE = 1
+
+        val VALID_INSTALLERS = ArrayList(Arrays.asList("com.android.vending", "com.google.android.feedback"))
 
         fun getDefaultAppFolder(): File {
             return File(Environment.getExternalStorageDirectory().path + File.separator + App.instance.getString(ru.chernakov.appmonitor.R.string.app_name))

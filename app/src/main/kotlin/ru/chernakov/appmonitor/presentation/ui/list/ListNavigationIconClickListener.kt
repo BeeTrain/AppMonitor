@@ -12,7 +12,7 @@ import android.widget.ImageView
 import ru.chernakov.appmonitor.R
 
 
-class NavigationIconClickListener @JvmOverloads internal constructor(
+class ListNavigationIconClickListener @JvmOverloads internal constructor(
     private val context: Context, private val sheet: View, private val interpolator: Interpolator? = null,
     private val openIcon: Drawable? = null, private val closeIcon: Drawable? = null) : View.OnClickListener {
 

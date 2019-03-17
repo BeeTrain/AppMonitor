@@ -141,7 +141,7 @@ class ListFragment : BaseFragment(), ListView {
         toolbar.title = getString(R.string.app_name)
         toolbar.navigationIcon = ResourcesUtils.getDrawable(R.drawable.ic_menu_open)
         toolbar.setNavigationOnClickListener(
-            NavigationIconClickListener(
+            ListNavigationIconClickListener(
                 activity,
                 view.findViewById(R.id.scrollViewGrid),
                 AccelerateDecelerateInterpolator(),

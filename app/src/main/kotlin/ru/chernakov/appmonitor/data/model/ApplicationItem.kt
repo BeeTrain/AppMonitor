@@ -38,6 +38,12 @@ class ApplicationItem : Serializable {
     var updateDate: Long? = null
         private set
 
+    var fromPlayMarket: Boolean? = null
+        private set
+
+    var appSize: Long? = null
+        private set
+
     constructor(
         name: String,
         apk: String,
@@ -48,7 +54,9 @@ class ApplicationItem : Serializable {
         isSystem: Boolean?,
         sha: String?,
         installDate: Long,
-        updateDate: Long
+        updateDate: Long,
+        fromPlayMarket: Boolean,
+        appSize: Long
     ) {
         this.name = name
         this.apk = apk
@@ -60,11 +68,13 @@ class ApplicationItem : Serializable {
         this.sha = sha
         this.installDate = installDate
         this.updateDate = updateDate
+        this.fromPlayMarket = fromPlayMarket
+        this.appSize = appSize
     }
 
     constructor(string: String) {
         val split = string.split("##".toRegex()).dropLastWhile { it.isEmpty() }.toTypedArray()
-        if (split.size == 9) {
+        if (split.size == 11) {
             this.name = split[0]
             this.apk = split[1]
             this.version = split[2]
@@ -74,13 +84,15 @@ class ApplicationItem : Serializable {
             this.sha = split[6]
             this.installDate = split[7].toLong()
             this.updateDate = split[8].toLong()
+            this.fromPlayMarket = getBoolean(split[9])
+            this.appSize = split[10].toLong()
 
             this.icon = PackageUtils.getPackageIcon(this.apk)
         }
     }
 
     override fun toString(): String {
-        return "$name##$apk##$version##$source##$data##$isSystem##$sha##$installDate##$updateDate"
+        return "$name##$apk##$version##$source##$data##$isSystem##$sha##$installDate##$updateDate##$fromPlayMarket##$appSize"
     }
 
     override fun equals(other: Any?): Boolean {
@@ -99,6 +111,8 @@ class ApplicationItem : Serializable {
         if (sha != other.sha) return false
         if (installDate != other.installDate) return false
         if (updateDate != other.updateDate) return false
+        if (fromPlayMarket != other.fromPlayMarket) return false
+        if (appSize != other.appSize) return false
 
         return true
     }
@@ -114,6 +128,8 @@ class ApplicationItem : Serializable {
         result = 31 * result + (sha?.hashCode() ?: 0)
         result = 31 * result + (installDate?.hashCode() ?: 0)
         result = 31 * result + (updateDate?.hashCode() ?: 0)
+        result = 31 * result + (fromPlayMarket?.hashCode() ?: 0)
+        result = 31 * result + (appSize?.hashCode() ?: 0)
         return result
     }
 }

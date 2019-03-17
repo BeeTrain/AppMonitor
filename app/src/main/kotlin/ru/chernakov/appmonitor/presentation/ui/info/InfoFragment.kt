@@ -17,6 +17,7 @@ import ru.chernakov.appmonitor.data.model.OptionItem
 import ru.chernakov.appmonitor.presentation.ui.base.BaseFragment
 import ru.chernakov.appmonitor.presentation.ui.info.adapter.OptionsAdapter
 import ru.chernakov.appmonitor.presentation.utils.DateUtils
+import ru.chernakov.appmonitor.presentation.utils.FormatUtils
 import java.util.*
 
 class InfoFragment : BaseFragment(), InfoView {
@@ -57,6 +58,10 @@ class InfoFragment : BaseFragment(), InfoView {
             getString(R.string.value_installed, DateUtils.formatDate(applicationItem.installDate?.let { Date(it) }))
         appUpdateDate.text =
             getString(R.string.value_updated, DateUtils.formatDate(applicationItem.updateDate?.let { Date(it) }))
+
+        val sizeStr =
+            getString(R.string.size_mb_val, FormatUtils.round(FormatUtils.convertBytesToMB(applicationItem.appSize!!)))
+        appDataSize.text = getString(R.string.data_size, sizeStr)
     }
 
     override fun initAdapter(optionItems: ArrayList<OptionItem>) {

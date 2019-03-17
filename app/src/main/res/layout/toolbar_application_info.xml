@@ -109,6 +109,15 @@
 					android:layout_margin="2dp"
 					android:textColor="@color/textColorPrimary"
 					android:textSize="@dimen/font_size_micro"/>
+
+				<TextView
+					android:id="@+id/appDataSize"
+					android:layout_width="match_parent"
+					android:layout_height="wrap_content"
+					android:text="@string/data_size"
+					android:layout_margin="2dp"
+					android:textColor="@color/textColorPrimary"
+					android:textSize="@dimen/font_size_micro"/>
 			</LinearLayout>
 
 		</LinearLayout>
