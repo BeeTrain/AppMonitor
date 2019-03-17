@@ -14,15 +14,20 @@
 		android:roundIcon="@mipmap/ic_launcher_round"
 		android:supportsRtl="true"
 		android:theme="@style/AppTheme.Launcher">
-		<activity android:name=".presentation.ui.AppActivity">
+
+		<activity
+			android:name=".presentation.ui.AppActivity"
+			android:launchMode="singleInstance">
 			<intent-filter>
 				<action android:name="android.intent.action.MAIN"/>
 
 				<category android:name="android.intent.category.LAUNCHER"/>
 			</intent-filter>
 		</activity>
+
 		<service
 			android:name=".presentation.service.PackageService"
 			android:exported="false"/>
+
 	</application>
 </manifest>

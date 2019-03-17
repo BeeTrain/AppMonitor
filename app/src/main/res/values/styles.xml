@@ -3,8 +3,9 @@
 	<style name="Widget.AppMonitor.Toolbar" parent="Widget.AppCompat.Toolbar">
 		<item name="android:background">?attr/colorPrimary</item>
 		<item name="android:theme">@style/AppTheme</item>
+		<item name="android:textColor">@color/textColorPrimary</item>
+		<item name="android:textColorSecondary">@color/textColorSecondary</item>
 		<item name="popupTheme">@style/ThemeOverlay.AppCompat.Light</item>
-		<item name="titleTextAppearance">@style/TextAppearance.AppMonitor.Toolbar</item>
 	</style>
 
 	<style name="TextAppearance.AppMonitor.Toolbar" parent="TextAppearance.MaterialComponents.Button">
