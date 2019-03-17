@@ -1,6 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
+	<dimen name="view_indent">8dp</dimen>
+	<dimen name="content_margin">16dp</dimen>
+
 	<dimen name="font_size_micro">12sp</dimen>
 	<dimen name="font_size_small">14sp</dimen>
 	<dimen name="font_size_medium">18sp</dimen>
@@ -17,5 +20,7 @@
 	<dimen name="notification_height">72dp</dimen>
 
 	<dimen name="list_reveal_height">550dp</dimen>
+
+	<dimen name="author_image_size">64dp</dimen>
 
 </resources>

@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+	<string name="msg_apk_saved">APK файл успешно сохранен</string>
 	<string name="msg_app_installed">Приложение установлено</string>
 	<string name="msg_app_updated">Приложение обновлено</string>
 	<string name="msg_app_uninstalled">Приложение удалено</string>

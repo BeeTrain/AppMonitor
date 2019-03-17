@@ -85,7 +85,7 @@ class InfoPresenter(router: Router, val applicationItem: ApplicationItem) : Base
 
     private fun saveApk() {
         if (AppUtils.copyFile(applicationItem)!!) {
-            viewState.showMessage(ResourcesUtils.getString(R.string.apk_saved))
+            viewState.showMessage(ResourcesUtils.getString(R.string.msg_apk_saved))
         } else {
             viewState.showMessage(ResourcesUtils.getString(R.string.error_cannot_save_apk))
         }

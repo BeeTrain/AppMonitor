@@ -133,6 +133,11 @@ class ListFragment : BaseFragment(), ListView {
         }
     }
 
+    @OnClick(R.id.btAbout)
+    fun onAboutClick() {
+        presenter.goToAbout()
+    }
+
     private fun setUpToolbar(view: View) {
         val toolbar: Toolbar = view.findViewById(R.id.toolbar)
         val activity = activity as AppCompatActivity

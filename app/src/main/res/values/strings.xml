@@ -1,7 +1,9 @@
 <resources>
 	<string name="app_name">AppMonitor</string>
-	<string name="apk_saved">APK файл успешно сохранен</string>
+	<string name="app_version" formatted="false">Version: %s</string>
 	<string name="content_description_default">content_description_default</string>
+	<string name="developed_by">developed by</string>
+	<string name="developer_url">www.github.com/beetrain</string>
 	<string name="error_cannot_run_app">Не удается запустить приложение</string>
 	<string name="error_cannot_save_apk">Не удалось сохранить APK файл</string>
 	<string name="history_no_data">Нет записей в истории</string>

@@ -8,6 +8,7 @@ import ru.chernakov.appmonitor.domain.executor.PostExecutionThread
 import ru.chernakov.appmonitor.domain.executor.ThreadExecutor
 import ru.chernakov.appmonitor.presentation.service.PackageService
 import ru.chernakov.appmonitor.presentation.ui.AppActivity
+import ru.chernakov.appmonitor.presentation.ui.about.AboutFragment
 import ru.chernakov.appmonitor.presentation.ui.history.HistoryFragment
 import ru.chernakov.appmonitor.presentation.ui.info.InfoFragment
 import ru.chernakov.appmonitor.presentation.ui.list.ListFragment
@@ -31,6 +32,8 @@ interface AppComponent {
     fun inject(listFragment: ListFragment)
 
     fun inject(historyFragment: HistoryFragment)
+
+    fun inject(aboutFragment: AboutFragment)
 
 
     fun application(): Application

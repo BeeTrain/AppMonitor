@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+	xmlns:android="http://schemas.android.com/apk/res/android"
+	android:layout_width="match_parent"
+	android:layout_height="match_parent">
+
+	<include
+		android:id="@+id/toolbar"
+		android:layout_height="wrap_content"
+		android:layout_width="match_parent"
+		android:layout_alignParentTop="true"
+		layout="@layout/toolbar_default"/>
+
+	<ImageView
+		android:id="@+id/logo"
+		android:layout_below="@+id/toolbar"
+		android:layout_width="match_parent"
+		android:layout_height="wrap_content"
+		android:src="@drawable/img_logo"
+		android:background="@color/colorPrimary"
+		android:contentDescription="@string/content_description_default"/>
+
+	<TextView
+		android:id="@+id/tvAppTitle"
+		android:layout_width="match_parent"
+		android:layout_height="wrap_content"
+		android:text="@string/app_name"
+		android:textSize="@dimen/font_size_large"
+		android:elevation="@dimen/default_elevation"
+		android:ellipsize="end"
+		android:layout_below="@+id/logo"
+		android:layout_marginTop="@dimen/view_indent"
+		android:layout_marginStart="@dimen/content_margin"/>
+
+	<TextView
+		android:id="@+id/tvAppVersion"
+		android:layout_width="match_parent"
+		android:layout_height="wrap_content"
+		android:text="@string/app_version"
+		android:textSize="@dimen/font_size_medium"
+		android:elevation="@dimen/default_elevation"
+		android:ellipsize="end"
+		android:textColor="@color/colorPrimaryDark"
+		android:layout_below="@+id/tvAppTitle"
+		android:layout_marginTop="@dimen/view_indent"
+		android:layout_marginStart="@dimen/content_margin"/>
+
+	<ImageView
+		android:id="@+id/author"
+		android:layout_above="@+id/tvDevelopedBy"
+		android:layout_width="match_parent"
+
+		android:layout_height="@dimen/author_image_size"
+		android:layout_margin="@dimen/view_indent"
+		android:src="@drawable/img_author"
+		android:contentDescription="@string/content_description_default"/>
+
+	<TextView
+		android:id="@+id/tvDevelopedBy"
+		android:layout_width="match_parent"
+		android:layout_height="wrap_content"
+		android:layout_above="@+id/tvDeveloperUrl"
+		android:gravity="center"
+		android:text="@string/developed_by"
+		android:textSize="@dimen/font_size_medium"/>
+
+	<TextView
+		android:id="@+id/tvDeveloperUrl"
+		android:layout_width="match_parent"
+		android:layout_height="wrap_content"
+		android:layout_alignParentBottom="true"
+		android:layout_marginBottom="@dimen/view_indent"
+		android:autoLink="web"
+		android:gravity="center"
+		android:text="@string/developer_url"
+		android:textSize="@dimen/font_size_medium"/>
+
+</RelativeLayout>

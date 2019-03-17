@@ -22,6 +22,10 @@ class ListPresenter(router: Router, val loadApplicationsUseCase: LoadApplication
         router.navigateTo(Screen.History)
     }
 
+    fun goToAbout() {
+        router.navigateTo(Screen.About)
+    }
+
     fun loadApps() {
         viewState.setLoading(appList.size == 0)
         loadApplicationsUseCase.execute(ListObserver(), null)
