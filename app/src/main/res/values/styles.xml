@@ -5,7 +5,9 @@
 		<item name="android:theme">@style/AppTheme</item>
 		<item name="android:textColor">@color/textColorPrimary</item>
 		<item name="android:textColorSecondary">@color/textColorSecondary</item>
-		<item name="popupTheme">@style/ThemeOverlay.AppCompat.Light</item>
+		<item name="android:windowActionBarOverlay">true</item>
+		<item name="popupTheme">@style/AppTheme.PopupOverlay</item>
+		<item name="theme">@style/ThemeOverlay.AppCompat.Dark.ActionBar</item>
 	</style>
 
 	<style name="TextAppearance.AppMonitor.Toolbar" parent="TextAppearance.MaterialComponents.Button">
