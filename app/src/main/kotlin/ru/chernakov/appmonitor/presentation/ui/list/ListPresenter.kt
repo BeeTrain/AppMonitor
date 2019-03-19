@@ -7,12 +7,15 @@ import ru.chernakov.appmonitor.domain.interactor.LoadApplications
 import ru.chernakov.appmonitor.domain.interactor.base.observer.BaseObserver
 import ru.chernakov.appmonitor.presentation.navigation.Screen
 import ru.chernakov.appmonitor.presentation.ui.base.BasePresenter
+import ru.chernakov.appmonitor.presentation.ui.list.adapter.ListAdapter
 import ru.terrakok.cicerone.Router
 
 @InjectViewState
 class ListPresenter(router: Router, val loadApplicationsUseCase: LoadApplications) : BasePresenter<ListView>(router) {
 
     val appList = ArrayList<ApplicationDto>()
+
+    val query: String? = ""
 
     fun goToInfo(applicationItem: ApplicationItem) {
         router.navigateTo(Screen.ApplicationInfo(applicationItem))
@@ -29,6 +32,14 @@ class ListPresenter(router: Router, val loadApplicationsUseCase: LoadApplication
     fun loadApps() {
         viewState.setLoading(appList.size == 0)
         loadApplicationsUseCase.execute(ListObserver(), null)
+    }
+
+    fun onQueryTextChange(adapter: ListAdapter, query: String?) {
+        adapter.filter.filter(query)
+    }
+
+    fun onQueryTextSubmit(adapter: ListAdapter, query: String?) {
+        adapter.filter.filter(query)
     }
 
     private inner class ListObserver : BaseObserver<List<ApplicationDto>>() {

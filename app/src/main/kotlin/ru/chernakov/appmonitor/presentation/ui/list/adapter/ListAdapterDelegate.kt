@@ -11,18 +11,18 @@ import ru.chernakov.appmonitor.R
 import ru.chernakov.appmonitor.data.dto.ApplicationDto
 import ru.chernakov.appmonitor.presentation.utils.PackageUtils
 
-class ListAdapterDelegate(private val activity: Activity) : AdapterDelegate<List<ApplicationDto>>() {
+class ListAdapterDelegate(private val activity: Activity) : AdapterDelegate<ArrayList<ApplicationDto>>() {
 
     override fun onCreateViewHolder(parent: ViewGroup): RecyclerView.ViewHolder {
         return ListViewHolder(activity.layoutInflater.inflate(R.layout.list_item_app, parent, false))
     }
 
-    override fun isForViewType(items: List<ApplicationDto>, position: Int): Boolean {
+    override fun isForViewType(items: ArrayList<ApplicationDto>, position: Int): Boolean {
         return items[position] is ApplicationDto
     }
 
     override fun onBindViewHolder(
-        items: List<ApplicationDto>,
+        items: ArrayList<ApplicationDto>,
         position: Int,
         holder: RecyclerView.ViewHolder,
         payloads: MutableList<Any>

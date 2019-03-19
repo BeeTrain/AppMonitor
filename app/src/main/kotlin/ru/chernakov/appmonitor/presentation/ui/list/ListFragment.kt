@@ -4,7 +4,9 @@ import android.content.Intent
 import android.os.Bundle
 import android.support.v7.app.AppCompatActivity
 import android.support.v7.widget.LinearLayoutManager
+import android.support.v7.widget.SearchView
 import android.support.v7.widget.Toolbar
+import android.text.TextUtils
 import android.view.Menu
 import android.view.MenuInflater
 import android.view.MenuItem
@@ -31,7 +33,7 @@ import ru.chernakov.appmonitor.presentation.utils.PackageUtils
 import ru.chernakov.appmonitor.presentation.utils.ResourcesUtils
 import javax.inject.Inject
 
-class ListFragment : BaseFragment(), ListView {
+class ListFragment : BaseFragment(), ListView, SearchView.OnQueryTextListener {
     override val layoutRes: Int = R.layout.fragment_list
 
     private var adapter: ListAdapter? = null
@@ -56,6 +58,19 @@ class ListFragment : BaseFragment(), ListView {
 
     override fun onCreateOptionsMenu(menu: Menu?, menuInflater: MenuInflater?) {
         menuInflater!!.inflate(R.menu.menu_list, menu)
+
+        val searchItem = menu?.findItem(R.id.action_search)
+        if (searchItem != null) {
+            val searchView = searchItem.actionView as SearchView
+                // Настройка виджета
+                searchView.setOnQueryTextListener(this)
+                searchView.setIconifiedByDefault(true)
+                // Вывод ранее введённого поискового запроса
+                if (!TextUtils.isEmpty(presenter.query)) {
+                    searchView.setQuery(presenter.query, false)
+                }
+        }
+
         super.onCreateOptionsMenu(menu, menuInflater)
     }
 
@@ -99,6 +114,23 @@ class ListFragment : BaseFragment(), ListView {
         setLoading(false)
     }
 
+    override fun setUpToolbar(view: View) {
+        val toolbar: Toolbar = view.findViewById(R.id.toolbar)
+        val activity = activity as AppCompatActivity
+        activity.setSupportActionBar(toolbar)
+        toolbar.title = getString(R.string.app_name)
+        toolbar.navigationIcon = ResourcesUtils.getDrawable(R.drawable.ic_menu_open)
+        toolbar.setNavigationOnClickListener(
+            ListNavigationIconClickListener(
+                activity,
+                view.findViewById(R.id.scrollViewGrid),
+                AccelerateDecelerateInterpolator(),
+                ResourcesUtils.getDrawable(R.drawable.ic_menu_open),
+                ResourcesUtils.getDrawable(R.drawable.ic_menu_close)
+            )
+        )
+    }
+
     override fun setLoading(isLoading: Boolean) {
         progressLoading.visibility = if (isLoading) View.VISIBLE else View.GONE
         applicationsList.visibility = if (isLoading) View.GONE else View.VISIBLE
@@ -108,6 +140,17 @@ class ListFragment : BaseFragment(), ListView {
         Toast.makeText(context, msg, Toast.LENGTH_SHORT).show()
     }
 
+    override fun onQueryTextSubmit(query: String?): Boolean {
+        presenter.onQueryTextSubmit(adapter!!, query)
+
+        return false
+    }
+
+    override fun onQueryTextChange(query: String?): Boolean {
+        presenter.onQueryTextChange(adapter!!, query)
+
+        return false
+    }
 
     @OnClick(R.id.btHistory)
     fun onHistoryClick() {
@@ -132,23 +175,6 @@ class ListFragment : BaseFragment(), ListView {
     @OnClick(R.id.btAbout)
     fun onAboutClick() {
         presenter.goToAbout()
-    }
-
-    override fun setUpToolbar(view: View) {
-        val toolbar: Toolbar = view.findViewById(R.id.toolbar)
-        val activity = activity as AppCompatActivity
-        activity.setSupportActionBar(toolbar)
-        toolbar.title = getString(R.string.app_name)
-        toolbar.navigationIcon = ResourcesUtils.getDrawable(R.drawable.ic_menu_open)
-        toolbar.setNavigationOnClickListener(
-            ListNavigationIconClickListener(
-                activity,
-                view.findViewById(R.id.scrollViewGrid),
-                AccelerateDecelerateInterpolator(),
-                ResourcesUtils.getDrawable(R.drawable.ic_menu_open),
-                ResourcesUtils.getDrawable(R.drawable.ic_menu_close)
-            )
-        )
     }
 
     @ProvidePresenter
