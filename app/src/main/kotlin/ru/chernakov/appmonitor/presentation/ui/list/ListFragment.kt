@@ -9,7 +9,6 @@ import android.support.v7.widget.Toolbar
 import android.text.TextUtils
 import android.view.Menu
 import android.view.MenuInflater
-import android.view.MenuItem
 import android.view.View
 import android.view.animation.AccelerateDecelerateInterpolator
 import android.widget.Toast
@@ -50,53 +49,12 @@ class ListFragment : BaseFragment(), ListView, SearchView.OnQueryTextListener {
     @Inject
     lateinit var applicationCache: ApplicationCache
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        App.instance.getAppComponent().inject(this)
-        super.onCreate(savedInstanceState)
-        setHasOptionsMenu(true)
-    }
+    override fun onActivityCreated(savedInstanceState: Bundle?) {
+        super.onActivityCreated(savedInstanceState)
 
-    override fun onCreateOptionsMenu(menu: Menu?, menuInflater: MenuInflater?) {
-        menuInflater!!.inflate(R.menu.menu_list, menu)
-
-        val searchItem = menu?.findItem(R.id.action_search)
-        if (searchItem != null) {
-            val searchView = searchItem.actionView as SearchView
-                // Настройка виджета
-                searchView.setOnQueryTextListener(this)
-                searchView.setIconifiedByDefault(true)
-                // Вывод ранее введённого поискового запроса
-                if (!TextUtils.isEmpty(presenter.query)) {
-                    searchView.setQuery(presenter.query, false)
-                }
-        }
-
-        super.onCreateOptionsMenu(menu, menuInflater)
-    }
-
-    override fun onOptionsItemSelected(item: MenuItem?): Boolean {
-        when (item?.itemId) {
-            R.id.action_refresh -> {
-                presenter.loadApps()
-                showMessage(getString(R.string.msg_list_refreshing))
-            }
-        }
-
-        return super.onOptionsItemSelected(item)
-    }
-
-    override fun loadData() {
-        presenter.loadApps()
-    }
-
-    override fun initAdapter(applications: ArrayList<ApplicationDto>) {
-        applications.sortWith(Comparator { p1, p2 ->
-            p1.name.toString().toLowerCase()
-                .compareTo(p2.name.toString().toLowerCase())
-        })
-
-        adapter = activity?.let { ListAdapter(it, applications) }
         applicationsList.layoutManager = LinearLayoutManager(context)
+        applicationsList.setHasFixedSize(true)
+        adapter = activity?.let { ListAdapter(it, ArrayList()) }
         applicationsList.adapter = adapter
 
         with(ItemClickSupport.addTo(applicationsList)) {
@@ -110,7 +68,42 @@ class ListFragment : BaseFragment(), ListView, SearchView.OnQueryTextListener {
             }
         }
 
-        adapter?.notifyDataSetChanged()
+        swipeRefresh.setOnRefreshListener { presenter.loadApps() }
+    }
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        App.instance.getAppComponent().inject(this)
+        super.onCreate(savedInstanceState)
+        setHasOptionsMenu(true)
+    }
+
+    override fun onCreateOptionsMenu(menu: Menu?, menuInflater: MenuInflater?) {
+        menuInflater!!.inflate(R.menu.menu_list, menu)
+
+        val searchItem = menu?.findItem(R.id.action_search)
+        if (searchItem != null) {
+            val searchView = searchItem.actionView as SearchView
+            searchView.setOnQueryTextListener(this)
+            searchView.setIconifiedByDefault(true)
+            if (!TextUtils.isEmpty(presenter.query)) {
+                searchView.setQuery(presenter.query, false)
+            }
+        }
+
+        super.onCreateOptionsMenu(menu, menuInflater)
+    }
+
+    override fun loadData() {
+        presenter.loadApps()
+    }
+
+    override fun initAdapter(applications: ArrayList<ApplicationDto>) {
+        applications.sortWith(Comparator { p1, p2 ->
+            p1.name.toString().toLowerCase()
+                .compareTo(p2.name.toString().toLowerCase())
+        })
+
+        adapter?.setItems(applications)
         setLoading(false)
     }
 
@@ -134,6 +127,8 @@ class ListFragment : BaseFragment(), ListView, SearchView.OnQueryTextListener {
     override fun setLoading(isLoading: Boolean) {
         progressLoading.visibility = if (isLoading) View.VISIBLE else View.GONE
         applicationsList.visibility = if (isLoading) View.GONE else View.VISIBLE
+        backdropMenu.visibility = if (isLoading) View.GONE else View.VISIBLE
+        swipeRefresh.isRefreshing = isLoading
     }
 
     override fun showMessage(msg: String) {

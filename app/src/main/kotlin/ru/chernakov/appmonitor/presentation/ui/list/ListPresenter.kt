@@ -30,7 +30,7 @@ class ListPresenter(router: Router, val loadApplicationsUseCase: LoadApplication
     }
 
     fun loadApps() {
-        viewState.setLoading(appList.size == 0)
+        viewState.setLoading(true)
         loadApplicationsUseCase.execute(ListObserver(), null)
     }
 

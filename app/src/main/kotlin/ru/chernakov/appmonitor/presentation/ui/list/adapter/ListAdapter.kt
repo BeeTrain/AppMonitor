@@ -67,4 +67,10 @@ class ListAdapter(activity: FragmentActivity, private var items: ArrayList<Appli
     fun getItem(position: Int): ApplicationDto {
         return itemsSearch[position]
     }
+
+    fun setItems(items: ArrayList<ApplicationDto>) {
+        this.items = items
+        itemsSearch = items
+        notifyDataSetChanged()
+    }
 }

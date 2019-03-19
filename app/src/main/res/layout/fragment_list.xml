@@ -6,6 +6,7 @@
 	android:layout_height="match_parent">
 
 	<LinearLayout
+		android:id="@+id/backdropMenu"
 		style="@style/Widget.AppMonitor.Backdrop"
 		android:layout_width="match_parent"
 		android:layout_height="match_parent"
@@ -27,33 +28,47 @@
 
 	</android.support.design.widget.AppBarLayout>
 
-	<android.support.v4.widget.NestedScrollView
-		android:id="@+id/scrollViewGrid"
-		android:layout_width="match_parent"
-		android:layout_height="match_parent"
+	<android.support.v4.widget.SwipeRefreshLayout
+		android:id="@+id/swipeRefresh"
 		android:layout_below="@+id/app_bar"
-		android:background="@color/listBackgroundColor"
-		android:elevation="@dimen/default_elevation">
+		android:layout_width="match_parent"
+		android:layout_height="match_parent">
 
 		<LinearLayout
+			android:orientation="vertical"
 			android:layout_width="match_parent"
-			android:layout_height="match_parent"
-			android:orientation="vertical">
-
-			<android.support.v7.widget.RecyclerView
-				android:id="@+id/applicationsList"
-				android:layout_width="match_parent"
-				android:layout_height="match_parent"/>
+			android:layout_height="match_parent">
 
 			<ProgressBar
 				android:id="@+id/progressLoading"
-				android:layout_width="match_parent"
+				android:layout_width="wrap_content"
 				android:layout_height="match_parent"
 				app:layout_behavior="@string/appbar_scrolling_view_behavior"
 				android:layout_gravity="center"/>
 
+			<android.support.v4.widget.NestedScrollView
+				android:id="@+id/scrollViewGrid"
+				android:layout_width="match_parent"
+				android:layout_height="match_parent"
+				android:background="@color/listBackgroundColor"
+				android:elevation="@dimen/default_elevation">
+
+				<LinearLayout
+					android:layout_width="match_parent"
+					android:layout_height="match_parent"
+					android:orientation="vertical">
+
+					<android.support.v7.widget.RecyclerView
+						android:id="@+id/applicationsList"
+						android:layout_width="match_parent"
+						android:layout_height="match_parent"/>
+
+				</LinearLayout>
+
+			</android.support.v4.widget.NestedScrollView>
+
 		</LinearLayout>
 
-	</android.support.v4.widget.NestedScrollView>
+	</android.support.v4.widget.SwipeRefreshLayout>
 
 </RelativeLayout>
