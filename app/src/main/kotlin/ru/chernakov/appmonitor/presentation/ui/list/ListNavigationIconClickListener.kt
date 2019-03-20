@@ -36,7 +36,7 @@ class ListNavigationIconClickListener @JvmOverloads internal constructor(
 
         updateIcon(view)
 
-        val translateY = height - context.resources.getDimensionPixelSize(R.dimen.list_reveal_height)
+        val translateY = height - context.resources.getDimensionPixelSize(R.dimen.backdrop_list_reveal_height)
 
         val animator = ObjectAnimator.ofFloat(sheet, "translationY", (if (backdropShown) translateY else 0).toFloat())
         animator.duration = 500

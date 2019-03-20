@@ -67,8 +67,6 @@ class ListFragment : BaseFragment(), ListView, SearchView.OnQueryTextListener {
                 }
             }
         }
-
-        swipeRefresh.setOnRefreshListener { presenter.loadApps() }
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -128,7 +126,6 @@ class ListFragment : BaseFragment(), ListView, SearchView.OnQueryTextListener {
         progressLoading.visibility = if (isLoading) View.VISIBLE else View.GONE
         applicationsList.visibility = if (isLoading) View.GONE else View.VISIBLE
         backdropMenu.visibility = if (isLoading) View.GONE else View.VISIBLE
-        swipeRefresh.isRefreshing = isLoading
     }
 
     override fun showMessage(msg: String) {

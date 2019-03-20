@@ -12,8 +12,8 @@
 		android:layout_height="match_parent"
 		android:gravity="center_horizontal"
 		android:orientation="vertical"
-		android:paddingTop="100dp"
-		android:paddingBottom="30dp">
+		android:paddingTop="@dimen/backdrop_paddingTop"
+		android:paddingBottom="@dimen/backdrop_paddingBottom">
 
 		<include layout="@layout/menu_backdrop"/>
 
@@ -28,47 +28,40 @@
 
 	</android.support.design.widget.AppBarLayout>
 
-	<android.support.v4.widget.SwipeRefreshLayout
-		android:id="@+id/swipeRefresh"
+	<LinearLayout
+		android:orientation="vertical"
 		android:layout_below="@+id/app_bar"
 		android:layout_width="match_parent"
 		android:layout_height="match_parent">
 
-		<LinearLayout
-			android:orientation="vertical"
+		<ProgressBar
+			android:id="@+id/progressLoading"
+			android:layout_width="wrap_content"
+			android:layout_height="match_parent"
+			app:layout_behavior="@string/appbar_scrolling_view_behavior"
+			android:layout_gravity="center"/>
+
+		<android.support.v4.widget.NestedScrollView
+			android:id="@+id/scrollViewGrid"
 			android:layout_width="match_parent"
-			android:layout_height="match_parent">
+			android:layout_height="match_parent"
+			android:background="@color/listBackgroundColor"
+			android:elevation="@dimen/default_elevation">
 
-			<ProgressBar
-				android:id="@+id/progressLoading"
-				android:layout_width="wrap_content"
-				android:layout_height="match_parent"
-				app:layout_behavior="@string/appbar_scrolling_view_behavior"
-				android:layout_gravity="center"/>
-
-			<android.support.v4.widget.NestedScrollView
-				android:id="@+id/scrollViewGrid"
+			<LinearLayout
 				android:layout_width="match_parent"
 				android:layout_height="match_parent"
-				android:background="@color/listBackgroundColor"
-				android:elevation="@dimen/default_elevation">
+				android:orientation="vertical">
 
-				<LinearLayout
+				<android.support.v7.widget.RecyclerView
+					android:id="@+id/applicationsList"
 					android:layout_width="match_parent"
-					android:layout_height="match_parent"
-					android:orientation="vertical">
+					android:layout_height="match_parent"/>
 
-					<android.support.v7.widget.RecyclerView
-						android:id="@+id/applicationsList"
-						android:layout_width="match_parent"
-						android:layout_height="match_parent"/>
+			</LinearLayout>
 
-				</LinearLayout>
+		</android.support.v4.widget.NestedScrollView>
 
-			</android.support.v4.widget.NestedScrollView>
-
-		</LinearLayout>
-
-	</android.support.v4.widget.SwipeRefreshLayout>
+	</LinearLayout>
 
 </RelativeLayout>
