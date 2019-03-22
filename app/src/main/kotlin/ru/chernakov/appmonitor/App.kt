@@ -49,5 +49,4 @@ class App : Application() {
             startService(packageService)
         }
     }
-
 }

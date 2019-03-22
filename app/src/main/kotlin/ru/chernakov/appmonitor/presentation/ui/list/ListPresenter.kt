@@ -31,7 +31,11 @@ class ListPresenter(router: Router, val loadApplicationsUseCase: LoadApplication
 
     fun loadApps() {
         viewState.setLoading(true)
-        loadApplicationsUseCase.execute(ListObserver(), null)
+        if (appList.size > 0) {
+            viewState.initAdapter(appList)
+        } else {
+            loadApplicationsUseCase.execute(ListObserver(), null)
+        }
     }
 
     fun onQueryTextChange(adapter: ListAdapter, query: String?) {

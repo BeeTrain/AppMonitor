@@ -21,8 +21,15 @@ internal constructor(
 
     override fun buildUseCaseSingle(params: Void?): Single<List<EventItem>> {
         return Single.create {
-            val events = scan()
-            it.onSuccess(events)
+            if (App.appPreferences.isColdStart) {
+                it.onSuccess(ArrayList())
+            }
+            try {
+                val events = scan()
+                it.onSuccess(events)
+            } catch (e: Exception) {
+                it.onError(e)
+            }
         }
     }
 
@@ -52,20 +59,36 @@ internal constructor(
             val updatedApps = PackageUtils.getUpdatedPackages(dataPackages, checkPackages)
             if (updatedApps.size > 0) {
                 for (ApplicationItem in updatedApps) {
-                    val eventItem = EventItem(
-                        ApplicationItem.name,
-                        ApplicationItem.apk,
-                        ApplicationItem.version,
-                        EventItem.EVENT_UPDATE,
-                        ApplicationItem.updateDate,
-                        PackageUtils.getPackageIcon(ApplicationItem.name)
+                    events.add(
+                        EventItem(
+                            ApplicationItem.name,
+                            ApplicationItem.apk,
+                            ApplicationItem.version,
+                            EventItem.EVENT_UPDATE,
+                            ApplicationItem.updateDate,
+                            PackageUtils.getPackageIcon(ApplicationItem.name)
+                        )
                     )
-
-                    events.add(eventItem)
                 }
             }
 
-            if (installedApps.size > 0 || updatedApps.size > 0) {
+            val uninstalledApps = PackageUtils.getUninstalledPackages(dataPackages, checkPackages)
+            if (uninstalledApps.size > 0) {
+                for (ApplicationItem in updatedApps) {
+                    events.add(
+                        EventItem(
+                            ApplicationItem.name,
+                            ApplicationItem.apk,
+                            ApplicationItem.version,
+                            EventItem.EVENT_UNINSTALL,
+                            ApplicationItem.updateDate,
+                            PackageUtils.getPackageIcon(ApplicationItem.name)
+                        )
+                    )
+                }
+            }
+
+            if (installedApps.size > 0 || updatedApps.size > 0 || uninstalledApps.size > 0) {
                 applicationRepository.update(checkPackages)
             }
         } else {

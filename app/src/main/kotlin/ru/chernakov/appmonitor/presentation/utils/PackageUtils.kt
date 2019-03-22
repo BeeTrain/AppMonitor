@@ -85,7 +85,7 @@ class PackageUtils {
             for (fromDb: ApplicationDto in sourceData) {
                 var isDeleted = true
                 for (fromUpdate: ApplicationDto in checkUpdate) {
-                    if (fromDb.name == fromUpdate.name) {
+                    if (fromDb.name == fromUpdate.name && fromDb.apk == fromUpdate.apk) {
                         isDeleted = false
                     }
                 }
