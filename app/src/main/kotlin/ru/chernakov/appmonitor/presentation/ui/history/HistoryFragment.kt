@@ -11,10 +11,7 @@ import com.arellomobile.mvp.presenter.ProvidePresenter
 import kotlinx.android.synthetic.main.fragment_history.*
 import ru.chernakov.appmonitor.App
 import ru.chernakov.appmonitor.R
-import ru.chernakov.appmonitor.UIThread
 import ru.chernakov.appmonitor.data.model.EventItem
-import ru.chernakov.appmonitor.data.repository.EventRepository
-import ru.chernakov.appmonitor.domain.executor.ThreadExecutor
 import ru.chernakov.appmonitor.domain.interactor.LoadHistory
 import ru.chernakov.appmonitor.presentation.ui.base.BaseFragment
 import ru.chernakov.appmonitor.presentation.ui.history.adapter.HistoryAdapter
@@ -30,13 +27,7 @@ class HistoryFragment : BaseFragment(), HistoryView {
     lateinit var presenter: HistoryPresenter
 
     @Inject
-    lateinit var eventRepository: EventRepository
-
-    @Inject
-    lateinit var uiThread: UIThread
-
-    @Inject
-    lateinit var threadExecutor: ThreadExecutor
+    lateinit var loadHistory: LoadHistory
 
     private var adapter: HistoryAdapter? = null
 
@@ -81,10 +72,7 @@ class HistoryFragment : BaseFragment(), HistoryView {
 
     @ProvidePresenter
     fun providePresenter(): HistoryPresenter {
-        return HistoryPresenter(
-            router,
-            LoadHistory(eventRepository, threadExecutor, uiThread)
-        )
+        return HistoryPresenter(router, loadHistory)
     }
 
     override fun setUpToolbar(view: View) {

@@ -7,8 +7,11 @@ import ru.chernakov.appmonitor.App
 import ru.chernakov.appmonitor.UIThread
 import ru.chernakov.appmonitor.data.executor.JobExecutor
 import ru.chernakov.appmonitor.data.repository.ApplicationRepository
+import ru.chernakov.appmonitor.data.repository.EventRepository
 import ru.chernakov.appmonitor.domain.executor.PostExecutionThread
 import ru.chernakov.appmonitor.domain.executor.ThreadExecutor
+import ru.chernakov.appmonitor.domain.interactor.LoadApplications
+import ru.chernakov.appmonitor.domain.interactor.LoadHistory
 import ru.chernakov.appmonitor.domain.interactor.ScanPackages
 import javax.inject.Singleton
 
@@ -31,6 +34,26 @@ class ApplicationModule(private val app: App) {
     @Singleton
     internal fun providePostExecutionThread(uiThread: UIThread): PostExecutionThread {
         return uiThread
+    }
+
+    @Provides
+    @Singleton
+    internal fun provideLoadApplications(
+        applicationRepository: ApplicationRepository,
+        threadExecutor: ThreadExecutor,
+        postExecutionThread: PostExecutionThread
+    ): LoadApplications {
+        return LoadApplications(applicationRepository, threadExecutor, postExecutionThread)
+    }
+
+    @Provides
+    @Singleton
+    internal fun provideLoadHistory(
+        eventRepository: EventRepository,
+        threadExecutor: ThreadExecutor,
+        postExecutionThread: PostExecutionThread
+    ): LoadHistory {
+        return LoadHistory(eventRepository, threadExecutor, postExecutionThread)
     }
 
     @Provides

@@ -18,11 +18,7 @@ import com.arellomobile.mvp.presenter.ProvidePresenter
 import kotlinx.android.synthetic.main.fragment_list.*
 import ru.chernakov.appmonitor.App
 import ru.chernakov.appmonitor.R
-import ru.chernakov.appmonitor.UIThread
-import ru.chernakov.appmonitor.data.cache.ApplicationCache
 import ru.chernakov.appmonitor.data.dto.ApplicationDto
-import ru.chernakov.appmonitor.data.repository.ApplicationRepository
-import ru.chernakov.appmonitor.domain.executor.ThreadExecutor
 import ru.chernakov.appmonitor.domain.interactor.LoadApplications
 import ru.chernakov.appmonitor.presentation.service.PackageService
 import ru.chernakov.appmonitor.presentation.ui.base.BaseFragment
@@ -41,13 +37,7 @@ class ListFragment : BaseFragment(), ListView, SearchView.OnQueryTextListener {
     lateinit var presenter: ListPresenter
 
     @Inject
-    lateinit var uiThread: UIThread
-
-    @Inject
-    lateinit var threadExecutor: ThreadExecutor
-
-    @Inject
-    lateinit var applicationCache: ApplicationCache
+    lateinit var loadApplications: LoadApplications
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
@@ -171,9 +161,6 @@ class ListFragment : BaseFragment(), ListView, SearchView.OnQueryTextListener {
 
     @ProvidePresenter
     fun providePresenter(): ListPresenter {
-        return ListPresenter(
-            router,
-            LoadApplications(ApplicationRepository(applicationCache), threadExecutor, uiThread)
-        )
+        return ListPresenter(router, loadApplications)
     }
 }

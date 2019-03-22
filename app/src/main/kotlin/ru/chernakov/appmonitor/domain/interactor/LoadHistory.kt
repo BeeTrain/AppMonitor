@@ -6,8 +6,12 @@ import ru.chernakov.appmonitor.data.repository.EventRepository
 import ru.chernakov.appmonitor.domain.executor.PostExecutionThread
 import ru.chernakov.appmonitor.domain.executor.ThreadExecutor
 import ru.chernakov.appmonitor.domain.interactor.base.usecase.UseCaseObservable
+import javax.inject.Inject
+import javax.inject.Singleton
 
-class LoadHistory(
+@Singleton
+class LoadHistory @Inject
+constructor(
     private val eventRepository: EventRepository,
     threadExecutor: ThreadExecutor,
     postExecutionThread: PostExecutionThread
