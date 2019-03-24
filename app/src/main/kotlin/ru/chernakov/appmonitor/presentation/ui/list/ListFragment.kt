@@ -1,6 +1,5 @@
 package ru.chernakov.appmonitor.presentation.ui.list
 
-import android.content.Intent
 import android.os.Bundle
 import android.support.v7.app.AppCompatActivity
 import android.support.v7.widget.LinearLayoutManager
@@ -20,7 +19,6 @@ import ru.chernakov.appmonitor.App
 import ru.chernakov.appmonitor.R
 import ru.chernakov.appmonitor.data.dto.ApplicationDto
 import ru.chernakov.appmonitor.domain.interactor.LoadApplications
-import ru.chernakov.appmonitor.presentation.service.PackageService
 import ru.chernakov.appmonitor.presentation.ui.base.BaseFragment
 import ru.chernakov.appmonitor.presentation.ui.list.adapter.ListAdapter
 import ru.chernakov.appmonitor.presentation.utils.ItemClickSupport
@@ -141,17 +139,7 @@ class ListFragment : BaseFragment(), ListView, SearchView.OnQueryTextListener {
 
     @OnClick(R.id.btService)
     fun onServiceClick() {
-        if (App.isServiceRunning) {
-            showMessage(getString(R.string.msg_service_stopped))
-            val intent = Intent(context, PackageService::class.java)
-            intent.action = PackageService.ACTION_STOP
-            App.instance.startService(intent)
-        } else {
-            showMessage(getString(R.string.msg_service_started))
-            val intent = Intent(context, PackageService::class.java)
-            intent.action = PackageService.ACTION_START
-            App.instance.startService(intent)
-        }
+        presenter.toggleService(this)
     }
 
     @OnClick(R.id.btAbout)

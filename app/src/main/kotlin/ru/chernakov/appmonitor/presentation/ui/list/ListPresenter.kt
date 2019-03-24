@@ -1,11 +1,16 @@
 package ru.chernakov.appmonitor.presentation.ui.list
 
+import android.content.Intent
 import com.arellomobile.mvp.InjectViewState
+import ru.chernakov.appmonitor.App
+import ru.chernakov.appmonitor.R
 import ru.chernakov.appmonitor.data.dto.ApplicationDto
 import ru.chernakov.appmonitor.data.model.ApplicationItem
 import ru.chernakov.appmonitor.domain.interactor.LoadApplications
 import ru.chernakov.appmonitor.domain.interactor.base.observer.BaseObserver
 import ru.chernakov.appmonitor.presentation.navigation.Screen
+import ru.chernakov.appmonitor.presentation.service.PackageService
+import ru.chernakov.appmonitor.presentation.ui.base.BaseFragment
 import ru.chernakov.appmonitor.presentation.ui.base.BasePresenter
 import ru.chernakov.appmonitor.presentation.ui.list.adapter.ListAdapter
 import ru.terrakok.cicerone.Router
@@ -35,6 +40,20 @@ class ListPresenter(router: Router, val loadApplicationsUseCase: LoadApplication
             viewState.initAdapter(appList)
         } else {
             loadApplicationsUseCase.execute(ListObserver(), null)
+        }
+    }
+
+    fun toggleService(fragment: BaseFragment) {
+        if (App.isServiceRunning) {
+            viewState.showMessage(fragment.getString(R.string.msg_service_stopped))
+            val intent = Intent(fragment.context, PackageService::class.java)
+            intent.action = PackageService.ACTION_STOP
+            App.instance.startService(intent)
+        } else {
+            viewState.showMessage(fragment.getString(R.string.msg_service_started))
+            val intent = Intent(fragment.context, PackageService::class.java)
+            intent.action = PackageService.ACTION_START
+            App.instance.startService(intent)
         }
     }
 
