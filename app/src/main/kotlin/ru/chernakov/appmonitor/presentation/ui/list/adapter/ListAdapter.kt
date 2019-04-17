@@ -8,8 +8,15 @@ import android.widget.Filterable
 import com.hannesdorfmann.adapterdelegates3.AdapterDelegatesManager
 import ru.chernakov.appmonitor.data.dto.ApplicationDto
 
-class ListAdapter(activity: FragmentActivity, private var items: ArrayList<ApplicationDto>) :
+class ListAdapter(activity: FragmentActivity, items: ArrayList<ApplicationDto>) :
     RecyclerView.Adapter<RecyclerView.ViewHolder>(), Filterable {
+
+    var items: ArrayList<ApplicationDto> = items
+    set(items) {
+        field = items
+        itemsSearch = items
+        notifyDataSetChanged()
+    }
 
     private var itemsSearch: ArrayList<ApplicationDto> = ArrayList()
 
@@ -66,11 +73,5 @@ class ListAdapter(activity: FragmentActivity, private var items: ArrayList<Appli
 
     fun getItem(position: Int): ApplicationDto {
         return itemsSearch[position]
-    }
-
-    fun setItems(items: ArrayList<ApplicationDto>) {
-        this.items = items
-        itemsSearch = items
-        notifyDataSetChanged()
     }
 }
