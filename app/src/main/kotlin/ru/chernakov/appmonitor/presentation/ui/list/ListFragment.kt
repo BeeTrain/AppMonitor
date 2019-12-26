@@ -89,7 +89,7 @@ class ListFragment : BaseFragment(), ListView, SearchView.OnQueryTextListener {
                 .compareTo(p2.name.toString().toLowerCase())
         })
 
-        adapter?.setItems(applications)
+        adapter?.items = applications
         setLoading(false)
     }
 

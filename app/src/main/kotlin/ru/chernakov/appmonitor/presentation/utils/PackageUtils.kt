@@ -123,23 +123,33 @@ class PackageUtils {
 
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.P) {
                 val signingInfo =
-                    packageManager.getPackageArchiveInfo(sourceFileDir, PackageManager.GET_SIGNING_CERTIFICATES)
+                    packageManager.getPackageArchiveInfo(
+                        sourceFileDir,
+                        PackageManager.GET_SIGNING_CERTIFICATES
+                    )
                         .signingInfo
 
-                sha = if (signingInfo.hasMultipleSigners()) {
-                    signingInfo.apkContentsSigners.map {
-                        md.update(it.toByteArray())
-                        bytesToHex(md.digest())
-                    }
+                sha = if (signingInfo == null) {
+                    listOf()
                 } else {
-                    signingInfo.signingCertificateHistory.map {
-                        md.update(it.toByteArray())
-                        bytesToHex(md.digest())
+                    if (signingInfo.hasMultipleSigners()) {
+                        signingInfo.apkContentsSigners.map {
+                            md.update(it.toByteArray())
+                            bytesToHex(md.digest())
+                        }
+                    } else {
+                        signingInfo.signingCertificateHistory.map {
+                            md.update(it.toByteArray())
+                            bytesToHex(md.digest())
+                        }
                     }
                 }
             } else {
                 val signingInfo =
-                    packageManager.getPackageArchiveInfo(sourceFileDir, PackageManager.GET_SIGNATURES).signatures
+                    packageManager.getPackageArchiveInfo(
+                        sourceFileDir,
+                        PackageManager.GET_SIGNATURES
+                    ).signatures
 
                 sha = signingInfo.map {
                     md.update(it.toByteArray())
@@ -155,11 +165,14 @@ class PackageUtils {
 
         fun getPackageIcon(packageName: String?): Drawable {
             val packageManager = App.instance.packageManager
-            var icon: Drawable = ResourcesUtils.getDrawable(ru.chernakov.appmonitor.R.drawable.ic_app)
+            var icon: Drawable =
+                ResourcesUtils.getDrawable(ru.chernakov.appmonitor.R.drawable.ic_app)
             try {
-                val packageInfo = packageManager.getPackageInfo(packageName, PackageManager.GET_META_DATA)
+                val packageInfo =
+                    packageManager.getPackageInfo(packageName, PackageManager.GET_META_DATA)
                 if (packageInfo != null) {
-                    icon = packageManager.getApplicationIcon(packageInfo.applicationInfo.packageName)
+                    icon =
+                        packageManager.getApplicationIcon(packageInfo.applicationInfo.packageName)
                 }
             } catch (e: PackageManager.NameNotFoundException) {
                 //
@@ -181,7 +194,8 @@ class PackageUtils {
         fun getApplicationItem(packageName: String?): ApplicationItem? {
             try {
                 val packageManager = App.instance.packageManager
-                val packageInfo = packageManager.getPackageInfo(packageName, PackageManager.GET_META_DATA)
+                val packageInfo =
+                    packageManager.getPackageInfo(packageName, PackageManager.GET_META_DATA)
 
                 return ApplicationItem(
                     packageManager.getApplicationLabel(packageInfo.applicationInfo).toString(),
@@ -236,7 +250,24 @@ class PackageUtils {
         }
 
         private fun bytesToHex(bytes: ByteArray): String {
-            val hexArray = charArrayOf('0', '1', '2', '3', '4', '5', '6', '7', '8', '9', 'A', 'B', 'C', 'D', 'E', 'F')
+            val hexArray = charArrayOf(
+                '0',
+                '1',
+                '2',
+                '3',
+                '4',
+                '5',
+                '6',
+                '7',
+                '8',
+                '9',
+                'A',
+                'B',
+                'C',
+                'D',
+                'E',
+                'F'
+            )
             val hexChars = CharArray(bytes.size * 2)
             var v: Int
             for (j in bytes.indices) {
